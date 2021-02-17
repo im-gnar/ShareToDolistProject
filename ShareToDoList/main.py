@@ -1,7 +1,9 @@
 import os
-from flask import Flask, render_template, request, redirect, send_file
+from flask import *
 
 app = Flask("ToDO")
+db={'test':'1234'}
+
 
 @app.route('/')
 def mainpage():
@@ -12,34 +14,37 @@ def mainpage():
 def mainpageUsing():
     return render_template("main_logout.html")
 
-@app.route('/login')
-def loginpage(id,pwd):
+
+# ID, PWD를 POST로 받아와서 DB 데이터와 대조
+@app.route('/login',methods=["post","get"])
+def loginpage():
     Error = None
-    if id not in db:
-        Error = "ID does not exist"
-    elif db[id]!=pwd:
-        Error = "Password does not match"
-    return render_template("login.html")
+    id = request.form.get('id')  # 초기값 = None
+    pwd = request.form.get('pwd')
+
+    if id!=None and pwd!=None:
+        # id not exist error
+        if id not in db.keys():
+            Error = "ID does not exist"
+
+        # password diff error
+        elif db[id]!=pwd:
+            Error = "Password does not match"
+
+        # login success
+        else:
+            return render_template("main_logout.html")
+    return render_template("login.html",Error = Error)
 
 @app.route('/signin')
 def signinpage():
     return render_template("signin.html")
+
+
 # {/{room list id}}
 @app.route('/')
 def todopage():
     return render_template("todolist.html")
-
-db={}
-def isExsist(id,pwd):
-    Error = None
-    if id not in db:
-        Error = "ID does not exist"
-        return Error
-    elif db[id]!=pwd:
-        Error = "Password does not match"
-        return Error
-    else: return render_template()
-
 
 app.run(host="127.0.0.1")
 
