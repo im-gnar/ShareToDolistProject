@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <header>
+        <h1>Sign in</h1>
+    </header>
+    <main>
+        <form action="/signin_success" method="get">
+            <div>
+                <input placeholder="id" required name="id">
+                <button>중복체크</button>
+                -- 존재하는 아이디 에러처리
+            </div>
+            <div>
+                <input placeholder="pwd" required name="pwd">
+            </div>
+            <button type="submit">join</button>
+        </form>
+    </main>
+</body>
+</html>

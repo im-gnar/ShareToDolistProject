@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <header>
+        <h2>login</h2>
+    </header>
+    <main>
+        <!--  get = /word=??   post = /{action link}  -->
+        <form action="/main_logout" method="post">
+            <fieldset>
+                <legend>Log In</legend>
+                아이디 : <input placeholder="아이디를 입력해주세요" required name="id"><br>
+                비밀번호 :  <input type="password" placeholder="비밀번호를 입력해주세요" required name="pwd"><br>
+                <input type="submit" value="로그인">
+
+                -- 데이터 존재 여부 확인
+
+            </fieldset>
+        </form>
+        <a href="/signin">If not our member, Join us!</a>
+    </main>
+
+</body>
+</html>
