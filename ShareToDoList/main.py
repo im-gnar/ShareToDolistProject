@@ -14,7 +14,11 @@ def mainpageUsing():
 
 @app.route('/login')
 def loginpage(id,pwd):
-
+    Error = None
+    if id not in db:
+        Error = "ID does not exist"
+    elif db[id]!=pwd:
+        Error = "Password does not match"
     return render_template("login.html")
 
 @app.route('/signin')
@@ -25,6 +29,16 @@ def signinpage():
 def todopage():
     return render_template("todolist.html")
 
+db={}
+def isExsist(id,pwd):
+    Error = None
+    if id not in db:
+        Error = "ID does not exist"
+        return Error
+    elif db[id]!=pwd:
+        Error = "Password does not match"
+        return Error
+    else: return render_template()
 
 
 app.run(host="127.0.0.1")
