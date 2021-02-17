@@ -1,13 +1,14 @@
-import os
 from flask import *
+import datetime
 
 app = Flask("ToDO")
 db={'test':'1234'}
-
+now = datetime.datetime.now()
 
 @app.route('/')
 def mainpage():
-    return render_template("main_need_login.html")
+    nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
+    return render_template("main_need_login.html", date = nowDatetime)
 
 # /user={userid}
 @app.route('/user')
