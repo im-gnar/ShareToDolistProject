@@ -63,4 +63,4 @@ def signinpage():
 def todopage():
     return render_template("todolist.html")
 
-app.run(host="127.0.0.1",debug=True)
+app.run(host="127.0.0.1")

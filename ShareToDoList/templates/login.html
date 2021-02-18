@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .error{
+        color:red;
+        }
+    </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
@@ -14,6 +19,11 @@
         <form action="/login" method="post">
             <fieldset class="text-center">
                 <legend>Log In</legend>
+                <div class="text-center">
+                {% if Error!=None %}
+                <p class="error"><strong>Error</strong>: {{Error}}</p>
+                {% endif %}
+                </div>
                 아이디 : <input placeholder="아이디를 입력해주세요" required name="id">
                 <br><br>
                 비밀번호 :  <input type="password" placeholder="비밀번호를 입력해주세요" required name="pwd">
@@ -22,11 +32,11 @@
                 <!--데이터 존재 여부 확인-->
             </fieldset>
         </form>
-        <div class="text-center">
-            {% if Error!=None %}
-                <p><strong>Error</strong>: {{Error}}</p>
-            {% endif %}
-        </div>
+<!--        <div class="text-center">-->
+<!--            {% if Error!=None %}-->
+<!--                <p><strong>Error</strong>: {{Error}}</p>-->
+<!--            {% endif %}-->
+<!--        </div>-->
 
         <div class="text-center">
             <a href="/signin">If not our member, Join us!</a>
