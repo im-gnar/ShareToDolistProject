@@ -2,13 +2,22 @@ from flask import *
 import datetime
 
 app = Flask("ToDO")
-db={'test':'1234'}
-now = datetime.datetime.now()
+db={'test':'1234','test2':'5678'}
+nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+roomList = []   # Query = select title from roomList
 
 @app.route('/')
 def mainpage():
-    nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
-    return render_template("main_need_login.html", date = nowDatetime)
+    link = "/login"
+    link_tag = "Log In"
+    msg = "Please log in first"
+    if not roomList:   # 빈 리스트는 false
+        msg = "no room now. create first room!"
+    return render_template("main_need_login.html",
+                           link = link, link_tag=link_tag,
+                           date = nowDatetime,
+                           roomList = roomList,
+                           msg = msg)
 
 # /user={userid}
 @app.route('/user')
@@ -34,7 +43,11 @@ def loginpage():
 
         # login success
         else:
-            return render_template("main_logout.html")
+            link = "/"
+            link_tag="Log Out"
+            return render_template("main_need_login.html",
+                                   link = link,link_tag = link_tag,
+                                   date=nowDatetime)
     return render_template("login.html",Error = Error)
 
 @app.route('/signin')
@@ -48,4 +61,3 @@ def todopage():
     return render_template("todolist.html")
 
 app.run(host="127.0.0.1")
-
