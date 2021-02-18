@@ -33,7 +33,11 @@
     <header>
         <div class="topright">
             <a href="/signin">Sign in</a>
-            <a href={{link}}>{{link_tag}}</a>
+            {% if login %}
+            <a href="/">Log Out</a>
+            {% else %}
+            <a href="/login">Log In</a>
+            {% endif %}
         </div>
     </header>
     <main>
@@ -45,12 +49,21 @@
                 <input placeholder="search for room" required name="roomsearch">
 <!--                <div>please log in first</div>-->
                 <div>
-                    {% if msg %}
-                    {{msg}}
+                    {% if not login %}
+<!--                    {{msg}}-->
+                    Please log in first
+                    {% else %}
+                        {% if not roomList %}
+                            No room exists
+                        {% else %}
+                            <ul>roomlist
+                            {% for room in roomList %}
+                                <li><a href="/tododist/{{room.id}}">{{room.id}} || {{room.title}}</a></li>
+                            {% endfor %}
+                             </ul>
+                        {% endif %}
                     {% endif %}
-                    {% for room in roomList %}
-                    {{room}}
-                    {% endfor %}
+
                 </div>
             </form>
         </div>
