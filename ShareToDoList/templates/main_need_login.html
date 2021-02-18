@@ -3,23 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+    .topright {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+      font-size: 18px;
+    }
+    .left {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      text-align: left;
+      font-size: 18px;
+
+    }
+    .right {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      text-align: right;
+      font-size: 18px;
+
+    }
+    </style>
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
 </head>
 <body>
-    <div>
-        <a href="/sign_in">Sign in</a>
-        <a href="/log_in">Log in</a>
-    </div>
-    <div>
-        sysdate
-    </div>
-    <div>
-       <input placeholder="room name" required name="word">
-        <div>please log in first</div>
-    </div>
+    <header>
+        <div class="topright">
+            <a href="/signin">Sign in</a>
+            <a href="/login">Log in</a>
+        </div>
+    </header>
+    <main>
+        <div class="left">
+            {{date}}
+        </div>
+        <div class="right">
+           <input placeholder="room name" required name="word">
+            <div>please log in first</div>
+        </div>
+    </main>
+
 </body>
 </html>
-
-# sysdate
-# sign in
-# login
-# room list - "login first"

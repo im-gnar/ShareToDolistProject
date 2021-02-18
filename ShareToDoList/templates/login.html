@@ -3,31 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <title>Title</title>
-  </head>
-  <body>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
     <header>
-      <h2>login</h2>
+        <h1 class="text-center">login</h1>
     </header>
     <main>
-      <!--  get = /word=??   post = /{action link}  -->
-      <form action="/main_logout" method="post">
-        <fieldset>
-          <legend>Log In</legend>
-          아이디 :
-          <input placeholder="아이디를 입력해주세요" required name="id" /><br />
-          비밀번호 :
-          <input
-            type="password"
-            placeholder="비밀번호를 입력해주세요"
-            required
-            name="pwd"
-          /><br />
-          <input type="submit" value="로그인" />
+        <!--  get = /word=??   post = /{action link}  -->
+        <form action="/login" method="post">
+            <fieldset class="text-center">
+                <legend>Log In</legend>
+                아이디 : <input placeholder="아이디를 입력해주세요" required name="id">
+                <br><br>
+                비밀번호 :  <input type="password" placeholder="비밀번호를 입력해주세요" required name="pwd">
+                <br><br>
+                <input type="submit" value="로그인">
+                <!--데이터 존재 여부 확인-->
+            </fieldset>
+        </form>
+        <div class="text-center">
+            {% if Error!=None %}
+                <p><strong>Error</strong>: {{Error}}</p>
+            {% endif %}
+        </div>
 
-          -- 데이터 존재 여부 확인
-        </fieldset>
-      </form>
-      <a href="/signin">If not our member, Join us!</a>
+        <div class="text-center">
+            <a href="/signin">If not our member, Join us!</a>
+        </div>
     </main>
   </body>
 </html>
