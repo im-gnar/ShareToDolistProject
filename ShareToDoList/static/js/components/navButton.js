@@ -1,4 +1,5 @@
 export default class NavButton extends HTMLElement {
+
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: "open" });
@@ -18,11 +19,16 @@ export default class NavButton extends HTMLElement {
 
   attributeChangedCallback() {
     this.render();
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log('reloaded!')
+      this.render();
+    });
   }
 
   render() {
     this.shadow.innerHTML = `
-        <a class="hello Custom!" href="${this.href}">${this.text}</a>
+        <button class="text-lg font-medium text-white py-4 transition-colors bg-lime-500 hover:bg-lime-600" 
+        onclick="location.href = '${this.href}'">${this.text}</button>
       `;
   }
 }
