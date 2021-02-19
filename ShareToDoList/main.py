@@ -3,17 +3,21 @@ import datetime
 
 app = Flask("ToDO")
 db = {'test': '1234', 'test2': '5678'}
+
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-roomList = [{'id':1,'title':'room1','host':"host1"},{'id':2,'title':'room2','host':"host2"}]   # Query = select title from roomList
+roomList = [{'id':1,'title':'room1','host':"host1"},{'id':2,'title':'room2','host':"host2"}]
+# Query = select * from roomList -> dict형으로 변환
+# 어떤 식으로 들어오나?
 
 @app.route('/',methods=["post","get"])
 def mainpage():
     login=False
     word = request.form.get("roomsearch")
-    print(word)
     if word!=None:
         login=True
-        # roomList = searchByWord(word)
+        resroomList = searchByWord(word)
+        return  render_template("main_need_login.html",login = login,date = nowDatetime,
+                            roomList = resroomList)
     return render_template("main_need_login.html",login = login,date = nowDatetime,
                             roomList = roomList)
 

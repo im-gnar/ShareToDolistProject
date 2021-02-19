@@ -46,7 +46,8 @@
         </div>
         <div class="right">
             <form method="post" action="/">
-                <input placeholder="search for room" required name="roomsearch">
+                <input placeholder="search for room" required name="roomsearch"
+                       {%if not login%} disabled {% endif %}>
                 <button type="submit">search</button>
                 <div>
                     {% if not login %}
