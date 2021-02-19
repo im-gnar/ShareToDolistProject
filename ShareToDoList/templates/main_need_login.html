@@ -47,10 +47,9 @@
         <div class="right">
             <form method="post" action="/">
                 <input placeholder="search for room" required name="roomsearch">
-<!--                <div>please log in first</div>-->
+                <button type="submit">search</button>
                 <div>
                     {% if not login %}
-<!--                    {{msg}}-->
                     Please log in first
                     {% else %}
                         {% if not roomList %}
@@ -58,7 +57,7 @@
                         {% else %}
                             <ul>roomlist
                             {% for room in roomList %}
-                                <li><a href="/tododist/{{room.id}}">{{room.id}} || {{room.title}}</a></li>
+                                <li><a href="/tododist/{{room.id}}">{{room.host}} || {{room.title}}</a></li>
                             {% endfor %}
                              </ul>
                         {% endif %}

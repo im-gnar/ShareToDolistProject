@@ -4,21 +4,16 @@ import datetime
 app = Flask("ToDO")
 db={'test':'1234','test2':'5678'}
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-roomList = [{'title':'room1','id':"host1"},{'title':'room2','id':"host2"}]   # Query = select title from roomList
+roomList = [{'id':1,'title':'room1','host':"host1"},{'id':2,'title':'room2','host':"host2"}]   # Query = select title from roomList
 
-@app.route('/')
+@app.route('/',methods=["post","get"])
 def mainpage():
-    # link = "/login"
-    # link_tag = "Log In"
-    # msg = "Please log in first"
     login=False
-    if not roomList:   # 빈 리스트는 false
-        msg = "no room now. create first room!"
-    # return render_template("main_need_login.html",
-    #                        link = link, link_tag=link_tag,
-    #                        date = nowDatetime,
-    #                        roomList = roomList,
-    #                        msg = msg)
+    word = request.form.get("roomsearch")
+    print(word)
+    if word!=None:
+        login=True
+        roomList = searchByWord(word)
     return render_template("main_need_login.html",login = login,date = nowDatetime,
                             roomList = roomList)
 
@@ -46,8 +41,6 @@ def loginpage():
 
         # login success
         else:
-            # link = "/"
-            # link_tag="Log Out"
             login = True
             return render_template("main_need_login.html",
                                    date=nowDatetime, login = login,roomList = roomList)
@@ -58,9 +51,18 @@ def signinpage():
     return render_template("signin.html")
 
 
-# {/{room list id}}
-@app.route('/')
+# {/id={room.id}}
+@app.route('/todolist')
 def todopage():
     return render_template("todolist.html")
 
-app.run(host="127.0.0.1")
+
+def searchByWord(word):
+    word = word.lower()
+    results = []
+    for room in roomList:
+        if word in room['title'].lower():
+            results.append(room)
+    return results
+
+app.run(host="127.0.0.1",debug=True)
