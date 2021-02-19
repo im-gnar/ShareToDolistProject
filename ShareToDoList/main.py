@@ -16,16 +16,11 @@ def mainpage():
     if word!=None:
         login=True
         resroomList = searchByWord(word)
-        return  render_template("main_need_login.html",login = login,date = nowDatetime,
+        return  render_template("main.html",login = login,date = nowDatetime,
                             roomList = resroomList)
-    return render_template("main_need_login.html",login = login,date = nowDatetime,
+    return render_template("main.html",login = login,date = nowDatetime,
                             roomList = roomList)
 
-
-# /user={userid}
-@app.route('/user')
-def mainpageUsing():
-    return render_template("main_logout.html")
 
 
 # ID, PWD를 POST로 받아와서 DB 데이터와 대조
@@ -47,14 +42,9 @@ def loginpage():
         # login success
         else:
             login = True
-            return render_template("main_need_login.html",
+            return render_template("main.html",
                                    date=nowDatetime, login=login, roomList=roomList)
     return render_template("login.html", Error=Error)
-
-
-@app.route('/signin')
-def signinpage():
-    return render_template("signin.html")
 
 
 f_db = {'sist': '1234'}
@@ -67,10 +57,6 @@ def id_check():
     else:
         notify = "사용 가능한 아이디입니다."
     return render_template("/signin.html", notify=notify)
-
-# {/{room list id}}
-
-
 
 # {/id={room.id}}
 @app.route('/todolist')
@@ -85,5 +71,6 @@ def searchByWord(word):
         if word in room['title'].lower():
             results.append(room)
     return results
+
 
 app.run(host="127.0.0.1",debug=True)
