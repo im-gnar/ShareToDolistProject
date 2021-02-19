@@ -1,1 +1,4 @@
 .idea
+ShareToDoList/static/.webassets-cache
+ShareToDoList/static/gen
+ShareToDoList/static/node_modules
