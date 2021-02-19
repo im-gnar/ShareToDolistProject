@@ -9,11 +9,11 @@
         <h1>Sign in</h1>
     </header>
     <main>
-        <form action="/signin_success" method="get">
+        <form action="/signin" method="post">
             <div>
                 <input placeholder="id" required name="id">
                 <button>중복체크</button>
-                -- 존재하는 아이디 에러처리
+                <strong>{{notify}}</strong>
             </div>
             <div>
                 <input placeholder="pwd" required name="pwd">

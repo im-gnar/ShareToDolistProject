@@ -2,7 +2,7 @@ from flask import *
 import datetime
 
 app = Flask("ToDO")
-db={'test':'1234','test2':'5678'}
+db = {'test': '1234', 'test2': '5678'}
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 roomList = [{'id':1,'title':'room1','host':"host1"},{'id':2,'title':'room2','host':"host2"}]   # Query = select title from roomList
 
@@ -13,9 +13,10 @@ def mainpage():
     print(word)
     if word!=None:
         login=True
-        roomList = searchByWord(word)
+        # roomList = searchByWord(word)
     return render_template("main_need_login.html",login = login,date = nowDatetime,
                             roomList = roomList)
+
 
 # /user={userid}
 @app.route('/user')
@@ -24,31 +25,47 @@ def mainpageUsing():
 
 
 # ID, PWD를 POST로 받아와서 DB 데이터와 대조
-@app.route('/login',methods=["post","get"])
+@app.route('/login', methods=["post", "get"])
 def loginpage():
     Error = None
     id = request.form.get('id')  # 초기값 = None
     pwd = request.form.get('pwd')
 
-    if id!=None and pwd!=None:
+    if id != None and pwd != None:
         # id not exist error
         if id not in db.keys():
             Error = "ID does not exist"
 
         # password diff error
-        elif db[id]!=pwd:
+        elif db[id] != pwd:
             Error = "Password does not match"
 
         # login success
         else:
             login = True
             return render_template("main_need_login.html",
-                                   date=nowDatetime, login = login,roomList = roomList)
-    return render_template("login.html",Error = Error)
+                                   date=nowDatetime, login=login, roomList=roomList)
+    return render_template("login.html", Error=Error)
+
 
 @app.route('/signin')
 def signinpage():
     return render_template("signin.html")
+
+
+f_db = {'sist': '1234'}
+@app.route('/signin', methods=["post", "get"])
+def id_check():
+    notify = None
+    id = request.form.get('id')
+    if id in f_db.keys():
+        notify = "다른 아이디를 사용해주세요"
+    else:
+        notify = "사용 가능한 아이디입니다."
+    return render_template("/signin.html", notify=notify)
+
+# {/{room list id}}
+
 
 
 # {/id={room.id}}
