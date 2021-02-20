@@ -8,8 +8,12 @@ nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 roomList = [{'id':1,'title':'room1','host':"host1"},{'id':2,'title':'room2','host':"host2"}]
 # Query = select * from roomList -> dict형으로 변환
 # 어떤 식으로 들어오나?
+app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
+db = {'test@naver.com': '1234'}
+now = datetime.datetime.now()
 
-@app.route('/',methods=["post","get"])
+
+@app.route('/')
 def mainpage():
     login=False
     word = request.form.get("roomsearch")
@@ -30,13 +34,13 @@ def loginpage():
     id = request.form.get('id')  # 초기값 = None
     pwd = request.form.get('pwd')
 
-    if id != None and pwd != None:
+    if id!=None and pwd!=None:
         # id not exist error
         if id not in db.keys():
             Error = "ID does not exist"
 
         # password diff error
-        elif db[id] != pwd:
+        elif db[id]!=pwd:
             Error = "Password does not match"
 
         # login success
