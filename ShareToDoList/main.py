@@ -2,7 +2,7 @@ from flask import *
 import datetime
 
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
-db = {'test': '1234'}
+db = {'test@naver.com': '1234'}
 now = datetime.datetime.now()
 
 

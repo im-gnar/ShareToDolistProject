@@ -26,3 +26,10 @@ text-shadow:none;
     cursor: pointer;
     background-color: #a0aec0;
 }
+
+/* font */
+@import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+
+.font-family-karla {
+    font-family: karla;
+}
