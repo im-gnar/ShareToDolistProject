@@ -1,28 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <header>
-        <h2>login</h2>
-    </header>
-    <main>
-        <!--  get = /word=??   post = /{action link}  -->
-        <form action="/main_logout" method="post">
-            <fieldset>
-                <legend>Log In</legend>
-                아이디 : <input placeholder="아이디를 입력해주세요" required name="id"><br>
-                비밀번호 :  <input type="password" placeholder="비밀번호를 입력해주세요" required name="pwd"><br>
-                <input type="submit" value="로그인">
+{% extends "layout.html" %} {% block content %}
+<link rel="stylesheet" type="text/css" href="../static/main.css" />
+<div class="w-full flex flex-wrap font-family-karla">
+  <div class="w-full md:w-1/2 flex flex-col">
+    <div class="flex justify-center md:justify-center pt-12 md:pl-12 md:-mb-24">
+      <img
+        class="hidden md:block h-40 w-40 py-8 pr-14"
+        src="https://i.ibb.co/YP8N5B7/todoLogo.png"
+      />
+    </div>
 
-                -- 데이터 존재 여부 확인
+    <div
+      class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32 text-blue-700"
+    >
+      <p class="text-center text-5xl text-shadow-md font-bold">Welcome Back!</p>
+      <form class="flex flex-col pt-3 md:pt-8" action="/login" method="post">
+        <div class="flex flex-col pt-4">
+          <label for="email" class="text-xl font-semibold opacity-80"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="inputID"
+            name="id"
+            required
+            placeholder="your@email.com"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-400 transition-colors"
+          />
+        </div>
 
-            </fieldset>
-        </form>
-        <a href="/signin">If not our member, Join us!</a>
-    </main>
+        <div class="flex flex-col pt-4">
+          <label for="password" class="text-xl font-semibold opacity-80"
+            >Password</label
+          >
+          <input
+            type="password"
+            id="inputPassword"
+            name="pwd"
+            required
+            placeholder="Password"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-400 transition-colors"
+          />
+        </div>
 
-</body>
-</html>
+        <input
+          type="submit"
+          value="Log In"
+          class="bg-blue-500 text-white font-bold text-lg hover:bg-blue-400 p-2 mt-8 transition-colors"
+        />
+      </form>
+      <div class="text-center pt-12 pb-12">
+        <p>
+          Don't have an account?
+          <a
+            href="/signin"
+            class="underline font-semibold hover:text-blue-400 transition-colors"
+            >Register here.</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-1/2 shadow-2xl">
+    <img
+      class="object-cover w-full h-screen hidden md:block"
+      src="https://images.unsplash.com/photo-1522199670076-2852f80289c3?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80"
+    />
+  </div>
+</div>
+<script type="text/javascript" src="../static/dist/bundle.js"></script>
+{% endblock %} >>>>>>> f132be758007b1d3c0f142dcc345e2cfd22efa1b
