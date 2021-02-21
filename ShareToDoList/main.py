@@ -57,11 +57,12 @@ def sign_in_page():
         if id != db_get_id()[count]['ID']:
             pass
         else:
-            notify = "다른 아이디를 사용해주세요"
-            return notify
+            notify = "다른 아이디를 사용해주세요" #js로 alert를 띄우는 게 좋을 것 같아요
+            return redirect('/signin')
     notify = "사용 가능한 아이디입니다."
     pwd = request.form.get('pwd')
     insert(id, pwd)
+    delete_none() # 자동으로 들어간 none 데이터 지우기
     return render_template('signin.html', notify=notify)
 
 
@@ -112,6 +113,10 @@ def db_get_id():
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
+def delete_none():
+    sql = "DELETE FROM member WHERE ID = 'None';"
+    cursor.execute(sql)
+    todo_db.commit()
 
 # insert()
 # print(db_count()[0]['COUNT(*)'])
