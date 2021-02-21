@@ -1,7 +1,6 @@
 from flask import *
 import datetime
 import pymysql
-from ShareToDolistProject.ShareToDoList.templates.test import db
 
 
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
@@ -48,27 +47,26 @@ def loginpage():
                                    date=nowDatetime, login=login, roomList=roomList)
     return render_template("login.html", Error=Error)
 
-# db = [{'id':'test@naver.com', 'pwd':'1234'}, {'id':'test2@naver.com', 'pwd':'5678'}]
 notify = None
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
     global notify
+    db_cnt = db_count()[0]['COUNT(*)']
     id = request.form.get('id')
-    for count in range(len(db)):
-        if id != db[count]['id']:
+    for count in range(db_cnt):
+        if id != db_get_id()[count]['ID']:
             pass
         else:
             notify = "다른 아이디를 사용해주세요"
             return notify
     notify = "사용 가능한 아이디입니다."
     pwd = request.form.get('pwd')
-    data = {}
-    data['id'] = id
-    data['pwd'] = pwd
+    insert(id, pwd)
     return render_template('signin.html', notify=notify)
 
-# {/id={room.id}}
 
+
+# {/id={room.id}}
 @app.route('/todolist')
 def todopage():
     return render_template("todolist.html")
@@ -82,5 +80,45 @@ def searchByWord(word):
             results.append(room)
     return results
 
-app.run(host="127.0.0.1", debug=True)
+# connect DB
+todo_db = pymysql.connect(
+    user='root',
+    passwd='1234',
+    host='127.0.0.1',
+    db='todolist',
+    charset='utf8'
+)
+cursor = todo_db.cursor(pymysql.cursors.DictCursor)
 
+def select():
+    sql = "SELECT * FROM `member`;"
+    cursor.execute(sql) # send query
+    result = cursor.fetchall() # get result
+    return result
+
+def insert(id, pwd):
+    sql = f"INSERT INTO member(ID, PWD) VALUES ('{id}', '{pwd}');"
+    cursor.execute(sql)
+    todo_db.commit()
+
+def db_count():
+    sql = "SELECT COUNT(*) FROM member;"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
+def db_get_id():
+    sql = "SELECT ID FROM member;"
+    cursor.execute(sql)
+    m_id = cursor.fetchall()
+    return m_id
+
+# insert()
+# print(db_count()[0]['COUNT(*)'])
+# db_len = db_count()
+# for i in range(len(db_len)):
+#     for db_id in db_get_id()[i]['ID']:
+#         print(db_id)
+
+
+app.run(host='127.0.0.1', debug=True)
