@@ -1,8 +1,7 @@
 from flask import *
 import datetime
-
+import pymysql
 from ShareToDolistProject.ShareToDoList.templates.test import db
-from db import dbf
 
 
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
@@ -50,33 +49,23 @@ def loginpage():
     return render_template("login.html", Error=Error)
 
 # db = [{'id':'test@naver.com', 'pwd':'1234'}, {'id':'test2@naver.com', 'pwd':'5678'}]
-def add_member(): # {'id': None, 'pwd': None}이 사이트 접속시에 먼저 한 번 들어가게 되는데, 수정하기 & 서버주소를 입력할 때마다 none값으로 회원추가됨
-    member = {}
+notify = None
+@app.route('/signin', methods=["post", "get"])
+def sign_in_page():
+    global notify
     id = request.form.get('id')
-    pwd = request.form.get('pwd')
-    member['id'] = id
-    member['pwd'] = pwd
-    db.append(member)
-    for i in db:
-        print(i)
-    return render_template("/signin.html")
-
-def abc():
-    notify = None
-    id = input('id')
-    for i in range(len(dbf)):
-        if id!=dbf[i]['id']:
+    for count in range(len(db)):
+        if id != db[count]['id']:
             pass
         else:
             notify = "다른 아이디를 사용해주세요"
-            return print(notify)
+            return notify
     notify = "사용 가능한 아이디입니다."
-    pwd = input('pwd')
+    pwd = request.form.get('pwd')
     data = {}
     data['id'] = id
     data['pwd'] = pwd
-    dbf.append(data)
-    return print(notify,dbf)
+    return render_template('signin.html', notify=notify)
 
 # {/id={room.id}}
 
@@ -93,7 +82,5 @@ def searchByWord(word):
             results.append(room)
     return results
 
+app.run(host="127.0.0.1", debug=True)
 
-# app.run(host="127.0.0.1", debug=True)
-
-# abc()
