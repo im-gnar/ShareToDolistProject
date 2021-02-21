@@ -2,7 +2,7 @@ from flask import *
 import datetime
 
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
-db = {'test@naver.com': '1234', 'test2@naver.com': '5678'}
+db = [{'id':'test@naver.com', 'pwd':'1234'}, {'id':'test2@naver.com', 'pwd':'5678'}]
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
             {'id': 2, 'title': 'room2', 'host': "host2"}]
@@ -33,32 +33,44 @@ def loginpage():
 
     if id != None and pwd != None:
         # id not exist error
-        if id not in db.keys():
-            Error = "ID does not exist"
-        # password diff error
-        elif db[id] != pwd:
-            Error = "Password does not match"
-        # login success
-        else:
-            login = True
-            return render_template("main.html",
+            if id not in db[0]['id']:
+                Error = "ID does not exist"
+            # password diff error
+            elif db[0]['pwd'] != pwd:
+                Error = "Password does not match"
+            # login success
+            else:
+                login = True
+                return render_template("main.html",
                                    date=nowDatetime, login=login, roomList=roomList)
     return render_template("login.html", Error=Error)
 
+# db = [{'id':'test@naver.com', 'pwd':'1234'}, {'id':'test2@naver.com', 'pwd':'5678'}]
+@app.route('/signin', methods=["post", "get"])
+def add_member(): # {'id': None, 'pwd': None}이 사이트 접속시에 먼저 한 번 들어가게 되는데, 수정하기 & 서버주소를 입력할 때마다 none값으로 회원추가됨
+    member = {}
+    id = request.form.get('id')
+    pwd = request.form.get('pwd')
+    member['id'] = id
+    member['pwd'] = pwd
+    db.append(member)
+    for i in db:
+        print(i)
+    return render_template("/signin.html")
 
 @app.route('/signin', methods=["post", "get"])
 def id_check():
     notify = None
     id = request.form.get('id')
-    pwd = request.form.get('pwd')
-    if id in db.keys():
-        notify = "다른 아이디를 사용해주세요"
-    else:
-        notify = "사용 가능한 아이디입니다."
-    return render_template("/signin.html", notify=notify)
+    for i in range(0, len(db)):
+        if id in db[i]['id']:
+            notify = "이미 가입된 아이디입니다."
+            return
+        else:
+            notify = "사용 가능한 아이디입니다."
+    return render_template("/signin.html", notify = notify)
 
 # {/id={room.id}}
-
 
 @app.route('/todolist')
 def todopage():
