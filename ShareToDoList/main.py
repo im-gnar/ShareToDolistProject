@@ -1,8 +1,10 @@
 from flask import *
 import datetime
+import pymysql
 
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
 db = {'test@naver.com': '1234','test2@naver.com': '5678'}
+# [{'id':'id1', 'pwd':'pwd1'},{'id':'id2','pwd':'pwd2'}]
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 roomList = [{'id':1,'title':'room1','host':"host1"},{'id':2,'title':'room2','host':"host2"}]
 # Query = select * from roomList -> dict형으로 변환
@@ -73,4 +75,38 @@ def searchByWord(word):
     return results
 
 
-app.run(host="127.0.0.1",debug=True)
+####### DB test
+# connect DB
+todo_db = pymysql.connect(
+    user='root',
+    passwd='jj123100!!',
+    host='127.0.0.1',
+    db='todolist',
+    charset='utf8'
+)
+# default는 tuple, Dictcurser는 dict
+cursor = todo_db.cursor(pymysql.cursors.DictCursor)
+
+def select():
+    sql = "SELECT * FROM `test`;"
+    cursor.execute(sql)           # send query
+    result = cursor.fetchall()    # get results
+    return result
+
+def insert():
+    sql = '''INSERT INTO `test` 
+        VALUES (7, '1', '서울특별시', 6);'''
+    cursor.execute(sql)
+    todo_db.commit()
+
+insert()
+print(select())
+
+# def delete():
+#     sql = '''DELETE FROM `busan-jibun`
+#       WHERE `법정동코드` IS NULL;'''
+#     cursor.execute(sql)
+#     juso_db.commit()
+
+
+# app.run(host="127.0.0.1",debug=True)
