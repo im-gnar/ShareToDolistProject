@@ -1,8 +1,12 @@
 from flask import *
 import datetime
 
+from ShareToDolistProject.ShareToDoList.templates.test import db
+from db import dbf
+
+
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
-db = [{'id':'test@naver.com', 'pwd':'1234'}, {'id':'test2@naver.com', 'pwd':'5678'}]
+# dbe = [{'id':'test@naver.com', 'pwd':'1234'}, {'id':'test2@naver.com', 'pwd':'5678'}]
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
             {'id': 2, 'title': 'room2', 'host': "host2"}]
@@ -46,7 +50,6 @@ def loginpage():
     return render_template("login.html", Error=Error)
 
 # db = [{'id':'test@naver.com', 'pwd':'1234'}, {'id':'test2@naver.com', 'pwd':'5678'}]
-@app.route('/signin', methods=["post", "get"])
 def add_member(): # {'id': None, 'pwd': None}이 사이트 접속시에 먼저 한 번 들어가게 되는데, 수정하기 & 서버주소를 입력할 때마다 none값으로 회원추가됨
     member = {}
     id = request.form.get('id')
@@ -58,17 +61,22 @@ def add_member(): # {'id': None, 'pwd': None}이 사이트 접속시에 먼저 �
         print(i)
     return render_template("/signin.html")
 
-@app.route('/signin', methods=["post", "get"])
-def id_check():
+def abc():
     notify = None
-    id = request.form.get('id')
-    for i in range(0, len(db)):
-        if id in db[i]['id']:
-            notify = "이미 가입된 아이디입니다."
-            return
+    id = input('id')
+    for i in range(len(dbf)):
+        if id!=dbf[i]['id']:
+            pass
         else:
-            notify = "사용 가능한 아이디입니다."
-    return render_template("/signin.html", notify = notify)
+            notify = "다른 아이디를 사용해주세요"
+            return print(notify)
+    notify = "사용 가능한 아이디입니다."
+    pwd = input('pwd')
+    data = {}
+    data['id'] = id
+    data['pwd'] = pwd
+    dbf.append(data)
+    return print(notify,dbf)
 
 # {/id={room.id}}
 
@@ -86,4 +94,6 @@ def searchByWord(word):
     return results
 
 
-app.run(host="127.0.0.1", debug=True)
+# app.run(host="127.0.0.1", debug=True)
+
+# abc()
