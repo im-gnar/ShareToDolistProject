@@ -48,6 +48,7 @@ def loginpage():
                 return render_template("main.html",
                                        date=nowDatetime, login=login, roomList=roomList)
     return render_template("login.html", Error=Error)
+  
 
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
@@ -68,7 +69,6 @@ def sign_in_page():
     return render_template('signin.html', notify=notify)
 
 
-
 # {/id={room.id}}
 @app.route('/todolist')
 def todopage():
@@ -83,7 +83,7 @@ def searchByWord(word):
             results.append(room)
     return results
 
-# connect DB
+########### connect DB
 todo_db = pymysql.connect(
     user='root',
     passwd='1234',
@@ -91,6 +91,7 @@ todo_db = pymysql.connect(
     db='todolist',
     charset='utf8'
 )
+# default는 tuple, Dictcurser는 dict
 cursor = todo_db.cursor(pymysql.cursors.DictCursor)
 
 def select():
@@ -98,26 +99,34 @@ def select():
     cursor.execute(sql) # send query
     result = cursor.fetchall() # get result
     return result
+  
 
 def insert(id, pwd):
     sql = f"INSERT INTO member(ID, PWD) VALUES ('{id}', '{pwd}');"
     cursor.execute(sql)
     todo_db.commit()
+    
 
 def db_count():
     sql = "SELECT COUNT(*) FROM member;"
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
+  
 
 def db_get_id():
     sql = "SELECT ID FROM member;"
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
+  
+  
 def delete_none():
     sql = "DELETE FROM member WHERE ID = 'None';"
     cursor.execute(sql)
     todo_db.commit()
 
+
+
 app.run(host='127.0.0.1', debug=True)
+
