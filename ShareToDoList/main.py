@@ -126,13 +126,6 @@ def delete_none():
     cursor.execute(sql)
     todo_db.commit()
 
-# def get_json():
-#     cursor.execute("SELECT * FROM member")
-#     data = cursor.fetchall()
-#     for e in data:
-#         print(json.dumps(data, sort_keys=True, indent=4, separators=(',', ': '), default=str))
-
-
 app.run(host='127.0.0.1', debug=True)
 
 
