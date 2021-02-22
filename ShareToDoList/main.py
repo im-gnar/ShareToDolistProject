@@ -34,14 +34,17 @@ def loginpage():
     pwd = request.form.get('pwd')
     db_cnt = db_count()[0]['COUNT(*)']
     db = select()
+    print(db)
     if id != None and pwd != None:
         for count in range(db_cnt):
             # id not exist error
+            Error = "ID does not exist"
             if id not in db[count]['ID']:
-                Error = "ID does not exist"
+                pass
             # password diff error
             elif db[count]['PWD'] != pwd:
                 Error = "Password does not match"
+                break
             # login success
             else:
                 login = True
@@ -86,7 +89,7 @@ def searchByWord(word):
 ########### connect DB
 todo_db = pymysql.connect(
     user='root',
-    passwd='1234',
+    passwd='jj123100!!',
     host='127.0.0.1',
     db='todolist',
     charset='utf8'
