@@ -32,19 +32,21 @@ def loginpage():
     Error = None
     id = request.form.get('id')  # 초기값 = None
     pwd = request.form.get('pwd')
-
+    db_cnt = db_count()[0]['COUNT(*)']
+    db = select()
     if id != None and pwd != None:
-        # id not exist error
-            if id not in db[0]['id']:
+        for count in range(db_cnt):
+            # id not exist error
+            if id not in db[count]['ID']:
                 Error = "ID does not exist"
             # password diff error
-            elif db[0]['pwd'] != pwd:
+            elif db[count]['PWD'] != pwd:
                 Error = "Password does not match"
             # login success
             else:
                 login = True
                 return render_template("main.html",
-                                   date=nowDatetime, login=login, roomList=roomList)
+                                       date=nowDatetime, login=login, roomList=roomList)
     return render_template("login.html", Error=Error)
 
 @app.route('/signin', methods=["post", "get"])
