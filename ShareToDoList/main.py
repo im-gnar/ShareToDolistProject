@@ -59,7 +59,7 @@ def sign_in_page():
         else:
             notify = "다른 아이디를 사용해주세요" #js로 alert를 띄우는 게 좋을 것 같아요
             return redirect('/signin') # HTTP/1.1 302 => redirect말고 다른 방식을 사용하도록 방법 찾기
-    # notify = "사용 가능한 아이디입니다."
+    notify = "사용 가능한 아이디입니다."
     pwd = request.form.get('pwd')
     insert(id, pwd)
     delete_none() # 자동으로 들어간 none 데이터 지우기
