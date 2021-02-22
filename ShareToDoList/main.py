@@ -1,28 +1,29 @@
 from flask import *
 import datetime
+import pymysql
+
 
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
-db = {'test@naver.com': '1234','test2@naver.com': '5678'}
+# dbe = [{'id':'test@naver.com', 'pwd':'1234'}, {'id':'test2@naver.com', 'pwd':'5678'}]
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-roomList = [{'id':1,'title':'room1','host':"host1"},{'id':2,'title':'room2','host':"host2"}]
+roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
+            {'id': 2, 'title': 'room2', 'host': "host2"}]
 # Query = select * from roomList -> dict형으로 변환
 # 어떤 식으로 들어오나?
 
 
-
-@app.route('/',methods=["post","get"])
+@app.route('/', methods=["post", "get"])
 def mainpage():
-    login=False
+    login = False
     word = request.form.get("roomsearch")
     print(word)
-    if word!=None:
-        login=True
+    if word != None:
+        login = True
         resroomList = searchByWord(word)
-        return render_template("main.html",login = login,date = nowDatetime,
-                            roomList = resroomList)
-    return render_template("main.html",login = login,date = nowDatetime,
-                            roomList = roomList)
-
+        return render_template("main.html", login=login, date=nowDatetime,
+                               roomList=resroomList)
+    return render_template("main.html", login=login, date=nowDatetime,
+                           roomList=roomList)
 
 
 # ID, PWD를 POST로 받아와서 DB 데이터와 대조
@@ -32,31 +33,39 @@ def loginpage():
     id = request.form.get('id')  # 초기값 = None
     pwd = request.form.get('pwd')
 
-    if id!=None and pwd!=None:
+    if id != None and pwd != None:
         # id not exist error
-        if id not in db.keys():
-            Error = "ID does not exist"
-        # password diff error
-        elif db[id]!=pwd:
-            Error = "Password does not match"
-        # login success
-        else:
-            login = True
-            return render_template("main.html",
+            if id not in db[0]['id']:
+                Error = "ID does not exist"
+            # password diff error
+            elif db[0]['pwd'] != pwd:
+                Error = "Password does not match"
+            # login success
+            else:
+                login = True
+                return render_template("main.html",
                                    date=nowDatetime, login=login, roomList=roomList)
     return render_template("login.html", Error=Error)
 
-
 @app.route('/signin', methods=["post", "get"])
-def id_check():
+def sign_in_page():
     notify = None
+    db_cnt = db_count()[0]['COUNT(*)']
+    db_id = db_get_id() # DB에서 ID가져오기
     id = request.form.get('id')
+    for count in range(db_cnt):
+        if id != db_id[count]['ID']:
+            pass
+        else:
+            notify = "다른 아이디를 사용해주세요" #js로 alert를 띄우는 게 좋을 것 같아요
+            return redirect('/signin') # HTTP/1.1 302 => redirect말고 다른 방식을 사용하도록 방법 찾기
+    notify = "사용 가능한 아이디입니다."
     pwd = request.form.get('pwd')
-    if id in db.keys():
-        notify = "다른 아이디를 사용해주세요"
-    else:
-        notify = "사용 가능한 아이디입니다."
-    return render_template("/signin.html", notify=notify)
+    insert(id, pwd)
+    delete_none() # 자동으로 들어간 none 데이터 지우기
+    return render_template('signin.html', notify=notify)
+
+
 
 # {/id={room.id}}
 @app.route('/todolist')
@@ -72,5 +81,41 @@ def searchByWord(word):
             results.append(room)
     return results
 
+# connect DB
+todo_db = pymysql.connect(
+    user='root',
+    passwd='1234',
+    host='127.0.0.1',
+    db='todolist',
+    charset='utf8'
+)
+cursor = todo_db.cursor(pymysql.cursors.DictCursor)
 
-app.run(host="127.0.0.1",debug=True)
+def select():
+    sql = "SELECT * FROM `member`;"
+    cursor.execute(sql) # send query
+    result = cursor.fetchall() # get result
+    return result
+
+def insert(id, pwd):
+    sql = f"INSERT INTO member(ID, PWD) VALUES ('{id}', '{pwd}');"
+    cursor.execute(sql)
+    todo_db.commit()
+
+def db_count():
+    sql = "SELECT COUNT(*) FROM member;"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
+def db_get_id():
+    sql = "SELECT ID FROM member;"
+    cursor.execute(sql)
+    m_id = cursor.fetchall()
+    return m_id
+def delete_none():
+    sql = "DELETE FROM member WHERE ID = 'None';"
+    cursor.execute(sql)
+    todo_db.commit()
+
+app.run(host='127.0.0.1', debug=True)
