@@ -47,19 +47,19 @@ def loginpage():
                                    date=nowDatetime, login=login, roomList=roomList)
     return render_template("login.html", Error=Error)
 
-notify = None
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
-    global notify
+    notify = None
     db_cnt = db_count()[0]['COUNT(*)']
+    db_id = db_get_id() # DB에서 ID가져오기
     id = request.form.get('id')
     for count in range(db_cnt):
-        if id != db_get_id()[count]['ID']:
+        if id != db_id[count]['ID']:
             pass
         else:
             notify = "다른 아이디를 사용해주세요" #js로 alert를 띄우는 게 좋을 것 같아요
-            return redirect('/signin')
-    notify = "사용 가능한 아이디입니다."
+            return redirect('/signin') # HTTP/1.1 302 => redirect말고 다른 방식을 사용하도록 방법 찾기
+    # notify = "사용 가능한 아이디입니다."
     pwd = request.form.get('pwd')
     insert(id, pwd)
     delete_none() # 자동으로 들어간 none 데이터 지우기
@@ -117,13 +117,5 @@ def delete_none():
     sql = "DELETE FROM member WHERE ID = 'None';"
     cursor.execute(sql)
     todo_db.commit()
-
-# insert()
-# print(db_count()[0]['COUNT(*)'])
-# db_len = db_count()
-# for i in range(len(db_len)):
-#     for db_id in db_get_id()[i]['ID']:
-#         print(db_id)
-
 
 app.run(host='127.0.0.1', debug=True)
