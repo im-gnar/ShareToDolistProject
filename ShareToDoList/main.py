@@ -1,6 +1,7 @@
 from flask import *
 import datetime
 import pymysql
+import json
 
 
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
