@@ -1,6 +1,7 @@
 from flask import *
 import datetime
 import pymysql
+import json
 
 
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
@@ -60,13 +61,12 @@ def sign_in_page():
         if id != db_id[count]['ID']:
             pass
         else:
-            notify = "다른 아이디를 사용해주세요" #js로 alert를 띄우는 게 좋을 것 같아요
             return redirect('/signin') # HTTP/1.1 302 => redirect말고 다른 방식을 사용하도록 방법 찾기
-    notify = "사용 가능한 아이디입니다."
     pwd = request.form.get('pwd')
-    insert(id, pwd)
-    delete_none() # 자동으로 들어간 none 데이터 지우기
-    return render_template('signin.html', notify=notify)
+    if id != None:
+        insert(id, pwd)
+    # delete_none() # 자동으로 들어간 none 데이터 지우기
+    return render_template('signin.html')
 
 
 # {/id={room.id}}
@@ -126,7 +126,13 @@ def delete_none():
     cursor.execute(sql)
     todo_db.commit()
 
+# def get_json():
+#     cursor.execute("SELECT * FROM member")
+#     data = cursor.fetchall()
+#     for e in data:
+#         print(json.dumps(data, sort_keys=True, indent=4, separators=(',', ': '), default=str))
 
 
 app.run(host='127.0.0.1', debug=True)
+
 
