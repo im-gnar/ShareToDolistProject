@@ -63,11 +63,12 @@ def sign_in_page():
         if id != db_id[count]['ID']:
             pass
         else:
+            # 존재하는 ID 에러 - js처리
             return redirect('/signin') # HTTP/1.1 302 => redirect말고 다른 방식을 사용하도록 방법 찾기
+    # 아이디 사용가능
     pwd = request.form.get('pwd')
     if id != None:
         insert(id, pwd)
-    # delete_none() # 자동으로 들어간 none 데이터 지우기
     return render_template('signin.html')
 
 
@@ -122,11 +123,7 @@ def db_get_id():
     m_id = cursor.fetchall()
     return m_id
   
-  
-def delete_none():
-    sql = "DELETE FROM member WHERE ID = 'None';"
-    cursor.execute(sql)
-    todo_db.commit()
+
 
 app.run(host='127.0.0.1', debug=True)
 
