@@ -99,8 +99,8 @@ def searchByWord(word):
 ########### connect DB
 todo_db = pymysql.connect(
     user='root',
-    # passwd='jj123100!!',
-    passwd='5180',
+    passwd='jj123100!!',
+    # passwd='5180',
     host='127.0.0.1',
     # host='mysql',
     db='todolist',
@@ -111,30 +111,31 @@ cursor = todo_db.cursor(pymysql.cursors.DictCursor)
 
 
 def select():
-    sql = "SELECT * FROM `member`;"
+    sql = "SELECT * FROM `USER`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
     return result
 
 
 def insert(id, pwd):
-    sql = f"INSERT INTO member(ID, PWD) VALUES ('{id}', '{pwd}');"
+    sql = f"INSERT INTO USER(ID, PWD) VALUES ('{id}', '{pwd}');"
     cursor.execute(sql)
     todo_db.commit()
 
 
 def db_count():
-    sql = "SELECT COUNT(*) FROM member;"
+    sql = "SELECT COUNT(*) FROM USER;"
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
 
 
 def db_get_id():
-    sql = "SELECT ID FROM member;"
+    sql = "SELECT ID FROM USER;"
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
 
 
-app.run(host='0.0.0.0', debug=True)
+
+app.run(host='127.0.0.1', debug=True)
