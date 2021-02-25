@@ -16,12 +16,18 @@
                         <input type="email" id="inputID" name="id" required placeholder="your@email.com" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline focus:border-purple-400 transition-colors">
                     </div>
 
+                    <div>
+                        <div class="absolute text-sm text-red-600 inline">
+                            <span id="error-message" class="font-semibold" class="relative">중복된 이메일 입니다.</span>
+                        </div>
+                    </div>
+
                     <div class="flex flex-col pt-4">
                         <label for="password" class="text-xl font-semibold opacity-80">Password</label>
                         <input type="password" id="inputPassword" name="pwd" required placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline focus:border-purple-400 transition-colors">
                     </div>
 
-                    <input type="submit" value="Create Account" class="bg-purple-500 text-white font-bold text-lg hover:bg-purple-400 p-2 mt-8 transition-colors">
+                    <input type="submit" disabled value="Create Account" class="bg-gray-400 text-white font-bold text-lg p-2 mt-8 transition-colors">
                 </form>
                 <div class="text-center pt-12 pb-12">
                     <p>Already you have account? <a href="/login" class="underline font-semibold hover:text-purple-400 transition-colors">Login here.</a></p>
@@ -35,4 +41,5 @@
         </div>
     </div>
     <script type="text/javascript" src="../static/dist/bundle.js"></script>
+    <script type="text/javascript" src="../static/js/pages/signin.js"></script>
 {% endblock %}

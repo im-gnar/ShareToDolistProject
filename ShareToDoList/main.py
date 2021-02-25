@@ -78,6 +78,14 @@ def sign_in_page():
 def todopage():
     return render_template("todolist.html")
 
+@app.route('/emailCheck', methods=['POST'])
+def emailCheck():
+    data = request.get_json()
+    print(data)
+    # TODO:: data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true를 넣어 줌
+    # TODO:: 이메일 형식이 맞는지도 확인해야 함 (이메일 정규표현식 참고)
+    response = "true"
+    return jsonify(ok = response)
 
 def searchByWord(word):
     word = word.lower()
@@ -91,9 +99,10 @@ def searchByWord(word):
 ########### connect DB
 todo_db = pymysql.connect(
     user='root',
-    passwd='jj123100!!',
-    # host='127.0.0.1',
-    host='mysql',
+    # passwd='jj123100!!',
+    passwd='5180',
+    host='127.0.0.1',
+    # host='mysql',
     db='todolist',
     charset='utf8'
 )
