@@ -1,10 +1,11 @@
 from flask import *
 import datetime
 import pymysql
+import json
+
 
 
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
-# dbe = [{'id':'test@naver.com', 'pwd':'1234'}, {'id':'test2@naver.com', 'pwd':'5678'}]
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
             {'id': 2, 'title': 'room2', 'host': "host2"}]
@@ -15,13 +16,15 @@ roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
 @app.route('/', methods=["post", "get"])
 def mainpage():
     login = False
+    # room search
     word = request.form.get("roomsearch")
-    print(word)
     if word != None:
         login = True
         resroomList = searchByWord(word)
         return render_template("main.html", login=login, date=nowDatetime,
                                roomList=resroomList)
+    # create room
+
     return render_template("main.html", login=login, date=nowDatetime,
                            roomList=roomList)
 
@@ -37,11 +40,11 @@ def loginpage():
     if id != None and pwd != None:
         for count in range(db_cnt):
             # id not exist error
-            if id not in db[count]['ID']:
-                Error = "ID does not exist"
+            Error = "ID does not exist"
+            if id not in db[count]['ID']: pass
             # password diff error
             elif db[count]['PWD'] != pwd:
-                Error = "Password does not match"
+                Error = "Password does not match"; break
             # login success
             else:
                 login = True
@@ -60,13 +63,13 @@ def sign_in_page():
         if id != db_id[count]['ID']:
             pass
         else:
-            notify = "다른 아이디를 사용해주세요" #js로 alert를 띄우는 게 좋을 것 같아요
+            # 존재하는 ID 에러 - js처리
             return redirect('/signin') # HTTP/1.1 302 => redirect말고 다른 방식을 사용하도록 방법 찾기
-    notify = "사용 가능한 아이디입니다."
+    # 아이디 사용가능
     pwd = request.form.get('pwd')
-    insert(id, pwd)
-    delete_none() # 자동으로 들어간 none 데이터 지우기
-    return render_template('signin.html', notify=notify)
+    if id != None:
+        insert(id, pwd)
+    return render_template('signin.html')
 
 
 # {/id={room.id}}
@@ -86,7 +89,7 @@ def searchByWord(word):
 ########### connect DB
 todo_db = pymysql.connect(
     user='root',
-    passwd='1234',
+    passwd='jj123100!!',
     host='127.0.0.1',
     db='todolist',
     charset='utf8'
@@ -120,13 +123,8 @@ def db_get_id():
     m_id = cursor.fetchall()
     return m_id
   
-  
-def delete_none():
-    sql = "DELETE FROM member WHERE ID = 'None';"
-    cursor.execute(sql)
-    todo_db.commit()
 
 
+app.run(host='127.0.0.1')
 
-app.run(host='127.0.0.1', debug=True)
 
