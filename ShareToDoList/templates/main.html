@@ -22,14 +22,12 @@
         </div>
     <div class="flex-auto mt-10 h-full">
 
-<!--             js -->
+
         {% if login %}
         <form class="js-form" method="post" action="/">
 <!--            <button class="js-create bg-blue-400 rounded py-1 px-2">➕</button>-->
-            <div>
-                <input class="roomtitle" placeholder="create new room">
-                <span class="create create-after">➕</span>
-            </div>
+                <input class="roomtitle" name="roomtitle" placeholder="create new room">
+                <button class="create create-after">➕</button>
         </form>
         {% endif %}
 <!--        <form class="searchContainer" action="https://www.google.com/search" method="GET">-->
@@ -72,7 +70,7 @@
                                         <td>
                                             <div class="flex shadow-md font-medium py-2 px-2 text-green-100 cursor-pointer
                                               bg-green-500 rounded tr-mt text-center hover:bg-green-400 transition-colors"
-                                                   onclick="location.href = '/tododist/{{ room.id }}'">Join</div>
+                                                   onclick="location.href = '/tododist/{{ room.rno }}'">Join</div>
                                         </td>
                                     </tr>
                                     {% endfor %}

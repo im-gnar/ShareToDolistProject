@@ -6,7 +6,7 @@ let createtitle = "origin";
 function wantCreate(event){
     event.preventDefault();
     const input = document.createElement("input");
-    input.placeholder = "input title";
+    input.placeholder = "create new room";
     form.appendChild(input);
     create.disabled = true;
     console.log(event);
