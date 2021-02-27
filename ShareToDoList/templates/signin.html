@@ -10,6 +10,8 @@
 
             <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32 text-purple-700">
                 <p class="text-center text-5xl text-shadow-md font-bold">Join us!</p>
+
+<!-- ----------------------------------------------------------------------------------------- -->
                 <form class="flex flex-col pt-3 md:pt-8" action="/signin" method="POST">
                     <div class="flex flex-col pt-4">
                         <label for="email" class="text-xl font-semibold opacity-80">Email</label>
@@ -18,7 +20,7 @@
 
                     <div>
                         <div class="absolute text-sm text-red-600 inline">
-                            <span id="error-message" class="font-semibold" class="relative">중복된 이메일 입니다.</span>
+                            <span id="error-message" class="font-semibold" class="relative" id="error-message">아이디 중복체크</span>
                         </div>
                     </div>
 
@@ -29,6 +31,8 @@
 
                     <input type="submit" disabled value="Create Account" class="bg-gray-400 text-white font-bold text-lg p-2 mt-8 transition-colors">
                 </form>
+
+<!-- ----------------------------------------------------------------------------------------- -->
                 <div class="text-center pt-12 pb-12">
                     <p>Already you have account? <a href="/login" class="underline font-semibold hover:text-purple-400 transition-colors">Login here.</a></p>
                 </div>

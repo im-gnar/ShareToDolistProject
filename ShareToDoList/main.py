@@ -2,8 +2,7 @@ from flask import *
 import datetime
 import pymysql
 import json
-
-app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
+app = Flask("ToDO", static_url_path='/static') # static 폴더 참조
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
             {'id': 2, 'title': 'room2', 'host': "host2"}]
@@ -78,7 +77,7 @@ def sign_in_page():
 def todopage():
     return render_template("todolist.html")
 
-@app.route('/emailCheck', methods=['POST'])
+@app.route('/emailCheck', methods=['POST'])    #form의 action을 여기로 해야하나..?
 def emailCheck():
     data = request.get_json()
     print(data)
