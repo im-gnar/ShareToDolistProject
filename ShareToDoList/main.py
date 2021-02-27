@@ -104,7 +104,7 @@ todo_db = pymysql.connect(
     host='127.0.0.1',
     # host='mysql',
     db='todolist',
-    charset='utf8'
+    charset='utf8',
 )
 # default는 tuple, Dictcurser는 dict
 cursor = todo_db.cursor(pymysql.cursors.DictCursor)
