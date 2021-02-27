@@ -1,0 +1,59 @@
+.js-form {
+    text-align : center;
+    position: relative;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%);
+    transition: all 1s;
+    width: 50px;
+    height: 50px;
+    background: #60A5FA;
+    box-sizing: border-box;
+    border-radius: 25px;
+    border: 4px solid #60A5FA;
+    padding: 5px;
+}
+
+.roomtitle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 42.5px;
+    line-height: 30px;
+    outline: 0;
+    border: 0;
+    display: none;
+    font-size: 1em;
+    border-radius: 20px;
+    padding: 0 20px;
+}
+
+.create{
+    box-sizing: border-box;
+    padding: 10px;
+    width: 42.5px;
+    height: 42.5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    color: #07051a;
+    text-align: center;
+    font-size: 1.2em;
+    transition: all 1s;
+}
+
+.js-form:hover{
+    width: 200px;
+    cursor: pointer;
+}
+
+.js-form:hover .roomtitle{
+    display: block;
+}
+
+.js-form:hover .create{
+    background: #BFDBFE;
+    color: #60A5FA;
+}
