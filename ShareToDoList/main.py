@@ -80,18 +80,17 @@ def todopage():
 @app.route('/emailCheck', methods=['POST'])    #form의 action을 여기로 해야하나..?
 def emailCheck():
     # TODO:: data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true를 넣어 줌
-    response = "true" # js로 넘어갈 값이기 때문에 소문자 true반환
     data = request.get_json()
     print('데이터',data)
     db_cnt = db_count()[0]['COUNT(*)']
     db_id = db_get_id()  # DB에서 ID가져오기
     id = data['email']
+    response = "true" # js로 넘어갈 값이기 때문에 소문자 true반환
     for count in range(db_cnt):
-        if id != db_id[count]['ID']:
-            return response
-        else:
+        if id == db_id[count]['ID']:
             response = "false"
-            return  response
+            return response
+    print('리스폰스', response)
     # TODO:: 이메일 형식이 맞는지도 확인해야 함 (이메일 정규표현식 참고)
     p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
     print(p.match(id) != None, end=' ')
