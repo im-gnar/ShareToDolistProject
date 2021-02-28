@@ -24,13 +24,11 @@ async function emailEvent() {
                     const button = document.querySelectorAll('input[type=submit]')[0];
                     if (data.ok === 'true') {
                         // 사용가능한 이메일이므로 성공했다는 메세지를 아래에 띄워줌 && button disable 상태 풀어주기 && 에러메세지 제거
-
-                        // if db에서 동일한 아이디가 없으면
                         button.disabled = false;
                         button.classList.remove('bg-gray-400');
                         button.classList.add('hover:bg-purple-400');
                         button.classList.add('bg-purple-500');
-                        alert('실행중');
+                        alert('실행중aaa');
                         document.getElementById('error-message').innerText= '사용 가능한 이메일입니다.';
                     } else {
                         // 사용 불가능하므로 메세지를 아래에 띄워 줌 && button 상태 disable로 변경 && 에러메세지 표시
