@@ -1,13 +1,15 @@
 function init() {
 
     emailEvent();
+    
 }
+let email = document.querySelector('#inputID').value; // 정규식 체크하려고 email변수를 전역변수로 만들었습니다.
 
 async function emailEvent() {
     const inputId = document.getElementById('inputID');
 
     inputId.addEventListener('focusout', event => {
-        const email = event.target.value;
+        email = event.target.value;
         let route = '/emailCheck';
         const data = {
             "email": email
@@ -20,24 +22,31 @@ async function emailEvent() {
         try {
             await sendXMLRequest(data, 'http://' + location.host + route, 'POST')
                 .then(res => {
+                    
                     const data = JSON.parse(res);
                     const button = document.querySelectorAll('input[type=submit]')[0];
-                    if (data.ok === 'true') {
-                        // 사용가능한 이메일이므로 성공했다는 메세지를 아래에 띄워줌 && button disable 상태 풀어주기 && 에러메세지 제거
-                        button.disabled = false;
-                        button.classList.remove('bg-gray-400');
-                        button.classList.add('hover:bg-purple-400');
-                        button.classList.add('bg-purple-500');
-                        alert('실행중aaa');
-                        document.getElementById('error-message').innerText= '사용 가능한 이메일입니다.';
+                    if (email.includes('@')) { // 정규식 체크
+                        if (data.ok === 'true') {
+                            // 사용가능한 이메일이므로 성공했다는 메세지를 아래에 띄워줌 && button disable 상태 풀어주기 && 에러메세지 제거
+                            button.disabled = false;
+                            button.classList.remove('bg-gray-400');
+                            button.classList.add('hover:bg-purple-400');
+                            button.classList.add('bg-purple-500');
+                            document.getElementById('error-message').innerText= '사용 가능한 이메일입니다.';
+                        } else {
+                            // 사용 불가능하므로 메세지를 아래에 띄워 줌 && button 상태 disable로 변경 && 에러메세지 표시
+                            button.disabled = true;
+                            button.classList.add('bg-gray-400');
+                            button.classList.remove('hover:bg-purple-400');
+                            button.classList.remove('bg-purple-500');
+                            document.getElementById('error-message').innerText= '이미 존재하는 이메일입니다.';
+                        }
                     } else {
-                        // 사용 불가능하므로 메세지를 아래에 띄워 줌 && button 상태 disable로 변경 && 에러메세지 표시
-                        button.disabled = true;
                         button.classList.add('bg-gray-400');
                         button.classList.remove('hover:bg-purple-400');
                         button.classList.remove('bg-purple-500');
-                        alert('이것도 실행중');
-                        document.getElementById('error-message').innerText= '이미 있는 이메일입니다.';
+                        button.disabled = true;
+                        document.getElementById('error-message').innerText= "이메일 주소에 '@'를 포함해 주세요💕";
                     }
                 })
                 .catch(err => {
