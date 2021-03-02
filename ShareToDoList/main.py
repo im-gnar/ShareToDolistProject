@@ -1,9 +1,9 @@
 from flask import *
 import datetime
 import pymysql
+import re
 import json
-
-app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
+app = Flask("ToDO", static_url_path='/static') # static 폴더 참조
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
             {'id': 2, 'title': 'room2', 'host': "host2"}]
@@ -56,20 +56,17 @@ def loginpage():
 
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
-    notify = None
-    db_cnt = db_count()[0]['COUNT(*)']
-    db_id = db_get_id()  # DB에서 ID가져오기
+    
     id = request.form.get('id')
-    for count in range(db_cnt):
-        if id != db_id[count]['ID']:
-            pass
-        else:
-            # 존재하는 ID 에러 - js처리
-            return redirect('/signin')  # HTTP/1.1 302 => redirect말고 다른 방식을 사용하도록 방법 찾기
+    
+    sign_idCheck(id) # 아이디 중복체크
+
     # 아이디 사용가능
+
     pwd = request.form.get('pwd')
+    name = request.form.get('name')
     if id != None:
-        insert(id, pwd)
+        insert(id, pwd, name)
     return render_template('signin.html')
 
 
@@ -78,14 +75,23 @@ def sign_in_page():
 def todopage():
     return render_template("todolist.html")
 
-@app.route('/emailCheck', methods=['POST'])
+@app.route('/emailCheck', methods=['POST'])  
 def emailCheck():
+    # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true를 넣어 줌
+    
     data = request.get_json()
-    print(data)
-    # TODO:: data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true를 넣어 줌
-    # TODO:: 이메일 형식이 맞는지도 확인해야 함 (이메일 정규표현식 참고)
-    response = "true"
+    id = data['email']
+    global response
+    response = 'true' # js로 넘어갈 값이기 때문에 소문자 true반환
+
+    response = emailTypeCheck(id) # 정규식 체크
+
+    response = email_idCheck(id) # id중복체크
+
     return jsonify(ok = response)
+
+
+
 
 def searchByWord(word):
     word = word.lower()
@@ -99,42 +105,71 @@ def searchByWord(word):
 ########### connect DB
 todo_db = pymysql.connect(
     user='root',
-    # passwd='jj123100!!',
-    passwd='5180',
+    passwd='jj123100!!',
+    # passwd='5180',
     host='127.0.0.1',
     # host='mysql',
     db='todolist',
-    charset='utf8'
+    charset='utf8',
 )
 # default는 tuple, Dictcurser는 dict
 cursor = todo_db.cursor(pymysql.cursors.DictCursor)
 
-
+''' 매서드 사용자: 강준호
 def select():
-    sql = "SELECT * FROM `member`;"
+    sql = "SELECT * FROM `MEMBER`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
     return result
 
-
-def insert(id, pwd):
-    sql = f"INSERT INTO member(ID, PWD) VALUES ('{id}', '{pwd}');"
+def insert(id, pwd,name):
+    sql = f"INSERT INTO `MEMBER`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
     cursor.execute(sql)
     todo_db.commit()
 
 
 def db_count():
-    sql = "SELECT COUNT(*) FROM member;"
+    sql = "SELECT COUNT(*) FROM `MEMBER`;"
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
 
 
 def db_get_id():
-    sql = "SELECT ID FROM member;"
+    sql = "SELECT ID FROM `MEMBER`;"
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
 
+def emailTypeCheck(id):
+    p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$') # 이메일 정규식
+    reg = p.match(id) != None # 정규식 체크
+    if (reg == False):
+            response = 'false'
+            return response    
 
-app.run(host='0.0.0.0', debug=True)
+def email_idCheck(id):
+
+    sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    if (result != None):
+        response = 'false'
+        return response
+    else:
+        response = 'true'
+        return response
+
+
+def sign_idCheck(id):
+    sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+
+    if (result != None): # 아이디가 없으면
+       pass
+    else:
+        return redirect('/signin')
+'''
+app.run(host='127.0.0.1', debug=True)
+
