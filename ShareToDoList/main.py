@@ -56,15 +56,11 @@ def loginpage():
 
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
-    db_cnt = db_count()[0]['COUNT(*)']
-    db_id = db_get_id()  # DB에서 ID가져오기
+    
     id = request.form.get('id')
-    for count in range(db_cnt):
-        if id != db_id[count]['ID']:
-            pass
-        else:
-            # 존재하는 ID 에러 - js처리
-            return redirect('/signin')
+    
+    sign_idCheck(id) # 아이디 중복체크
+
     # 아이디 사용가능
     pwd = request.form.get('pwd')
     if id != None:
@@ -89,7 +85,7 @@ def emailCheck():
 
     response = emailTypeCheck(id) # 정규식 체크
 
-    response = idCheck(id) # id중복체크
+    response = email_idCheck(id) # id중복체크
 
 
     return jsonify(ok = response)
@@ -152,19 +148,28 @@ def emailTypeCheck(id):
             response = 'false'
             return response    
 
-def idCheck(id):
+def email_idCheck(id):
 
     sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
     cursor.execute(sql)
     result = cursor.fetchone()
-    print('db_idCheck 값 확인', result)
-
     if (result != None):
         response = 'false'
         return response
     else:
         response = 'true'
         return response
+
+
+def sign_idCheck(id):
+    sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+
+    if (result != None): # 아이디가 없으면
+       pass
+    else:
+        return redirect('/signin')
 
 app.run(host='127.0.0.1', debug=True)
 
