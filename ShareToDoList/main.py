@@ -89,12 +89,7 @@ def emailCheck():
 
     response = emailTypeCheck(id) # 정규식 체크
 
-    print('이메일 중복체크 리스폰스', response)
-
-
-    response = idCheck(id, response) # id중복체크
-
-    print('아이디 중복체크 리스폰스', response)
+    response = idCheck(id) # id중복체크
 
 
     return jsonify(ok = response)
@@ -151,15 +146,14 @@ def db_get_id():
     return m_id
 
 def emailTypeCheck(id):
-    response = "true"
     p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$') # 이메일 정규식
     reg = p.match(id) != None # 정규식 체크
     if (reg == False):
             response = 'false'
             return response    
 
-def idCheck(id, response):
-    response = "true"
+def idCheck(id):
+
     sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
     cursor.execute(sql)
     result = cursor.fetchone()

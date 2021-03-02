@@ -8,10 +8,10 @@ async function emailEvent() {
     const inputId = document.getElementById('inputID');
     const err_name = document.getElementById('inputName')
     const button = document.querySelectorAll('input[type=submit]')[0];
-    const ppp = document.querySelector('#inputName').value === "";
-    err_name.addEventListener('focusout', event => {
-        alert(ppp)
-        if (ppp) {
+
+    err_name.addEventListener('focusout', event => {    // 이름을 입력안했을 경우, button disabled
+        let name = document.querySelector('#inputName').value === "";
+        if (name) {
             button.disabled = true;
             button.classList.add('bg-gray-400');
             button.classList.remove('hover:bg-purple-400');
