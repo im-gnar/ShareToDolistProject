@@ -36,19 +36,22 @@
                     <h1 class="text-blue-400 text-2xl font-semibold text-center">Please log in first!</h1>
                 </div>
                 {% else %}
-                <div class="flex flex-col items-center w-full h-screen lg:mt-48">
-                    <input class="border-0 border-b-2 outline-none max-w-2xl h-14 leading-10 text-lg
-                        focus:border-blue-400 hover:border-blue-200 transition-colors text-center" placeholder="search for room" name="roomsearch">
-                    {% if not roomList %}
-                    <h1 class="text-blue-400 text-2xl font-semibold text-center mt-10">No room exists</h1>
-                    {% else %}
-                    <div class="container mx-auto py-10 flex justify-center h-screen">
-                        <div class="w-4/12 pl-4 h-full flex flex-col">
-                            <div class="bg-white text-sm text-gray-500 font-bold px-5 py-2 shadow border-b border-gray-300">
-                                Room List
-                            </div>
-                            <div class="w-full h-full overflow-auto shadow bg-white" id="journal-scroll">
-                                <table class="w-full">
+                        <div class="flex flex-col items-center w-full h-screen lg:mt-26">
+                        <input class="border-0 border-b-2 outline-none max-w-2xl h-14 leading-10 text-lg
+                        focus:border-blue-400 hover:border-blue-200 transition-colors text-center" placeholder="search for room" required name="roomsearch">
+                        {% if not roomList %}
+                            <h1 class="text-blue-400 text-2xl font-semibold text-center mt-10">No room exists</h1>
+                        {% else %}
+                            <div class="container mx-auto py-10 flex justify-center h-screen">
+                              <div class="w-10/12 md:w-12/12 lg:w-full h-full flex flex-col">
+                                <div
+                                  class="bg-white text-sm text-gray-500 font-bold px-5 py-2 shadow border-b border-gray-300">
+                                  Room List
+                                </div>
+                                <div
+                                  class="w-full h-full overflow-auto shadow bg-white"
+                                  id="journal-scroll">
+                                  <table class="w-full">
                                     <tbody class="">
                                     {% for room in roomList %}
                                     <tr class="relative transform scale-100 text-xs py-1 border-b-2 border-blue-100 cursor-default">

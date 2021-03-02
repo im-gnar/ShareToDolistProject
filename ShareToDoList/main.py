@@ -1,8 +1,9 @@
 from flask import *
 import pymysql
+import re
 import json
 
-app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
+app = Flask("ToDO", static_url_path='/static') # static 폴더 참조
 
 
 @app.route('/', methods=["post", "get"])
@@ -18,7 +19,7 @@ def mainpage():
     # create room
     if roomtitle != None:
         login = True
-        host = 'localhost'
+        host = 'localhost'   # check needed
         addRoom(host, roomtitle)
         return render_template("main.html", login=login, roomList=selectroom())
 
@@ -38,12 +39,10 @@ def loginpage():
         for count in range(db_cnt):
             # id not exist error
             Error = "ID does not exist"
-            if id not in db[count]['ID']:
-                pass
+            if id not in db[count]['ID']: pass
             # password diff error
             elif db[count]['PWD'] != pwd:
-                Error = "Password does not match";
-                break
+                Error = "Password does not match"; break
             # login success
             else:
                 login = True
@@ -53,20 +52,15 @@ def loginpage():
 
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
-    notify = None
-    db_cnt = db_count()[0]['COUNT(*)']
-    db_id = db_get_id()  # DB에서 ID가져오기
     id = request.form.get('id')
-    for count in range(db_cnt):
-        if id != db_id[count]['ID']:
-            pass
-        else:
-            # 존재하는 ID 에러 - js처리
-            return redirect('/signin')  # HTTP/1.1 302 => redirect말고 다른 방식을 사용하도록 방법 찾기
+    
+    sign_idCheck(id) # 아이디 중복체크
+
     # 아이디 사용가능
     pwd = request.form.get('pwd')
+    name = request.form.get('name')
     if id != None:
-        insert(id, pwd)
+        insert(id, pwd, name)
     return render_template('signin.html')
 
 
@@ -75,15 +69,19 @@ def sign_in_page():
 def todopage():
     return render_template("todolist.html")
 
-
-@app.route('/emailCheck', methods=['POST'])
+@app.route('/emailCheck', methods=['POST'])  
 def emailCheck():
+    # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true
+    
     data = request.get_json()
-    print(data)
-    # TODO:: data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true를 넣어 줌
-    # TODO:: 이메일 형식이 맞는지도 확인해야 함 (이메일 정규표현식 참고)
-    response = "true"
-    return jsonify(ok=response)
+    id = data['email']
+    global response
+    response = 'true' # js로 넘어갈 값이기 때문에 소문자 true반환
+
+    response = emailTypeCheck(id) # 정규식 체크
+    response = email_idCheck(id) # id중복체크
+
+    return jsonify(ok = response)
 
 
 def searchByWord(word):
@@ -95,7 +93,6 @@ def searchByWord(word):
     return results
 
 
-
 ########### connect DB
 todo_db = pymysql.connect(
     user='root',
@@ -104,7 +101,7 @@ todo_db = pymysql.connect(
     host='127.0.0.1',
     # host='mysql',
     db='todolist',
-    charset='utf8'
+    charset='utf8',
 )
 # default는 tuple, Dictcurser는 dict
 cursor = todo_db.cursor(pymysql.cursors.DictCursor)
@@ -124,8 +121,8 @@ def selectroom():
     return result
 
 
-def insert(id, pwd):
-    sql = f"INSERT INTO member(ID, PWD) VALUES ('{id}', '{pwd}');"
+def insert(id, pwd,name):
+    sql = f"INSERT INTO `MEMBER`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
     cursor.execute(sql)
     todo_db.commit()
 
@@ -137,17 +134,48 @@ def addRoom(host, title):
 
 
 def db_count():
-    sql = "SELECT COUNT(*) FROM member;"
+    sql = "SELECT COUNT(*) FROM `MEMBER`;"
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
 
 
 def db_get_id():
-    sql = "SELECT ID FROM member;"
+    sql = "SELECT ID FROM `MEMBER`;"
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
+  
 
+def emailTypeCheck(id):  # 정규식 체크
+    p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$') # 이메일 정규식
+    reg = p.match(id) != None 
+    if (reg == False):
+            response = 'false'
+            return response  
+        
+
+def email_idCheck(id):
+    sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    if (result != None):
+        response = 'false'
+        return response
+    else:
+        response = 'true'
+        return response
+
+
+def sign_idCheck(id):
+    sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+
+    if (result != None): # 아이디가 없으면
+       pass
+    else:
+        return redirect('/signin')
+      
 
 app.run(host='127.0.0.1', debug=True)
