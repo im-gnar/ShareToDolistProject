@@ -63,8 +63,9 @@ def sign_in_page():
 
     # 아이디 사용가능
     pwd = request.form.get('pwd')
+    name = request.form.get('name')
     if id != None:
-        insert(id, pwd)
+        insert(id, pwd, name)
     return render_template('signin.html')
 
 
@@ -122,8 +123,8 @@ def select():
     result = cursor.fetchall()  # get result
     return result
 
-def insert(id, pwd):
-    sql = f"INSERT INTO `MEMBER`(ID, PWD) VALUES ('{id}', '{pwd}');"
+def insert(id, pwd,name):
+    sql = f"INSERT INTO `MEMBER`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
     cursor.execute(sql)
     todo_db.commit()
 
