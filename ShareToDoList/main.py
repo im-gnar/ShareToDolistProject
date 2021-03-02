@@ -1,30 +1,30 @@
 from flask import *
-import datetime
 import pymysql
 import re
 import json
+
 app = Flask("ToDO", static_url_path='/static') # static 폴더 참조
-nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
-            {'id': 2, 'title': 'room2', 'host': "host2"}]
-
-
-# Query = select * from roomList -> dict형으로 변환
-# 어떤 식으로 들어오나?
 
 
 @app.route('/', methods=["post", "get"])
 def mainpage():
     login = False
+    # room search
     word = request.form.get("roomsearch")
-    print(word)
+    roomtitle = request.form.get("roomtitle")
+    print(roomtitle)
     if word != None:
         login = True
-        resroomList = searchByWord(word)
-        return render_template("main.html", login=login, date=nowDatetime,
-                               roomList=resroomList)
-    return render_template("main.html", login=login, date=nowDatetime,
-                           roomList=roomList)
+        return render_template("main.html", login=login, roomList=searchByWord(word))
+    # create room
+    if roomtitle != None:
+        login = True
+        host = 'localhost'   # check needed
+        addRoom(host, roomtitle)
+        return render_template("main.html", login=login, roomList=selectroom())
+
+    return render_template("main.html", login=login,
+                           roomList=selectroom())
 
 
 # ID, PWD를 POST로 받아와서 DB 데이터와 대조
@@ -35,34 +35,28 @@ def loginpage():
     pwd = request.form.get('pwd')
     db_cnt = db_count()[0]['COUNT(*)']
     db = select()
-    print(db)
     if id != None and pwd != None:
         for count in range(db_cnt):
             # id not exist error
             Error = "ID does not exist"
-            if id not in db[count]['ID']:
-                pass
+            if id not in db[count]['ID']: pass
             # password diff error
             elif db[count]['PWD'] != pwd:
-                Error = "Password does not match"
-                break
+                Error = "Password does not match"; break
             # login success
             else:
                 login = True
-                return render_template("main.html",
-                                       date=nowDatetime, login=login, roomList=roomList)
+                return render_template("main.html", login=login, roomList=selectroom())
     return render_template("login.html", Error=Error)
 
 
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
-    
     id = request.form.get('id')
     
     sign_idCheck(id) # 아이디 중복체크
 
     # 아이디 사용가능
-
     pwd = request.form.get('pwd')
     name = request.form.get('name')
     if id != None:
@@ -77,7 +71,7 @@ def todopage():
 
 @app.route('/emailCheck', methods=['POST'])  
 def emailCheck():
-    # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true를 넣어 줌
+    # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true
     
     data = request.get_json()
     id = data['email']
@@ -85,18 +79,15 @@ def emailCheck():
     response = 'true' # js로 넘어갈 값이기 때문에 소문자 true반환
 
     response = emailTypeCheck(id) # 정규식 체크
-
     response = email_idCheck(id) # id중복체크
 
     return jsonify(ok = response)
 
 
-
-
 def searchByWord(word):
     word = word.lower()
     results = []
-    for room in roomList:
+    for room in selectroom():
         if word in room['title'].lower():
             results.append(room)
     return results
@@ -115,15 +106,29 @@ todo_db = pymysql.connect(
 # default는 tuple, Dictcurser는 dict
 cursor = todo_db.cursor(pymysql.cursors.DictCursor)
 
-''' 매서드 사용자: 강준호
+
 def select():
-    sql = "SELECT * FROM `MEMBER`;"
+    sql = "SELECT * FROM `member`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
     return result
 
+
+def selectroom():
+    sql = "SELECT * FROM `roomlist`;"
+    cursor.execute(sql)  # send query
+    result = cursor.fetchall()  # get result
+    return result
+
+
 def insert(id, pwd,name):
     sql = f"INSERT INTO `MEMBER`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
+    cursor.execute(sql)
+    todo_db.commit()
+
+
+def addRoom(host, title):
+    sql = f"INSERT INTO roomlist(host, title) VALUES ('{host}', '{title}');"
     cursor.execute(sql)
     todo_db.commit()
 
@@ -140,16 +145,17 @@ def db_get_id():
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
+  
 
-def emailTypeCheck(id):
+def emailTypeCheck(id):  # 정규식 체크
     p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$') # 이메일 정규식
-    reg = p.match(id) != None # 정규식 체크
+    reg = p.match(id) != None 
     if (reg == False):
             response = 'false'
-            return response    
+            return response  
+        
 
 def email_idCheck(id):
-
     sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -170,6 +176,6 @@ def sign_idCheck(id):
        pass
     else:
         return redirect('/signin')
-'''
-app.run(host='127.0.0.1', debug=True)
+      
 
+app.run(host='127.0.0.1', debug=True)
