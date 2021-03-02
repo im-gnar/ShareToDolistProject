@@ -64,7 +64,7 @@ def sign_in_page():
             pass
         else:
             # 존재하는 ID 에러 - js처리
-            return redirect('/signin')  # HTTP/1.1 302 => redirect말고 다른 방식을 사용하도록 방법 찾기
+            return redirect('/signin')
     # 아이디 사용가능
     pwd = request.form.get('pwd')
     if id != None:
@@ -82,23 +82,24 @@ def emailCheck():
     # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true를 넣어 줌
     
     data = request.get_json()
-    db_cnt = db_count()[0]['COUNT(*)']
-    db_id = db_get_id()  # DB에서 ID가져오기
     id = data['email']
-    response = "true" # js로 넘어갈 값이기 때문에 소문자 true반환
-    p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$') # 이메일 정규식
-    for count in range(db_cnt):
-        if id != db_id[count]['ID']:
-            pass
-        else:
-            response = 'false'
-            return response
+    print('아이디', id)
+    global response
+    response = 'true' # js로 넘어갈 값이기 때문에 소문자 true반환
 
-    reg = p.match(id) != None # 정규식 체크
-    if (reg == False):
-        response = 'false'
-        return response
+    response = emailTypeCheck(id) # 정규식 체크
+
+    print('이메일 중복체크 리스폰스', response)
+
+
+    response = idCheck(id, response) # id중복체크
+
+    print('아이디 중복체크 리스폰스', response)
+
+
     return jsonify(ok = response)
+
+
 
 
 def searchByWord(word):
@@ -125,31 +126,51 @@ cursor = todo_db.cursor(pymysql.cursors.DictCursor)
 
 
 def select():
-    sql = "SELECT * FROM `USER`;"
+    sql = "SELECT * FROM `MEMBER`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
     return result
 
-
 def insert(id, pwd):
-    sql = f"INSERT INTO USER(ID, PWD) VALUES ('{id}', '{pwd}');"
+    sql = f"INSERT INTO `MEMBER`(ID, PWD) VALUES ('{id}', '{pwd}');"
     cursor.execute(sql)
     todo_db.commit()
 
 
 def db_count():
-    sql = "SELECT COUNT(*) FROM USER;"
+    sql = "SELECT COUNT(*) FROM `MEMBER`;"
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
 
 
 def db_get_id():
-    sql = "SELECT ID FROM USER;"
+    sql = "SELECT ID FROM `MEMBER`;"
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
 
+def emailTypeCheck(id):
+    response = "true"
+    p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$') # 이메일 정규식
+    reg = p.match(id) != None # 정규식 체크
+    if (reg == False):
+            response = 'false'
+            return response    
 
+def idCheck(id, response):
+    response = "true"
+    sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    print('db_idCheck 값 확인', result)
+
+    if (result != None):
+        response = 'false'
+        return response
+    else:
+        response = 'true'
+        return response
 
 app.run(host='127.0.0.1', debug=True)
+
