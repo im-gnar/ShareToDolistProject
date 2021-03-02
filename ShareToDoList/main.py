@@ -62,6 +62,7 @@ def sign_in_page():
     sign_idCheck(id) # 아이디 중복체크
 
     # 아이디 사용가능
+
     pwd = request.form.get('pwd')
     name = request.form.get('name')
     if id != None:
@@ -80,14 +81,12 @@ def emailCheck():
     
     data = request.get_json()
     id = data['email']
-    print('아이디', id)
     global response
     response = 'true' # js로 넘어갈 값이기 때문에 소문자 true반환
 
     response = emailTypeCheck(id) # 정규식 체크
 
     response = email_idCheck(id) # id중복체크
-
 
     return jsonify(ok = response)
 
@@ -116,7 +115,7 @@ todo_db = pymysql.connect(
 # default는 tuple, Dictcurser는 dict
 cursor = todo_db.cursor(pymysql.cursors.DictCursor)
 
-
+''' 매서드 사용자: 강준호
 def select():
     sql = "SELECT * FROM `MEMBER`;"
     cursor.execute(sql)  # send query
@@ -171,6 +170,6 @@ def sign_idCheck(id):
        pass
     else:
         return redirect('/signin')
-
+'''
 app.run(host='127.0.0.1', debug=True)
 
