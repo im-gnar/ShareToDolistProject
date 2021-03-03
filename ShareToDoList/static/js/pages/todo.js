@@ -7,6 +7,7 @@ const toDoForm = document.querySelector(".js-toDoForm"),
 	nothing = document.querySelector(".js-nothing");
 
 const TODOS_LS = "toDos";
+const SHOWING_CN = "showing";
 
 let toDos = [];
 let checkedNum = 0;
@@ -21,8 +22,6 @@ function paintNothing(){
 }
 
 function saveToDos(){
-	//localStorage only save as String type
-	//JSON(JS Object Notation)
 	localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
 	deleteNothing();
 }
@@ -277,10 +276,10 @@ function paintToDo(text, isChecked){
 	btns.setAttribute("class", "controlBtns");
 	const editBtn = document.createElement("img");
 	editBtn.setAttribute("class", "editBtn");
-	editBtn.src = "images/edit.png";
+	editBtn.src = "ShareToDoList/templates/static/images/edit.png";
 	const delBtn = document.createElement("img");
 	delBtn.setAttribute("class", "delBtn");
-	delBtn.src = "images/delete.png";
+	delBtn.src = "ShareToDoList/templates/static/images/delete.png";
 	//eventListener(checkbox, edit, delete)
 	checkBox.addEventListener("change", checkBoxChange);
 	editBtn.addEventListener("click", showEdit);
@@ -348,3 +347,4 @@ function init(){
 	toDoForm.addEventListener("submit", toDoSubmit);
 }
 init();
+
