@@ -122,7 +122,7 @@ def selectroom():
 
 
 def insert(id, pwd,name):
-    sql = f"INSERT INTO `MEMBER`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
+    sql = f"INSERT INTO `member`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
     cursor.execute(sql)
     todo_db.commit()
 
@@ -134,14 +134,14 @@ def addRoom(host, title):
 
 
 def db_count():
-    sql = "SELECT COUNT(*) FROM `MEMBER`;"
+    sql = "SELECT COUNT(*) FROM `member`;"
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
 
 
 def db_get_id():
-    sql = "SELECT ID FROM `MEMBER`;"
+    sql = "SELECT ID FROM `member`;"
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
@@ -156,7 +156,7 @@ def emailTypeCheck(id):  # 정규식 체크
         
 
 def email_idCheck(id):
-    sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
+    sql = f"SELECT id FROM `member` WHERE id = '{id}';"
     cursor.execute(sql)
     result = cursor.fetchone()
     if (result != None):
@@ -168,7 +168,7 @@ def email_idCheck(id):
 
 
 def sign_idCheck(id):
-    sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
+    sql = f"SELECT ID FROM `member` WHERE ID = '{id}';"
     cursor.execute(sql)
     result = cursor.fetchone()
 
