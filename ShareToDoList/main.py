@@ -15,27 +15,39 @@ roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
 
 @app.route('/', methods=["post", "get"])
 def mainpage():
+
     login = False
     word = request.form.get("roomsearch")
     print(word)
     if word != None:
         login = True
         resroomList = searchByWord(word)
+
         return render_template("main.html", login=login, date=nowDatetime,
                                roomList=resroomList)
     return render_template("main.html", login=login, date=nowDatetime,
                            roomList=roomList)
 
 
+
+
+
+
 # ID, PWD를 POST로 받아와서 DB 데이터와 대조
 @app.route('/login', methods=["post", "get"])
 def loginpage():
+
+    id = request.form.get('id')
+    print('-=-------==========',id)
+    if id != None:
+        global real_id
+        real_id = selectID(id)
+
     Error = None
-    id = request.form.get('id')  # 초기값 = None
     pwd = request.form.get('pwd')
     db_cnt = db_count()[0]['COUNT(*)']
     db = select()
-    print(db)
+
     if id != None and pwd != None:
         for count in range(db_cnt):
             # id not exist error
@@ -50,7 +62,7 @@ def loginpage():
             else:
                 login = True
                 return render_template("main.html",
-                                       date=nowDatetime, login=login, roomList=roomList)
+                                       date=nowDatetime, login=login, roomList=roomList, id=real_id)
     return render_template("login.html", Error=Error)
 
 
@@ -115,7 +127,7 @@ todo_db = pymysql.connect(
 # default는 tuple, Dictcurser는 dict
 cursor = todo_db.cursor(pymysql.cursors.DictCursor)
 
-''' 매서드 사용자: 강준호
+
 def select():
     sql = "SELECT * FROM `MEMBER`;"
     cursor.execute(sql)  # send query
@@ -169,7 +181,23 @@ def sign_idCheck(id):
     if (result != None): # 아이디가 없으면
        pass
     else:
-        return redirect('/signin')
-'''
+        return
+
+
+# def get_no(id) {
+#     sql = f"SELECT NO FROM `MEMBER` WHERE ID = '{id}';"
+#     cursor.execute(sql)
+#     result = cursor.fetchone
+# }
+
+def selectID(id):
+    sql = f"SELECT NAME FROM `MEMBER` WHERE id = '{id}';"
+    cursor.execute(sql)  # send query
+    result = cursor.fetchall()[0]['NAME']  # get result
+    return result
+# str로 리턴
+
+
+
 app.run(host='127.0.0.1', debug=True)
 
