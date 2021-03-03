@@ -15,18 +15,23 @@ roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
 
 @app.route('/', methods=["post", "get"])
 def mainpage():
-
     login = False
+    # room search
     word = request.form.get("roomsearch")
-    print(word)
+    roomtitle = request.form.get("roomtitle")
+    print(roomtitle)
     if word != None:
         login = True
-        resroomList = searchByWord(word)
+        return render_template("main.html", login=login, roomList=searchByWord(word))
+    # create room
+    if roomtitle != None:
+        login = True
+        host = 'localhost'
+        addRoom(host, roomtitle)
+        return render_template("main.html", login=login, roomList=selectroom())
 
-        return render_template("main.html", login=login, date=nowDatetime,
-                               roomList=resroomList)
-    return render_template("main.html", login=login, date=nowDatetime,
-                           roomList=roomList)
+    return render_template("main.html", login=login,
+                           roomList=selectroom())
 
 
 
@@ -67,9 +72,9 @@ def loginpage():
 
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
-    
+
     id = request.form.get('id')
-    
+
     sign_idCheck(id) # 아이디 중복체크
 
     # 아이디 사용가능
@@ -86,10 +91,10 @@ def sign_in_page():
 def todopage():
     return render_template("todolist.html")
 
-@app.route('/emailCheck', methods=['POST'])  
+@app.route('/emailCheck', methods=['POST'])
 def emailCheck():
     # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true를 넣어 줌
-    
+
     data = request.get_json()
     id = data['email']
     global response
@@ -107,7 +112,7 @@ def emailCheck():
 def searchByWord(word):
     word = word.lower()
     results = []
-    for room in roomList:
+    for room in selectroom():
         if word in room['title'].lower():
             results.append(room)
     return results
@@ -133,8 +138,21 @@ def select():
     result = cursor.fetchall()  # get result
     return result
 
+def selectroom():
+    sql = "SELECT * FROM `roomlist`;"
+    cursor.execute(sql)  # send query
+    result = cursor.fetchall()  # get result
+    return result
+
+
+
 def insert(id, pwd,name):
     sql = f"INSERT INTO `MEMBER`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
+    cursor.execute(sql)
+    todo_db.commit()
+
+def addRoom(host, title):
+    sql = f"INSERT INTO roomlist(host, title) VALUES ('{host}', '{title}');"
     cursor.execute(sql)
     todo_db.commit()
 
@@ -157,7 +175,7 @@ def emailTypeCheck(id):
     reg = p.match(id) != None # 정규식 체크
     if (reg == False):
             response = 'false'
-            return response    
+            return response
 
 def email_idCheck(id):
 
