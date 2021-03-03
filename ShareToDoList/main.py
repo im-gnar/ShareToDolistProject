@@ -115,7 +115,7 @@ todo_db = pymysql.connect(
 # default는 tuple, Dictcurser는 dict
 cursor = todo_db.cursor(pymysql.cursors.DictCursor)
 
-
+''' 매서드 사용자: 강준호
 def select():
     sql = "SELECT * FROM `MEMBER`;"
     cursor.execute(sql)  # send query
@@ -170,6 +170,6 @@ def sign_idCheck(id):
        pass
     else:
         return redirect('/signin')
-
+'''
 app.run(host='127.0.0.1', debug=True)
 
