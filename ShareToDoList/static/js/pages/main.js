@@ -3,7 +3,7 @@ const USER = 'USER'
 
 console.log()
 function saveSession(user_name) {
-    sessionStorage.setItem(USER,user_name);
+    sessionStorage.setItem(user_name,USER);
 }
 
 function init() {
@@ -11,3 +11,4 @@ function init() {
 }
 
 init();
+

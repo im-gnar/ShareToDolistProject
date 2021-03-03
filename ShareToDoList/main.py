@@ -38,7 +38,6 @@ def mainpage():
 def loginpage():
 
     id = request.form.get('id')
-    print('-=-------==========',id)
     if id != None:
         global real_id
         real_id = selectID(id)
@@ -184,18 +183,11 @@ def sign_idCheck(id):
         return
 
 
-# def get_no(id) {
-#     sql = f"SELECT NO FROM `MEMBER` WHERE ID = '{id}';"
-#     cursor.execute(sql)
-#     result = cursor.fetchone
-# }
-
 def selectID(id):
     sql = f"SELECT NAME FROM `MEMBER` WHERE id = '{id}';"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()[0]['NAME']  # get result
     return result
-# str로 리턴
 
 
 
