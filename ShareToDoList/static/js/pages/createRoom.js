@@ -1,7 +1,10 @@
+
+
 const create = document.querySelector(".js-create"),
     form = document.querySelector(".js-form");
 
 let createtitle = "origin";
+//const s_name = sessionStorage.key(0);
 
 function wantCreate(event){
     event.preventDefault();

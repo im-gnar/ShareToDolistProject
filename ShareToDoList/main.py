@@ -2,12 +2,13 @@ from flask import *
 import datetime
 import pymysql
 import re
+from flask import Flask, session
+from flask_sessionstore import Session
 import json
 app = Flask("ToDO", static_url_path='/static') # static 폴더 참조
 nowDatetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
             {'id': 2, 'title': 'room2', 'host': "host2"}]
-
 
 # Query = select * from roomList -> dict형으로 변환
 # 어떤 식으로 들어오나?
@@ -15,6 +16,7 @@ roomList = [{'id': 1, 'title': 'room1', 'host': "host1"},
 
 @app.route('/', methods=["post", "get"])
 def mainpage():
+    id = request.form.get('id')
     login = False
     # room search
     word = request.form.get("roomsearch")
@@ -26,7 +28,10 @@ def mainpage():
     # create room
     if roomtitle != None:
         login = True
+        # session['USER'] = request.form.get(id)
         host = 'localhost'
+        # host = session.get('USER')
+        # print(',,,', host)
         addRoom(host, roomtitle)
         return render_template("main.html", login=login, roomList=selectroom())
 
@@ -206,7 +211,6 @@ def selectID(id):
     cursor.execute(sql)  # send query
     result = cursor.fetchall()[0]['NAME']  # get result
     return result
-
 
 
 app.run(host='127.0.0.1', debug=True)
