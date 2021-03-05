@@ -1,0 +1,184 @@
+.toDo-set{
+	text-align: center;
+}
+
+.toDoInput{
+	font-size: 20px;
+	width: 50%;
+	padding: 7px 10px;
+	border-radius: 10px;
+	min-width: 130px;
+}
+
+.toDoInput::placeholder{
+	text-align: center;
+}
+
+.toDoBtn{
+	border: 0;
+	border-radius: 10px;
+	width: 50px;
+	height: 50px;
+	background-color: #618CD1;
+	padding: 0;
+	color: white;
+	cursor: pointer;
+    position: relative;
+    bottom: 4px;
+}
+
+.toDoBtn:hover {
+    background-color: #577fbf;
+}
+
+.toDoText{
+	margin: 0;
+	position: absolute;
+	top: 7%;
+	left: 180px;
+	font-size: 50px;
+}
+
+.editInput{
+	font-size: 35px;
+	width: 70%;
+	padding-left: 44px;
+	position: relative;
+	bottom: 4px;
+}
+
+.toDoItems{
+	display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    height: 100vh;
+}
+
+.toDoList{
+	margin-top: 10%;
+	margin-left: 60px;
+	list-style: none;
+	height: 60vh;
+	overflow-y: scroll;
+	margin-right: 60px;
+}
+.addbtn {
+    margin-top: 40%;
+}
+
+@keyframes fadeIn{
+	from{
+		opacity: 0;
+	}
+	to{
+		opacity: 1;
+	}
+}
+
+.toDoList li{
+	font-size: 35px;
+	margin-bottom: 20px;
+	height: 50px;
+	animation: fadeIn .5s linear;
+}
+
+.todoCheck{
+	width: 30px;
+	height: 30px;
+	position: relative;
+	top: 3px;
+}
+
+.content{
+	position: relative;
+	left: 10px;
+}
+
+.controlBtns {
+	float: right;
+    margin-right: 20px;
+    position: relative;
+    top: 5px;
+}
+
+@keyframes btnFocus{
+	from{
+		width: 35px;
+		height: 35px;
+	} to{
+		width: 40px;
+		height: 40px;
+	}
+}
+
+.undoBtn, .submitBtn, .editBtn, .delBtn{
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+}
+
+.undoBtn:hover, .submitBtn:hover, .editBtn:hover, .delBtn:hover{
+	animation: btnFocus 0.5s;
+	animation-fill-mode: forwards;
+}
+
+.delBtn, .submitBtn{
+	margin-left: 10px;
+}
+
+.progress-set{
+	margin-top: 50px;
+	width: 100%;
+}
+
+.cheerImageProgress{
+	width: 70%;
+	padding: 3px;
+}
+
+
+.completed{
+    font-weight: bold;
+    float: right;
+    position: relative;
+    top: 47px;
+    color: white;
+}
+
+.toDoProgress{
+	width: 70%;
+	height: 15px;
+  	background: white;
+	border-radius: 25px;
+	padding: 3px;
+	position: relative;
+}
+
+.toDoProgressBar{
+	width: 0%;
+	display: block;
+	height: 100%;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+	border-top-right-radius: 17px;
+	border-bottom-right-radius: 17px;
+	background-color: #618CD1;
+	position: relative;
+}
+
+.empty{
+	display: none;
+	text-align: center;
+	color: red;
+	font-size: 16px;
+}
+
+.nothing{
+	display: none;
+}
+
+.showing{
+	display: block;
+}
+

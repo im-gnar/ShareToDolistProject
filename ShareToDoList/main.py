@@ -12,14 +12,13 @@ def mainpage():
     # room search
     word = request.form.get("roomsearch")
     roomtitle = request.form.get("roomtitle")
-    print(roomtitle)
     if word != None:
         login = True
         return render_template("main.html", login=login, roomList=searchByWord(word))
     # create room
     if roomtitle != None:
         login = True
-        host = 'localhost'   # check needed
+        host = session['user']
         addRoom(host, roomtitle)
         return render_template("main.html", login=login, roomList=selectroom())
 
@@ -45,6 +44,7 @@ def loginpage():
                 Error = "Password does not match"; break
             # login success
             else:
+                session['user'] = db[count]['NAME']
                 login = True
                 return render_template("main.html", login=login, roomList=selectroom())
     return render_template("login.html", Error=Error)
@@ -61,6 +61,7 @@ def sign_in_page():
     name = request.form.get('name')
     if id != None:
         insert(id, pwd, name)
+        return redirect('/login')
     return render_template('signin.html')
 
 
@@ -72,7 +73,6 @@ def todopage():
 @app.route('/emailCheck', methods=['POST'])  
 def emailCheck():
     # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true
-    
     data = request.get_json()
     id = data['email']
     global response
@@ -111,6 +111,7 @@ def select():
     sql = "SELECT * FROM `member`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
+    print(result)
     return result
 
 
@@ -122,7 +123,7 @@ def selectroom():
 
 
 def insert(id, pwd,name):
-    sql = f"INSERT INTO `MEMBER`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
+    sql = f"INSERT INTO `member`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
     cursor.execute(sql)
     todo_db.commit()
 
@@ -134,14 +135,14 @@ def addRoom(host, title):
 
 
 def db_count():
-    sql = "SELECT COUNT(*) FROM `MEMBER`;"
+    sql = "SELECT COUNT(*) FROM `member`;"
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
 
 
 def db_get_id():
-    sql = "SELECT ID FROM `MEMBER`;"
+    sql = "SELECT ID FROM `member`;"
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
@@ -156,7 +157,7 @@ def emailTypeCheck(id):  # 정규식 체크
         
 
 def email_idCheck(id):
-    sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
+    sql = f"SELECT id FROM `member` WHERE id = '{id}';"
     cursor.execute(sql)
     result = cursor.fetchone()
     if (result != None):
@@ -168,7 +169,7 @@ def email_idCheck(id):
 
 
 def sign_idCheck(id):
-    sql = f"SELECT ID FROM `MEMBER` WHERE ID = '{id}';"
+    sql = f"SELECT ID FROM `member` WHERE ID = '{id}';"
     cursor.execute(sql)
     result = cursor.fetchone()
 
@@ -177,5 +178,9 @@ def sign_idCheck(id):
     else:
         return redirect('/signin')
       
+
+
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 app.run(host='127.0.0.1', debug=True)
