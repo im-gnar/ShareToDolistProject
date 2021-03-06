@@ -32,14 +32,13 @@
         <form method="post" action="/">
             <div>
                 {% if not login %}
-                <div class="search for roomflex-col items-center w-full h-screen lg:mt-48">
+                <div class="flex flex-col items-center w-full h-screen lg:mt-48">
                     <h1 class="text-blue-400 text-2xl font-semibold text-center">Please log in first!</h1>
                 </div>
                 {% else %}
                         <div class="flex flex-col items-center w-full h-screen lg:mt-26">
                         <input class="border-0 border-b-2 outline-none max-w-2xl h-14 leading-10 text-lg
                         focus:border-blue-400 hover:border-blue-200 transition-colors text-center" placeholder="search for room" required name="roomsearch">
-                            <h1 class="text-blue-400 text-2xl font-semibold text-center">welcom <span id=session_id>{{id}}</span></h1>
                         {% if not roomList %}
                             <h1 class="text-blue-400 text-2xl font-semibold text-center mt-10">No room exists</h1>
                         {% else %}
@@ -83,6 +82,4 @@
     </div>
     <script type="text/javascript" src="../static/dist/bundle.js"></script>
     <script type="text/javascript" src="../static/js/pages/clock.js"></script>
-    <script type="text/javascript" src="../static/js/pages/createRoom.js"></script>
-    <script type="text/javascript" src="../static/js/pages/main.js"></script>
 {% endblock %}

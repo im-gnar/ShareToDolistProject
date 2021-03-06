@@ -1,0 +1,75 @@
+body{
+	padding: 0;
+	margin: 0;
+}
+
+body, li, input{
+	font-family: 'Noto Sans KR', sans-serif;
+	color:#60A5FA;
+}
+
+button:focus,
+button:active{
+	outline: none;
+}
+
+input{
+	background: white;
+	border: 3px solid#60A5FA;
+	color: #4F6892;
+}
+
+input:focus{
+	outline: none;
+	background-color: #e3edfc;
+}
+
+::-webkit-scrollbar{
+	width: 5px;
+}
+
+::-webkit-scrollbar-thumb{
+	width: 5px;
+	border-radius: 10px;
+	background-color: #213c67;
+}
+
+::-webkit-scrollbar-track{
+	width: 5px;
+	border-radius: 10px;
+	background-color: #60A5FA;
+}
+
+.left{
+	width: 50%;
+	height: 100vh;
+	position: fixed;
+	left: 0;
+	background-color: #60A5FA;
+}
+
+.right{
+	width: 50%;
+	height: 100vh;
+	position: fixed;
+	right: 0;
+	background-color: white;
+}
+
+.left-items{
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-content: center;
+    height: 100vh;
+}
+
+
+.center-items{
+	text-align: center;
+}
+
+.center{
+	display: block;
+	margin: auto;
+}
