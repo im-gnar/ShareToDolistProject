@@ -176,7 +176,7 @@ def sign_idCheck(id):
     if (result != None): # 아이디가 없으면
        pass
     else:
-        return redirect('/signin')
+        return
       
 
 
