@@ -56,14 +56,13 @@ def loginpage():
 def sign_in_page():
     id = request.form.get('id')
 
-    sign_idCheck(id)  # 아이디 중복체크
-
     # 아이디 사용가능
     pwd = request.form.get('pwd')
-    name = request.form.get('name')
+    # name = request.form.get('name')
     if id != None:
-        insert(id, pwd, name)
-        return redirect('/login')
+        if(sign_idCheck(id)):  # 아이디 중복체크
+            insert(id, pwd)
+            return redirect('/login')
     return render_template('signin.html')
 
 
@@ -77,7 +76,9 @@ def todopage():
 def emailCheck():
     # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true
     data = request.get_json()
+    print('값을 알려줘',data)
     id = data['email']
+    print('아이디를 알려줘', id)
     global response
     response = 'true'  # js로 넘어갈 값이기 때문에 소문자 true반환
 
@@ -125,8 +126,8 @@ def selectroom():
     return result
 
 
-def insert(id, pwd, name):
-    sql = f"INSERT INTO `member`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
+def insert(id, pwd):
+    sql = f"INSERT INTO `member`(ID, PWD) VALUES ('{id}', '{pwd}');"
     cursor.execute(sql)
     todo_db.commit()
 
@@ -176,10 +177,10 @@ def sign_idCheck(id):
     cursor.execute(sql)
     result = cursor.fetchone()
 
-    if (result != None):  # 아이디가 없으면
-        pass
+    if (result != None):  # 아이디가 존재하면
+        return False
     else:
-        return
+        return True
 
 
 app.secret_key = 'super secret key'
