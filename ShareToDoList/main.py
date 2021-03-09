@@ -12,14 +12,17 @@ def mainpage():
     # room search
     word = request.form.get("roomsearch")
     roomtitle = request.form.get("roomtitle")
-    if word != None:
+
+    if (session['user'] != None):
         login = True
+
+    if word != None:
         return render_template("main.html", login=login, roomList=searchByWord(word))
     # create room
-    if roomtitle != '':
-        login = True
+    if roomtitle != None and roomtitle != '':
         host = session['user']
         addRoom(host, roomtitle)
+        request.form.roomtitle = ''
         return render_template("main.html", login=login, roomList=selectroom())
 
     return render_template("main.html", login=login,
@@ -51,6 +54,10 @@ def loginpage():
                 return render_template("main.html", login=login, roomList=selectroom())
     return render_template("login.html", Error=Error)
 
+@app.route('/logout', methods=["get"])
+def log_out():
+    for key in list(session.keys()):
+        print(key)
 
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
