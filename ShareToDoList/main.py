@@ -3,7 +3,7 @@ import pymysql
 import re
 import json
 
-app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
+app = Flask("ToDO", static_url_path='/static') # static 폴더 참조
 
 
 @app.route('/', methods=["post", "get"])
@@ -38,15 +38,13 @@ def loginpage():
         for count in range(db_cnt):
             # id not exist error
             Error = "ID does not exist"
-            if id not in db[count]['ID']:
-                pass
+            if id not in db[count]['ID']: pass
             # password diff error
             elif db[count]['PWD'] != pwd:
-                Error = "Password does not match";
-                break
+                Error = "Password does not match"; break
             # login success
             else:
-                session['user'] = db[count]['NAME']
+                session['user'] = id
                 login = True
                 return render_template("main.html", login=login, roomList=selectroom())
     return render_template("login.html", Error=Error)
@@ -59,10 +57,9 @@ def sign_in_page():
     # 아이디 사용가능
     pwd = request.form.get('pwd')
     # name = request.form.get('name')
-    
+
     print(id == None,'아이디 출력')
     if id != None:
-        print(id,'===========None입력')
         if(sign_idCheck(id)):  # 아이디 중복체크
             insert(id, pwd)
             return redirect('/login')
@@ -74,19 +71,18 @@ def sign_in_page():
 def todopage():
     return render_template("todolist.html")
 
-
-@app.route('/emailCheck', methods=['POST'])
+@app.route('/emailCheck', methods=['POST'])  
 def emailCheck():
     # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true
     data = request.get_json()
     id = data['email']
     global response
-    response = 'true'  # js로 넘어갈 값이기 때문에 소문자 true반환
+    response = 'true' # js로 넘어갈 값이기 때문에 소문자 true반환
 
-    response = emailTypeCheck(id)  # 정규식 체크
-    response = email_idCheck(id)  # id중복체크
+    response = emailTypeCheck(id) # 정규식 체크
+    response = email_idCheck(id) # id중복체크
 
-    return jsonify(ok=response)
+    return jsonify(ok = response)
 
 
 def searchByWord(word):
@@ -116,7 +112,6 @@ def select():
     sql = "SELECT * FROM `member`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
-    print(result)
     return result
 
 
@@ -151,7 +146,7 @@ def db_get_id():
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
-
+  
 
 def emailTypeCheck(id):  # 정규식 체크
     p = re.compile('/^[가-힣a-zA-Z0-9]+$/')  # 이메일 정규식
