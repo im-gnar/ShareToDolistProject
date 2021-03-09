@@ -9,21 +9,20 @@ app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
 @app.route('/', methods=["post", "get"])
 def mainpage():
     login = False
+
+    if (session.get('user') != None):
+        login = True
     # room search
     word = request.form.get("roomsearch")
     roomtitle = request.form.get("roomtitle")
 
-    if (session['user'] != None):
-        login = True
-
     if word != None:
         return render_template("main.html", login=login, roomList=searchByWord(word))
     # create room
-    if roomtitle != None and roomtitle != '':
+    if roomtitle is not None and roomtitle != '':
         host = session['user']
         addRoom(host, roomtitle)
-        request.form.roomtitle = ''
-        return render_template("main.html", login=login, roomList=selectroom())
+        return redirect(url_for('mainpage'))
 
     return render_template("main.html", login=login,
                            roomList=selectroom())
@@ -56,8 +55,8 @@ def loginpage():
 
 @app.route('/logout', methods=["get"])
 def log_out():
-    for key in list(session.keys()):
-        print(key)
+    session.pop('user', None)
+    return redirect(url_for('mainpage'))
 
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
