@@ -58,10 +58,10 @@ function editToDo(event){
 		btnSpan.setAttribute("class", "controlBtns");
 		const editBtn = document.createElement("img");
 		editBtn.setAttribute("class", "editBtn");
-		editBtn.src = "images/edit.png";
+		editBtn.src = "../../../templates/ShareToDoList/templates/static/images/edit.png";
 		const delBtn = document.createElement("img");
 		delBtn.setAttribute("class", "delBtn");
-		delBtn.src = "images/delete.png";
+		delBtn.src = "../../../templates/ShareToDoList/templates/static/images/delete.png";
 		checkBox.addEventListener("change", checkBoxChange);
 		editBtn.innerText = "edit";
 		editBtn.addEventListener("click", showEdit);
