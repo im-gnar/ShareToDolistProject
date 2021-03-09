@@ -12,7 +12,6 @@ async function emailEvent() {
 
 
     const inputId = document.getElementById('inputID');
-    const err_name = document.getElementById('inputID')
     const button = document.querySelectorAll('input[type=submit]')[0];
 
     inputId.addEventListener('focusout', event => {
@@ -30,28 +29,25 @@ async function emailEvent() {
             await sendXMLRequest(data, 'http://' + location.host + route, 'POST')
                 .then(res => {
                     const data = JSON.parse(res);
-                        let name = document.querySelector('#inputID').value === "";
+                        let name = document.querySelector('#inputID').value === ""; // 입력하지 않았다면 true
                         if (name) {
-                            document.getElementById('error-name').innerText= "";
                             button.disabled = true;
                             button.classList.add('bg-gray-400');
                             button.classList.remove('hover:bg-purple-400');
                             button.classList.remove('bg-purple-500');
-                            document.getElementById('error-name').style.color = 'red';
-                            document.getElementById('error-name').innerText= "이름을 입력해주세요💕";
+                            document.getElementById('error-message').style.color = 'red';
+                            document.getElementById('error-message').innerText= "이름을 입력해주세요💕";
 
                         }
                         else {
-                            if(checkSpace(err_name.value) || checkSpecial(err_name.value)) {
-                                document.getElementById('error-name').innerText= "";
+                            if(checkSpace(inputId.value) || checkSpecial(inputId.value)) {
                                 button.disabled = true;
                                 button.classList.add('bg-gray-400');
                                 button.classList.remove('hover:bg-purple-400');
                                 button.classList.remove('bg-purple-500');
-                                document.getElementById('error-name').style.color = 'red';
-                                document.getElementById('error-name').innerText= "이름에 공백이나 특수문자가 들어갈 수 없습니다.😢";
+                                document.getElementById('error-message').style.color = 'red';
+                                document.getElementById('error-message').innerText= "이름에 공백이나 특수문자가 들어갈 수 없습니다.😢";
                             } else {
-                                document.getElementById('error-name').innerText= "";
                                 if (data.ok === 'true') {
                                 // 사용가능한 이메일이므로 성공했다는 메세지를 아래에 띄워줌 && button disable 상태 풀어주기 && 에러메세지 제거
                                 button.disabled = false;
@@ -61,7 +57,6 @@ async function emailEvent() {
                                 document.getElementById('error-message').style.color = 'blue';
                                 document.getElementById('error-message').innerText= '사용 가능한 이름입니다.';
                                 } else {
-                                    document.getElementById('error-name').innerText= "";
                                     // 사용 불가능하므로 메세지를 아래에 띄워 줌 && button 상태 disable로 변경 && 에러메세지 표시
                                     button.disabled = true;
                                     button.classList.add('bg-gray-400');

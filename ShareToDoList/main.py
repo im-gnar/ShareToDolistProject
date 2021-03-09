@@ -59,7 +59,10 @@ def sign_in_page():
     # 아이디 사용가능
     pwd = request.form.get('pwd')
     # name = request.form.get('name')
+    
+    print(id == None,'아이디 출력')
     if id != None:
+        print(id,'===========None입력')
         if(sign_idCheck(id)):  # 아이디 중복체크
             insert(id, pwd)
             return redirect('/login')
