@@ -76,9 +76,7 @@ def todopage():
 def emailCheck():
     # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true
     data = request.get_json()
-    print('값을 알려줘',data)
     id = data['email']
-    print('아이디를 알려줘', id)
     global response
     response = 'true'  # js로 넘어갈 값이기 때문에 소문자 true반환
 
@@ -153,7 +151,7 @@ def db_get_id():
 
 
 def emailTypeCheck(id):  # 정규식 체크
-    p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')  # 이메일 정규식
+    p = re.compile('/^[가-힣a-zA-Z0-9]+$/')  # 이메일 정규식
     reg = p.match(id) != None
     if (reg == False):
         response = 'false'
