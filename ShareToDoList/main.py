@@ -3,7 +3,7 @@ import pymysql
 import re
 import json
 
-app = Flask("ToDO", static_url_path='/static') # static 폴더 참조
+app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
 
 
 @app.route('/', methods=["post", "get"])
@@ -38,10 +38,12 @@ def loginpage():
         for count in range(db_cnt):
             # id not exist error
             Error = "ID does not exist"
-            if id not in db[count]['ID']: pass
+            if id not in db[count]['ID']:
+                pass
             # password diff error
             elif db[count]['PWD'] != pwd:
-                Error = "Password does not match"; break
+                Error = "Password does not match";
+                break
             # login success
             else:
                 session['user'] = db[count]['NAME']
@@ -53,15 +55,17 @@ def loginpage():
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
     id = request.form.get('id')
-    
-    sign_idCheck(id) # 아이디 중복체크
 
     # 아이디 사용가능
     pwd = request.form.get('pwd')
-    name = request.form.get('name')
+    # name = request.form.get('name')
+    
+    print(id == None,'아이디 출력')
     if id != None:
-        insert(id, pwd, name)
-        return redirect('/login')
+        print(id,'===========None입력')
+        if(sign_idCheck(id)):  # 아이디 중복체크
+            insert(id, pwd)
+            return redirect('/login')
     return render_template('signin.html')
 
 
@@ -70,18 +74,19 @@ def sign_in_page():
 def todopage():
     return render_template("todolist.html")
 
-@app.route('/emailCheck', methods=['POST'])  
+
+@app.route('/emailCheck', methods=['POST'])
 def emailCheck():
     # data를 기준으로 데이터베이스에  있는지 확인 후 있으면 response에 false, 없으면 true
     data = request.get_json()
     id = data['email']
     global response
-    response = 'true' # js로 넘어갈 값이기 때문에 소문자 true반환
+    response = 'true'  # js로 넘어갈 값이기 때문에 소문자 true반환
 
-    response = emailTypeCheck(id) # 정규식 체크
-    response = email_idCheck(id) # id중복체크
+    response = emailTypeCheck(id)  # 정규식 체크
+    response = email_idCheck(id)  # id중복체크
 
-    return jsonify(ok = response)
+    return jsonify(ok=response)
 
 
 def searchByWord(word):
@@ -122,8 +127,8 @@ def selectroom():
     return result
 
 
-def insert(id, pwd,name):
-    sql = f"INSERT INTO `member`(ID, PWD, NAME) VALUES ('{id}', '{pwd}', '{name}');"
+def insert(id, pwd):
+    sql = f"INSERT INTO `member`(ID, PWD) VALUES ('{id}', '{pwd}');"
     cursor.execute(sql)
     todo_db.commit()
 
@@ -146,15 +151,15 @@ def db_get_id():
     cursor.execute(sql)
     m_id = cursor.fetchall()
     return m_id
-  
+
 
 def emailTypeCheck(id):  # 정규식 체크
-    p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$') # 이메일 정규식
-    reg = p.match(id) != None 
+    p = re.compile('/^[가-힣a-zA-Z0-9]+$/')  # 이메일 정규식
+    reg = p.match(id) != None
     if (reg == False):
-            response = 'false'
-            return response  
-        
+        response = 'false'
+        return response
+
 
 def email_idCheck(id):
     sql = f"SELECT id FROM `member` WHERE id = '{id}';"
@@ -173,11 +178,10 @@ def sign_idCheck(id):
     cursor.execute(sql)
     result = cursor.fetchone()
 
-    if (result != None): # 아이디가 없으면
-       pass
+    if (result != None):  # 아이디가 존재하면
+        return False
     else:
-        return redirect('/signin')
-      
+        return True
 
 
 app.secret_key = 'super secret key'
