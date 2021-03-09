@@ -6,10 +6,11 @@ function init() {
 
 async function emailEvent() {
 
-    function checkSpace(str) { if(str.search(/\s/) != -1) { return true; } else { return false; } }
+    function checkSpace(str) { if(str.search(/\s/) != -1) { return true; } else { return false; } }// 공백 있으면 true반환
     function checkSpecial(str) { var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi; if(special_pattern.test(str) == true) { return true; } else { return false; } }
     // 특수문자 있으면 true반환
-    // 공백 있으면 true반환
+
+
     const inputId = document.getElementById('inputID');
     const err_name = document.getElementById('inputID')
     const button = document.querySelectorAll('input[type=submit]')[0];
