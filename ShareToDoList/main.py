@@ -16,7 +16,7 @@ def mainpage():
         login = True
         return render_template("main.html", login=login, roomList=searchByWord(word))
     # create room
-    if roomtitle != None:
+    if roomtitle != '':
         login = True
         host = session['user']
         addRoom(host, roomtitle)
@@ -46,7 +46,7 @@ def loginpage():
                 break
             # login success
             else:
-                session['user'] = db[count]['NAME']
+                session['user'] = db[count]['ID']
                 login = True
                 return render_template("main.html", login=login, roomList=selectroom())
     return render_template("login.html", Error=Error)
@@ -59,7 +59,7 @@ def sign_in_page():
     # 아이디 사용가능
     pwd = request.form.get('pwd')
     # name = request.form.get('name')
-    
+
     print(id == None,'아이디 출력')
     if id != None:
         print(id,'===========None입력')
@@ -101,8 +101,8 @@ def searchByWord(word):
 ########### connect DB
 todo_db = pymysql.connect(
     user='root',
-    passwd='jj123100!!',
-    # passwd='5180',
+    # passwd='jj123100!!',
+    passwd='5180',
     host='127.0.0.1',
     # host='mysql',
     db='todolist',

@@ -1,7 +1,17 @@
 {% extends "layout.html" %}
+{% block top %}
+    {% if login %}
+    <form class="js-form top-6 left-28" method="post" action="/">
+            <input class="roomtitle" name="roomtitle" placeholder="create new room">
+            <button class="create create-after">➕</button>
+    </form>
+    {% endif %}
+{% endblock %}
 {% block content %}
     <link rel="stylesheet" href="../static/create.css">
     <link rel="stylesheet" type="text/css" href="../static/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
     <div class="w-full max-w-screen-mx flex flex-col px-5 py-5 items-center" id="header">
         <div class="ml-auto lg:mt-5" id="accout-button-group">
             <a class="bg-blue-400 py-3 px-6 rounded shadow-md text-white font-semibold hover:bg-blue-500 transition-colors" href="/signin">Sign in</a>
@@ -21,14 +31,6 @@
             </div>
         </div>
     <div class="flex-auto mt-10 h-full">
-
-        {% if login %}
-        <form class="js-form" method="post" action="/">
-                <input class="roomtitle" name="roomtitle" placeholder="create new room">
-                <button class="create create-after">➕</button>
-        </form>
-        {% endif %}
-
         <form method="post" action="/">
             <div>
                 {% if not login %}
@@ -82,4 +84,8 @@
     </div>
     <script type="text/javascript" src="../static/dist/bundle.js"></script>
     <script type="text/javascript" src="../static/js/pages/clock.js"></script>
+
+    <div class="modal">
+        <div class="modal_header"></div>
+    </div>
 {% endblock %}
