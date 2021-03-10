@@ -1,10 +1,16 @@
 from flask import *
+from flask_socketio import SocketIO, send
 import pymysql
 import re
-import json
+
 
 app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
-
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = 'private-key'
+socketio = SocketIO(app)
+socketio.init_app(app, cors_allowed_origins="*")
+rooms = []
 
 @app.route('/', methods=["post", "get"])
 def mainpage():
@@ -94,6 +100,19 @@ def emailCheck():
 
     return jsonify(ok=response)
 
+@app.route('/tododist/<roomId>')
+def loadRoom(roomId):
+
+    login = False
+
+    if (session.get('user') == None):
+        redirect('/login')
+
+    user = session['user']
+
+    print(user)
+
+    return render_template('room.html', login=login, user=user, roomId=roomId)
 
 def searchByWord(word):
     word = word.lower()
@@ -130,6 +149,7 @@ def selectroom():
     sql = "SELECT * FROM `roomlist`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
+    print(result)
     return result
 
 
@@ -189,8 +209,13 @@ def sign_idCheck(id):
     else:
         return True
 
+def todoList(methods=['GET', 'POST']):
+    print('message wa received!!!')
 
-app.secret_key = 'super secret key'
-app.config['SESSION_TYPE'] = 'filesystem'
+@socketio.on('room_event')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', callback=todoList(json))
 
-app.run(host='127.0.0.1', debug=True)
+if __name__ == '__main__':
+    socketio.run(app, debug=True, port=5000)

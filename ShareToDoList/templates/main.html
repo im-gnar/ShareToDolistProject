@@ -14,7 +14,9 @@
 
     <div class="w-full max-w-screen-mx flex flex-col px-5 py-5 items-center" id="header">
         <div class="ml-auto lg:mt-5" id="accout-button-group">
+            {% if not login %}
             <a class="bg-blue-400 py-3 px-6 rounded shadow-md text-white font-semibold hover:bg-blue-500 transition-colors" href="/signin">Sign in</a>
+            {% endif %}
             {% if login %}
             <a class="bg-blue-400 py-3 px-6 rounded shadow-md text-white font-semibold hover:bg-blue-500 transition-colors" href="/logout">Log out</a>
             {% else %}
@@ -86,7 +88,4 @@
     <script type="text/javascript" src="../static/js/pages/clock.js"></script>
     <script type="text/javascript" src="../static/js/components/search-room.js"></script>
 
-    <div class="modal">
-        <div class="modal_header"></div>
-    </div>
 {% endblock %}
