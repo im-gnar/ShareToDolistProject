@@ -1,26 +1,33 @@
 from flask import *
+from flask_socketio import SocketIO, send
 import pymysql
 import re
-import json
 
-app = Flask("ToDO", static_url_path='/static') # static 폴더 참조
-
+app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = 'private-key'
+socketio = SocketIO(app)
+socketio.init_app(app, cors_allowed_origins="*")
+rooms = []
 
 @app.route('/', methods=["post", "get"])
 def mainpage():
     login = False
+
+    if (session.get('user') != None):
+        login = True
     # room search
     word = request.form.get("roomsearch")
     roomtitle = request.form.get("roomtitle")
+
     if word != None:
-        login = True
         return render_template("main.html", login=login, roomList=searchByWord(word))
     # create room
-    if roomtitle != None:
-        login = True
+    if roomtitle is not None and roomtitle != '':
         host = session['user']
         addRoom(host, roomtitle)
-        return render_template("main.html", login=login, roomList=selectroom())
+        return redirect(url_for('mainpage'))
 
     return render_template("main.html", login=login,
                            roomList=selectroom())
@@ -44,11 +51,15 @@ def loginpage():
                 Error = "Password does not match"; break
             # login success
             else:
-                session['user'] = id
+                session['user'] = db[count]['ID']
                 login = True
                 return render_template("main.html", login=login, roomList=selectroom())
     return render_template("login.html", Error=Error)
 
+@app.route('/logout', methods=["get"])
+def log_out():
+    session.pop('user', None)
+    return redirect(url_for('mainpage'))
 
 @app.route('/signin', methods=["post", "get"])
 def sign_in_page():
@@ -84,6 +95,19 @@ def emailCheck():
 
     return jsonify(ok = response)
 
+@app.route('/tododist/<roomId>')
+def loadRoom(roomId):
+
+    login = False
+
+    if (session.get('user') == None):
+        redirect('/login')
+
+    user = session['user']
+
+    print(user)
+
+    return render_template('room.html', login=login, user=user, roomId=roomId)
 
 def searchByWord(word):
     word = word.lower()
@@ -97,8 +121,8 @@ def searchByWord(word):
 ########### connect DB
 todo_db = pymysql.connect(
     user='root',
-    passwd='jj123100!!',
-    # passwd='5180',
+    # passwd='jj123100!!',
+    passwd='5180',
     host='127.0.0.1',
     # host='mysql',
     db='todolist',
@@ -119,6 +143,7 @@ def selectroom():
     sql = "SELECT * FROM `roomlist`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
+    print(result)
     return result
 
 
@@ -178,8 +203,13 @@ def sign_idCheck(id):
     else:
         return True
 
+def todoList(methods=['GET', 'POST']):
+    print('message wa received!!!')
 
-app.secret_key = 'super secret key'
-app.config['SESSION_TYPE'] = 'filesystem'
+@socketio.on('room_event')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', callback=todoList(json))
 
-app.run(host='127.0.0.1', debug=True)
+if __name__ == '__main__':
+    socketio.run(app, debug=True, port=5000)

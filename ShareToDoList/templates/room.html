@@ -1,0 +1,198 @@
+{% extends "layout.html" %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="../static/todomain.css">
+    <link rel="stylesheet" type="text/css" href="../static/todo.css">
+	<div class="main">
+		<div class="left">
+			<div class="left-items">
+				<div>
+					<div class="progress-set">
+						<div class="cheerImageProgress center">
+							<span class="js-completed completed">0% completed!</span>
+						</div>
+						<div class="toDoProgress center">
+				  			<div class="js-toDoProgressBar toDoProgressBar"></div>
+						</div>
+					</div>
+				</div>
+
+                <div class="container mt-20 flex p-4 h-5/6">
+                    <div class="people_list h-full bg-gray-700 flex-auto text-white rounded-l-lg max-w-xs bg-gray-700">
+                         <ul class="list p-10 h-full overflow-auto journal-scroll">
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Jay</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-green-400"></i> online
+                                   </div>
+                                </div>
+                            </li>
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Kain</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-green-400"></i> online
+                                   </div>
+                                </div>
+                            </li>
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Mable</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-green-400"></i> online
+                                   </div>
+                                </div>
+                            </li>
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Daisy</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-green-400"></i> online
+                                   </div>
+                                </div>
+                            </li>
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Hobs</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-green-400"></i> online
+                                   </div>
+                                </div>
+                            </li>
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Mans</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-green-400"></i> online
+                                   </div>
+                                </div>
+                            </li>
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Daps</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-red-400"></i> offline
+                                   </div>
+                                </div>
+                            </li>
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Que</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-green-400"></i> online
+                                   </div>
+                                </div>
+                            </li>
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Dep</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-green-400"></i> online
+                                   </div>
+                                </div>
+                            </li>
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Mark</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-green-400"></i> online
+                                   </div>
+                                </div>
+                            </li>
+                            <li class="clearfix pt-4">
+                                <div class="w-16 h-16 rounded-full bg-white float-left border-2 border-green-600"></div>
+                                <div class="pl-4 pt-2.5 float-left">
+                                   <div class="text-white">Jorn</div>
+                                   <div class="status text-gray-400">
+                                     <i class="fa fa-circle online text-green-400"></i> online
+                                   </div>
+                                </div>
+                            </li>
+                         </ul>
+                    </div>
+                    <div class="chat bg-gray-100 flex-auto rounded-r-lg">
+                         <div class="clearfix p-6 border-2 border-white">
+                       <div class="chat-with font-semibold text-black">Room name</div>
+                         </div>
+
+                        <div class="p-4 h-5/6">
+                        <ul class="overflow-auto pl-10 pr-10 pb-10 h-full journal-scroll">
+                          <li class="clearfix">
+                            <div class="mb-2 mt-4 align-left text-white">
+                              <span class="text-black" >Jay</span> <i class="fa fa-circle me text-green-500"></i>
+                            </div>
+                            <p class="bg-blue-300 align-left text-white w-10/12 px-10 max-w-xs py-3 rounded break-words">
+                                Hi, Chat world
+                            </p>
+                          </li>
+                          <li class="clearfix">
+                            <div class="mb-2 mt-4 align-left text-white">
+                              <span class="text-black" >Jay</span> <i class="fa fa-circle me text-green-500"></i>
+                            </div>
+                            <p class="bg-blue-300 align-left text-white w-10/12 px-10 max-w-xs py-3 rounded break-words">
+                              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                            </p>
+                          </li>
+                          <li class="clearfix pt-10">
+                            <p class="float-right bg-yellow-400 text-right text-white max-w-xs px-6 py-3 rounded break-words">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                            </p>
+                          </li>
+                          <li class="clearfix">
+                            <div class="mb-2 mt-4 align-left text-white">
+                              <span class="text-black">Jay</span> <i class="fa fa-circle me text-green-500"></i>
+                            </div>
+                            <div class="bg-blue-300 align-left text-white w-10/12 px-6 py-3 rounded break-words">
+                              Hi, Chat world
+                            </div>
+                          </li>
+                        </ul>
+
+                      </div> <!-- end chat-history -->
+                    </div>
+
+                    </div>
+                </div>
+
+{#                <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>#}
+{#                <div class="message_holder">#}
+{#                    <form action="" method="POST">#}
+{#                      <input type="text" class="username" style='font-size:15px;' placeholder="User Name"/>#}
+{#                      <input type="text" class="message" style='font-size:15px;' placeholder="Messages"/>#}
+{#                      <input type="submit"/>#}
+{#                    </form>#}
+{#			    </div>#}
+		    </div>
+        </div>
+
+		<div class="right">
+			<h1 class="toDoText">TO DO LIST</h1>
+			<div class="toDoItems">
+                <form class="js-toDoForm toDoForm center">
+                    <div class="toDo-set addbtn">
+                        <input class="js-toDoInput toDoInput" type="text" placeholder="TO DO?"/>
+                        <button class="toDoBtn">submit</button>
+                        <span class="js-empty empty">You can't leave this empty.</span>
+                    </div>
+                </form>
+				<ul class="js-toDoList toDoList">
+					<li class="js-nothing nothing">Nothing to do</li>
+				</ul>
+			</div>
+		</div>
+    </div>
+    <script type="text/javascript" src="../static/js/pages/todo.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://use.fontawesome.com/19d3e4fe13.js"></script>
+{% endblock %}

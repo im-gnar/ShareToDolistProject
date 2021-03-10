@@ -1,8 +1,7 @@
+
 .js-form {
     text-align : center;
-    position: relative;
-    top: 15%;
-    left: 50%;
+    position: fixed;
     transform: translate(-50%);
     transition: all 1s;
     width: 50px;
