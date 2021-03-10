@@ -66,11 +66,7 @@ async function emailEvent() {
                                     document.getElementById('error-message').innerText= '이미 존재하는 이름입니다.';
                                 }
                             }
-
-
                         }
-
-
                 })
                 .catch(err => {
                     console.error('error!', err.statusText);
