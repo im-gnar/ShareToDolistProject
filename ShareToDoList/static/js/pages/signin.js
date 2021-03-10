@@ -67,10 +67,10 @@ async function emailEvent() {
                                 }
                             }
 
-                            
 
                         }
-                        
+
+
                 })
                 .catch(err => {
                     console.error('error!', err.statusText);
