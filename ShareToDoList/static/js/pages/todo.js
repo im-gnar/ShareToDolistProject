@@ -6,6 +6,18 @@ const toDoForm = document.querySelector(".js-toDoForm"),
 	empty = toDoForm.querySelector(".js-empty"),
 	nothing = document.querySelector(".js-nothing");
 
+// DB connection
+var mysql = require('mysql2');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : 'jj123100!!',
+  database : 'todolist',
+  port : 3306,
+  insecureAuth : true
+});
+connection.connect();
+
 const TODOS_LS = "toDos";
 const SHOWING_CN = "showing";
 
@@ -58,10 +70,10 @@ function editToDo(event){
 		btnSpan.setAttribute("class", "controlBtns");
 		const editBtn = document.createElement("img");
 		editBtn.setAttribute("class", "editBtn");
-		editBtn.src = "../../../templates/ShareToDoList/templates/static/images/edit.png";
+		editBtn.src = "../../../templates/static/images/edit.png";
 		const delBtn = document.createElement("img");
 		delBtn.setAttribute("class", "delBtn");
-		delBtn.src = "../../../templates/ShareToDoList/templates/static/images/delete.png";
+		delBtn.src = "../../../templates/static/images/delete.png";
 		checkBox.addEventListener("change", checkBoxChange);
 		editBtn.innerText = "edit";
 		editBtn.addEventListener("click", showEdit);
@@ -109,10 +121,10 @@ function undo(event){
 	btns.setAttribute("class", "controlBtns");
 	const editBtn = document.createElement("img");
 	editBtn.setAttribute("class", "editBtn");
-	editBtn.src = "images/edit.png";
+	editBtn.src = "../../../templates/static/images/edit.png";
 	const delBtn = document.createElement("img");
 	delBtn.setAttribute("class", "delBtn");
-	delBtn.src = "images/delete.png";
+	delBtn.src = "../../../templates/static/images/edit.png";
 	//eventListener(checkbox, edit, delete)
 	checkBox.addEventListener("change", checkBoxChange);
 	editBtn.addEventListener("click", showEdit);
@@ -276,10 +288,10 @@ function paintToDo(text, isChecked){
 	btns.setAttribute("class", "controlBtns");
 	const editBtn = document.createElement("img");
 	editBtn.setAttribute("class", "editBtn");
-	editBtn.src = "ShareToDoList/templates/static/images/edit.png";
+	editBtn.src = "../../../templates/static/images/edit.png";
 	const delBtn = document.createElement("img");
 	delBtn.setAttribute("class", "delBtn");
-	delBtn.src = "ShareToDoList/templates/static/images/delete.png";
+	delBtn.src = "../../../templates/static/images/delete.png";
 	//eventListener(checkbox, edit, delete)
 	checkBox.addEventListener("change", checkBoxChange);
 	editBtn.addEventListener("click", showEdit);
@@ -291,13 +303,16 @@ function paintToDo(text, isChecked){
 	li.appendChild(btns);
 	btns.appendChild(editBtn);
 	btns.appendChild(delBtn);
+
+	// DB.pno
 	const newId = toDos.length + 1;
+	//
 	li.id = newId;
 	toDoList.appendChild(li);
 	//저장
 	const toDoObj = {
+	        id: newId,
 			text: text,
-			id: newId,
 			isChecked: isChecked
 	};
 	toDos.push(toDoObj);
@@ -319,29 +334,50 @@ function toDoSubmit(event){
 		toDoInput.value = "";
 	}
 }
-
 function loadToDos(){
-	const loadedToDos = localStorage.getItem(TODOS_LS);
-	if(loadedToDos !== null){
-		//loadedToDos(String) → parsedToDos(Array)
-		const parsedToDos = JSON.parse(loadedToDos);
-		if(parsedToDos.length === 0){
-			//Nothing To Do
-			paintNothing();
-		} else {
-			for(var i = 0; i < parsedToDos.length; i++){
-				//todo들을 보여줌
-				paintToDo(parsedToDos[i].text, parsedToDos[i].isChecked);
-			};
-			//체크수 조회 + 프로그레스 바
-			selectCheckedNum();
-		}
-	} else {
-		//Nothing To Do
-		paintNothing();
-	}
+	getTodos().then(function(results){
+	    console.log(results);
+	    if(results !== null){
+            //loadedToDos(String) → parsedToDos(Array)
+            if(results.length === 0){
+                //Nothing To Do
+                paintNothing();
+            } else {
+                for(var i = 0; i < results.length; i++){
+                    paintToDo(results[i]["goal"], false);
+                };
+                selectCheckedNum(); //check cnt+progress
+            }
+	    } else { paintNothing(); }
+//    console.log("res",results)
+//    console.log(results.length)
+    }).catch();
+//	if(loadedToDos !== null){
+//		//loadedToDos(String) → parsedToDos(Array)
+//		const parsedToDos = JSON.parse(loadedToDos);
+//		if(parsedToDos.length === 0){
+//			//Nothing To Do
+//			paintNothing();
+//		} else {
+//			for(var i = 0; i < parsedToDos.length; i++){
+//				paintToDo(parsedToDos[i].text, parsedToDos[i].isChecked);
+//			};
+//			selectCheckedNum(); //check cnt+progress
+//		}
+//	} else { paintNothing(); }
 }
-
+function getTodos(){
+    return new Promise(function(resolve,reject){
+        connection.connect();
+        connection.query('SELECT goal FROM plan', function(err, results, fields) {
+          if (err) {
+            return reject(err);
+          }
+          resolve(results);
+        });
+        connection.end();
+    });
+}
 function init(){
 	loadToDos();
 	toDoForm.addEventListener("submit", toDoSubmit);

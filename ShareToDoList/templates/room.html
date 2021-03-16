@@ -161,17 +161,18 @@
                       </div> <!-- end chat-history -->
                     </div>
 
+                <!-- test -->
+<!--                <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>-->
+<!--                <div class="message_holder">-->
+<!--                    <form action="" method="POST">-->
+<!--                      <input type="text" class="username" style='font-size:15px;' placeholder="User Name"/>-->
+<!--                      <input type="text" class="message" style='font-size:15px;' placeholder="Messages"/>-->
+<!--                      <input type="submit"/>-->
+<!--                    </form>-->
+<!--			    </div>-->
+
                     </div>
                 </div>
-
-{#                <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>#}
-{#                <div class="message_holder">#}
-{#                    <form action="" method="POST">#}
-{#                      <input type="text" class="username" style='font-size:15px;' placeholder="User Name"/>#}
-{#                      <input type="text" class="message" style='font-size:15px;' placeholder="Messages"/>#}
-{#                      <input type="submit"/>#}
-{#                    </form>#}
-{#			    </div>#}
 		    </div>
         </div>
 
@@ -195,4 +196,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
     <script src="https://use.fontawesome.com/19d3e4fe13.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect('http://localhost:5000');
+
+      socket.on('connect', function () {
+          console.log(socket.id)
+          socket.emit('room_event', {
+              data: 'User Connected'
+          });
+
+      });
+    </script>
 {% endblock %}

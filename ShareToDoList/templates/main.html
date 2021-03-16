@@ -33,6 +33,14 @@
             </div>
         </div>
     <div class="flex-auto mt-10 h-full">
+
+<!--        {% if login %}-->
+<!--        <form class="js-form" method="post" action="/">-->
+<!--                <input class="roomtitle" name="roomtitle" placeholder="create new room">-->
+<!--                <button class="create create-after">➕</button>-->
+<!--        </form>-->
+<!--        {% endif %}-->
+
         <form method="post" action="/">
             <div>
                 {% if not login %}
@@ -86,6 +94,4 @@
     </div>
     <script type="text/javascript" src="../static/dist/bundle.js"></script>
     <script type="text/javascript" src="../static/js/pages/clock.js"></script>
-    <script type="text/javascript" src="../static/js/components/search-room.js"></script>
-
 {% endblock %}

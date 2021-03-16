@@ -28,7 +28,23 @@
                     </div>
                 </form>
 				<ul class="js-toDoList toDoList">
+					{% if not todolist %}
 					<li class="js-nothing nothing">Nothing to do</li>
+					{% else %}
+					{% for todo in todolist %}
+					<li id="">
+						<lable>
+							<!-- if achivement==1: checked? -->
+							<input type="checkbox" class="todoCheck">
+							<span class="content">{{todo.goal}}</span>
+						</lable>
+						<span class="controlBtns">
+							<img class="editBtn" src="../../../templates/static/images/edit.png">
+							<img class="delBtn" src="../../../templates/static/images/delete.png">
+						</span>
+					</li>
+					{% endfor %}
+					{% endif %}
 				</ul>
 			</div>
 		</div>

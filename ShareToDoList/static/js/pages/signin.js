@@ -1,6 +1,6 @@
 function init() {
     emailEvent();
-    
+
 }
 //let email = document.querySelector('#inputID').value; // 정규식 체크하려고 email변수를 전역변수로 만들었습니다.
 
@@ -13,6 +13,7 @@ async function emailEvent() {
 
     const inputId = document.getElementById('inputID');
     const button = document.querySelectorAll('input[type=submit]')[0];
+
 
     inputId.addEventListener('focusout', event => {
         email = event.target.value;
@@ -78,17 +79,18 @@ async function emailEvent() {
 
 
 }
+
 async function sendXMLRequest(data, url, method) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
 
         xhr.open(method, url); // 초기화
         xhr.setRequestHeader('Content-Type', 'application/json');
-        // HTTP 요청 헤더의 값을 설정합니다. open() 후, send() 전에 setRequestHeader() 를 호출해야합니다.
+        // HTTP 요청 헤더의 값을 설정. open() 후, send() 전에 setRequestHeader() 를 호출해야합니다.
 
         xhr.onreadystatechange = () => {
-        // readyState 어트리뷰트가 변경될때마다 호출되는 EventHandler 입니다.
-            if (xhr.readyState == xhr.DONE) { // // 이상 없음, 응답 받았음
+        // readyState 어트리뷰트가 변경될때마다 호출되는 EventHandler
+            if (xhr.readyState == xhr.DONE) { // 이상 없음, 응답 받았음
                 if (xhr.status === 200 || xhr.status === 201) {
                     resolve(xhr.response);
                 } else {
@@ -99,7 +101,6 @@ async function sendXMLRequest(data, url, method) {
                 }
             }
         };
-
         xhr.onerror = () => {
             reject({
                 status: this.status,
@@ -115,4 +116,3 @@ async function sendXMLRequest(data, url, method) {
     })
 }
 init();
-
