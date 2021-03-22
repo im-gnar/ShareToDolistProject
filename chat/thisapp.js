@@ -69,6 +69,6 @@
  })
 
  /* 서버를 8080 포트로 listen */
- server.listen(1230, function() {
+ server.listen(1231, function() {
    console.log('서버 실행 중..')
  })
