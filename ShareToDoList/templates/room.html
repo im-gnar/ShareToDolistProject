@@ -2,19 +2,19 @@
 {% block content %}
     <link rel="stylesheet" type="text/css" href="../static/todomain.css">
     <link rel="stylesheet" type="text/css" href="../static/todo.css">
-	<div class="main">
-		<div class="left">
-			<div class="left-items">
-				<div>
-					<div class="progress-set">
-						<div class="cheerImageProgress center">
-							<span class="js-completed completed">0% completed!</span>
-						</div>
-						<div class="toDoProgress center">
-				  			<div class="js-toDoProgressBar toDoProgressBar"></div>
-						</div>
-					</div>
-				</div>
+   <div class="main">
+      <div class="left">
+         <div class="left-items">
+            <div>
+               <div class="progress-set">
+                  <div class="cheerImageProgress center">
+                     <span class="js-completed completed">0% completed!</span>
+                  </div>
+                  <div class="toDoProgress center">
+                       <div class="js-toDoProgressBar toDoProgressBar"></div>
+                  </div>
+               </div>
+            </div>
 
                 <div class="container mt-20 flex p-4 h-5/6">
                     <div class="people_list h-full bg-gray-700 flex-auto text-white rounded-l-lg max-w-xs bg-gray-700">
@@ -124,7 +124,7 @@
                          <div class="clearfix p-6 border-2 border-white">
                        <div class="chat-with font-semibold text-black">Room name</div>
                          </div>
-
+                        <!-- chat message area -->
                         <div class="p-4 h-5/6">
                         <ul class="overflow-auto pl-10 pr-10 pb-10 h-full journal-scroll">
                           <li class="clearfix">
@@ -159,26 +159,20 @@
                         </ul>
 
                       </div> <!-- end chat-history -->
+                        <div>
+                            <input style="width:80%;" type="text" id="test" placeholder="메세지를 입력해주세요">
+                            <button onclick="send()">SEND</button>
+                        </div>
                     </div>
-
-                <!-- test -->
-<!--                <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>-->
-<!--                <div class="message_holder">-->
-<!--                    <form action="" method="POST">-->
-<!--                      <input type="text" class="username" style='font-size:15px;' placeholder="User Name"/>-->
-<!--                      <input type="text" class="message" style='font-size:15px;' placeholder="Messages"/>-->
-<!--                      <input type="submit"/>-->
-<!--                    </form>-->
-<!--			    </div>-->
 
                     </div>
                 </div>
-		    </div>
+          </div>
         </div>
 
-		<div class="right">
-			<h1 class="toDoText">TO DO LIST</h1>
-			<div class="toDoItems">
+      <div class="right">
+         <h1 class="toDoText">TO DO LIST</h1>
+         <div class="toDoItems">
                 <form class="js-toDoForm toDoForm center">
                     <div class="toDo-set addbtn">
                         <input class="js-toDoInput toDoInput" type="text" placeholder="TO DO?"/>
@@ -186,23 +180,24 @@
                         <span class="js-empty empty">You can't leave this empty.</span>
                     </div>
                 </form>
-				<ul class="js-toDoList toDoList">
-					<li class="js-nothing nothing">Nothing to do</li>
-				</ul>
-			</div>
-		</div>
+            <ul class="js-toDoList toDoList">
+               <li class="js-nothing nothing">Nothing to do</li>
+            </ul>
+         </div>
+      </div>
     </div>
     <script type="text/javascript" src="../static/js/pages/todo.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/19d3e4fe13.js"></script>
     <script type="text/javascript">
-      var socket = io.connect('http://localhost:5000');
+      var socket = io.connect('http://localhost:1230');
 
       socket.on('connect', function () {
           console.log(socket.id)
-          socket.emit('room_event', {
-              data: 'User Connected'
+          socket.emit('newUser', {
+              data: 'User Connected',
+              name: 'hi'
           });
 
       });

@@ -19,8 +19,8 @@ const server = http.createServer(app)
 /* 생성된 서버를 socket.io에 바인딩 */
 const io = socket(server)
 
-app.use('/css', express.static('./static/css'))
-app.use('/js', express.static('./static/chatjs'))
+app.use('/css', express.static('./static/chat/index.css'))
+app.use('/js', express.static('./static/chat/index.js'))
 
 /* Get 방식으로 / 경로에 접속하면 실행 됨 */
 app.get('/todolist', function(request, response) {
@@ -28,6 +28,7 @@ app.get('/todolist', function(request, response) {
     if(err) {
       response.send('에러')
     } else {
+      console.log('got it')
       response.writeHead(200, {'Content-Type':'text/html'})
       response.write(data)
       response.end()
