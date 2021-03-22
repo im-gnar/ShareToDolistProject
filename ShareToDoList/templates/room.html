@@ -2,6 +2,7 @@
 {% block content %}
     <link rel="stylesheet" type="text/css" href="../static/todomain.css">
     <link rel="stylesheet" type="text/css" href="../static/todo.css">
+    <script src="../../chat/static/socket.io/socket.io.js"></script>
    <div class="main">
       <div class="left">
          <div class="left-items">
@@ -125,8 +126,8 @@
                        <div class="chat-with font-semibold text-black">Room name</div>
                          </div>
                         <!-- chat message area -->
-                        <div class="p-4 h-5/6">
-                        <ul class="overflow-auto pl-10 pr-10 pb-10 h-full journal-scroll">
+                        <div class="p-4 h-5/6" id="main">
+                        <ul class="overflow-auto pl-10 pr-10 pb-10 h-full journal-scroll chatmsg">
                           <li class="clearfix">
                             <div class="mb-2 mt-4 align-left text-white">
                               <span class="text-black" >Jay</span> <i class="fa fa-circle me text-green-500"></i>
@@ -135,34 +136,34 @@
                                 Hi, Chat world
                             </p>
                           </li>
-                          <li class="clearfix">
-                            <div class="mb-2 mt-4 align-left text-white">
-                              <span class="text-black" >Jay</span> <i class="fa fa-circle me text-green-500"></i>
-                            </div>
-                            <p class="bg-blue-300 align-left text-white w-10/12 px-10 max-w-xs py-3 rounded break-words">
-                              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
-                            </p>
-                          </li>
-                          <li class="clearfix pt-10">
-                            <p class="float-right bg-yellow-400 text-right text-white max-w-xs px-6 py-3 rounded break-words">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
-                            </p>
-                          </li>
-                          <li class="clearfix">
-                            <div class="mb-2 mt-4 align-left text-white">
-                              <span class="text-black">Jay</span> <i class="fa fa-circle me text-green-500"></i>
-                            </div>
-                            <div class="bg-blue-300 align-left text-white w-10/12 px-6 py-3 rounded break-words">
-                              Hi, Chat world
-                            </div>
-                          </li>
+<!--                          <li class="clearfix">-->
+<!--                            <div class="mb-2 mt-4 align-left text-white">-->
+<!--                              <span class="text-black" >Jay</span> <i class="fa fa-circle me text-green-500"></i>-->
+<!--                            </div>-->
+<!--                            <p class="bg-blue-300 align-left text-white w-10/12 px-10 max-w-xs py-3 rounded break-words">-->
+<!--                              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum-->
+<!--                            </p>-->
+<!--                          </li>-->
+<!--                          <li class="clearfix pt-10">-->
+<!--                            <p class="float-right bg-yellow-400 text-right text-white max-w-xs px-6 py-3 rounded break-words">-->
+<!--                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum-->
+<!--                            </p>-->
+<!--                          </li>-->
+<!--                          <li class="clearfix">-->
+<!--                            <div class="mb-2 mt-4 align-left text-white">-->
+<!--                              <span class="text-black">Jay</span> <i class="fa fa-circle me text-green-500"></i>-->
+<!--                            </div>-->
+<!--                            <div class="bg-blue-300 align-left text-white w-10/12 px-6 py-3 rounded break-words">-->
+<!--                              Hi, Chat world-->
+<!--                            </div>-->
+<!--                          </li>-->
                         </ul>
 
                       </div> <!-- end chat-history -->
-                        <div>
-                            <input style="width:80%;" type="text" id="test" placeholder="메세지를 입력해주세요">
-                            <button onclick="send()">SEND</button>
-                        </div>
+                      <div>
+                          <input style="width:80%;" type="text" id="test" placeholder="메세지를 입력해주세요">
+                          <button onclick="send()">SEND</button>
+                      </div>
                     </div>
 
                     </div>
@@ -186,6 +187,7 @@
          </div>
       </div>
     </div>
+    <script src="../../chat/static/js/index.js"></script>
     <script type="text/javascript" src="../static/js/pages/todo.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
