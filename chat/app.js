@@ -1,5 +1,14 @@
 const express = require('express')
 const http = require('http')
+var mysql = require('mysql2');
+var connection = mysql.createConnection({
+  host: 'localhost',
+  port:3306,
+  user:'root',
+  password:'jj123100!!',
+  database:'todolist'
+})
+connection.connect();
 
 const app = express()
 
@@ -13,11 +22,9 @@ const io = require('socket.io')(server, {
 
 io.on('connection', function(socket) {
 //  console.log(socket)
-
   /* 새로운 유저가 접속했을 경우 다른 소켓에게도 알려줌 */
   socket.on('newUser', function(name) {
     console.log(name + ' 님이 접속하였습니다.')
-
     /* 소켓에 이름 저장해두기 */
     socket.name = name
 
@@ -43,6 +50,31 @@ io.on('connection', function(socket) {
     /* 나가는 사람을 제외한 나머지 유저에게 메시지 전송 */
     socket.broadcast.emit('update', {type: 'disconnect', name: 'SERVER', message: socket.name + '님이 나가셨습니다.'});
   })
+
+  socket.on('newPlan', function(data){
+    let todolist = "";
+    /*  type: 'create_todo',
+		goal : plan,
+		roomno : {current room no} */
+		// todolist 갱신, 갱신된 리스트 반환
+	console.log(data.goal, data.roomno)
+    connection.query("INSERT INTO plan(rno,goal) VALUES (?, ?)",[
+            data.roomno, data.goal], function(err,success){
+            if (err) console.log("err");
+            console.log('Data Insert OK');
+        });
+    connection.query("SELECT * FROM plan",function(err,success){
+            if (err) console.log("err");
+            console.log(success[0]);
+            io.emit('planUpdate', success);
+//            [ TextRow { PNO: 1, RNO: 71, goal: 'todolist', achievement: 0 },
+//              TextRow { PNO: 2, RNO: 71, goal: 'todolist2', achievement: 0 },
+//              TextRow { PNO: 3, RNO: 71, goal: 'ssssss', achievement: 0 },
+//              TextRow { PNO: 4, RNO: 71, goal: 'todolist', achievement: 0 },
+//              TextRow { PNO: 5, RNO: 71, goal: 'this', achievement: 0 } ]
+        });
+//	    socket.broadcast.emit('planupdate',todolist)
+    })
 })
 
 /* 서버를 8080 포트로 listen */

@@ -106,8 +106,9 @@ def loadRoom(roomId):
 
     user = session['user']
 
-    print(user)
-
+    #print(user)
+    # login, user 파라미터는 안씀; 오류 없다면 빼기
+    # roomId로 DB에서 room title get, 파라미터로 넘겨주기
     return render_template('room.html', login=login, user=user, roomId=roomId)
 
 def searchByWord(word):
@@ -215,4 +216,3 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1',debug=True)
-    # socketio.run(app)

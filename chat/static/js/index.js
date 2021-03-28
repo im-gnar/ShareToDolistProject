@@ -14,6 +14,20 @@ socket.on('connect', function() {
   socket.emit('newUser', name)
 })
 
+function createPlan() {
+    var plan = document.getElementById('todoInput').value   // input value
+    document.getElementById('todoInput').value = ''
+
+    socket.emit('newPlan',{
+        type: 'create_todo',
+		goal : plan,
+		roomno : {current room no}
+    })
+
+}
+
+
+
 /* 서버로부터 데이터 받은 경우 */
 socket.on('update', function(data) {
 //    var chat = document.getElementById('chat')
