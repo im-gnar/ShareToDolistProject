@@ -177,7 +177,7 @@
                     <div class="toDo-set addbtn">
                         <input class="js-toDoInput toDoInput" id="todoInput" type="text" placeholder="TO DO?"/>
                         <button class="toDoBtn" onclick="createPlan()">submit</button>
-                        <span class="js-empty empty">You can't leave this empty.</span>
+<!--                        <span class="js-empty empty">You can't leave this empty.</span>-->
                     </div>
                 </form>
             <ul class="js-toDoList toDoList">
@@ -186,9 +186,7 @@
          </div>
       </div>
     </div>
-<!--    <script src="../../chat/static/js/index.js"></script>-->
     <script type="text/javascript" src="../static/js/pages/todo.js"></script>
-<!--    <script type="text/javascript" src="../static/js/pages/chat.js"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/19d3e4fe13.js"></script>
@@ -204,8 +202,13 @@
       });
 
       socket.on('planUpdate', function (data) {
-          console.log("this is it");
           console.log(data);
+          data.forEach((data)=>{
+            paintToDos(data.pno, data.goal,data.achievement===0?false:true)
+            // nothing remove
+            console.log(data.goal);
+          });
+
       });
 
       socket.on('update', function(data) {
@@ -282,7 +285,45 @@
             goal : plan,
             roomno : 71
         })
-
     }
+    function paintToDo(pno, goal, achievement){
+        //li > label > input(checkbox), span(content)
+
+        const li = document.createElement("li");
+        const label = document.createElement("label");
+        const checkBox = document.createElement("input");
+        checkBox.setAttribute("type", "checkbox");
+        checkBox.setAttribute("class", "todoCheck");
+        checkBox.checked = achievement;
+        const content = document.createElement("span");
+        content.setAttribute("class", "content");
+
+        //li > span(btns) > img(editBtn), img(delBtn)
+
+        const btns = document.createElement("span");
+        btns.setAttribute("class", "controlBtns");
+        const editBtn = document.createElement("button");
+        editBtn.setAttribute("class", "editBtn");
+        editBtn.innerText = "✏";
+        const delBtn = document.createElement("button");
+        delBtn.setAttribute("class", "delBtn");
+        delBtn.innerText = "❌";
+        //eventListener(checkbox, edit, delete)
+        checkBox.addEventListener("change", checkBoxChange);
+        editBtn.addEventListener("click", showEdit);
+        delBtn.addEventListener("click", deleteToDo);
+        content.innerText = goal;
+        li.appendChild(label);
+        label.appendChild(checkBox);
+        label.appendChild(content);
+        li.appendChild(btns);
+        btns.appendChild(editBtn);
+        btns.appendChild(delBtn);
+        const newId = pno;
+        li.id = newId;
+        toDoList.appendChild(li);
+    }
+
     </script>
+
 {% endblock %}
