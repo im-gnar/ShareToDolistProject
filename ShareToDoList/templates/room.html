@@ -186,7 +186,9 @@
          </div>
       </div>
     </div>
+<!--    <script src="../../chat/static/js/index.js"></script>-->
     <script type="text/javascript" src="../static/js/pages/todo.js"></script>
+<!--    <script type="text/javascript" src="../static/js/pages/chat.js"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/19d3e4fe13.js"></script>
@@ -204,11 +206,9 @@
       socket.on('planUpdate', function (data) {
           console.log(data);
           data.forEach((data)=>{
-            paintToDos(data.pno, data.goal,data.achievement===0?false:true)
-            // nothing remove
+            paintToDo(data.pno, data.goal,data.achievement===0?false:true);
             console.log(data.goal);
           });
-
       });
 
       socket.on('update', function(data) {
@@ -251,6 +251,12 @@
       message.appendChild(namediv)
       message.appendChild(content)
       chat.appendChild(message)
+
+      data.todo.forEach((td)=>{
+            paintToDo(td.pno, td.goal,td.achievement===0?false:true)
+            // nothing remove
+            console.log(data.goal);
+          });
     });
 
     /* 메시지 전송 함수 */
@@ -323,7 +329,5 @@
         li.id = newId;
         toDoList.appendChild(li);
     }
-
     </script>
-
 {% endblock %}
