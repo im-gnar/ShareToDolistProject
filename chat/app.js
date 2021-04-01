@@ -55,10 +55,6 @@ io.on('connection', function(socket) {
   })
 
   socket.on('newPlan', function(data){
-    let todolist = "";
-    /*  type: 'create_todo',
-		goal : plan,
-		roomno : {current room no} */
 		// todolist 갱신, 갱신된 리스트 반환
 	console.log(data.goal, data.roomno)
     connection.query("INSERT INTO plan(rno,goal) VALUES (?, ?)",[

@@ -202,7 +202,6 @@
               name: 'hi'
           });
       });
-
       socket.on('planUpdate', function (data) {
           console.log(data);
           data.forEach((data)=>{
@@ -210,7 +209,6 @@
             console.log(data.goal);
           });
       });
-
       socket.on('update', function(data) {
       var chat = document.getElementById('chatmsg')
       var message = document.createElement('li')
