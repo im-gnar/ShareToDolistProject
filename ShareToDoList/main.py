@@ -103,7 +103,7 @@ def loadRoom(roomId):
     if (session.get('user') == None):
         redirect('/login')
     user = session['user']
-    #print(user)
+
     # login, user 파라미터는 안씀; 오류 없다면 빼기
     # roomId로 DB에서 room title get, 파라미터로 넘겨주기
     return render_template('room.html',name=user, roomId=roomId)

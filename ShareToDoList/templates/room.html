@@ -169,14 +169,16 @@
                 </div>
           </div>
         </div>
-
+<input type="hidden" id="username" name="username" value="{{name}}">
+<input type="hidden" id="roomid" name="roomid" value="{{roomId}}">
+<input type="hidden" id="pno" name="pno" value="" oninput="deletePlan(this)">
       <div class="right">
          <h1 class="toDoText">TO DO LIST</h1>
          <div class="toDoItems">
                 <form class="js-toDoForm toDoForm center">
                     <div class="toDo-set addbtn">
                         <input class="js-toDoInput toDoInput" id="todoInput" type="text" placeholder="TO DO?"/>
-                        <button class="toDoBtn" onclick="createPlan()">submit</button>
+                        <button class="toDoBtn" onclick="createPlan(event)">submit</button>
                         <span class="js-empty empty">You can't leave this empty.</span>
                     </div>
                 </form>
@@ -193,22 +195,30 @@
     <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/19d3e4fe13.js"></script>
     <script type="text/javascript">
+      setInterval(pnoChange, 100);
       var socket = io.connect('http://localhost:1230');
+      var user = document.getElementById('username').value
+      var roomid = document.getElementById('roomid').value
+      var pno = document.getElementById('pno').value
 
       socket.on('connect', function () {
           console.log(socket.id)
-          console.log('user');
+
           socket.emit('newUser', {
               data: 'User Connected',
-              name: 'hi'
+              name: user,
+              rno:roomid
           });
       });
       socket.on('planUpdate', function (data) {
           console.log(data);
+          var result = JSON.stringify(data);
+          console.log(result);
+          /*
           data.forEach((data)=>{
-            paintToDo(data.goal,data.achievement===0?false:true);
-            console.log(data.goal);
-          });
+            paintToDo(data.pno,data.text,data.isChecked===0?false:true);
+          }); */
+          loadToDos(result);
       });
       socket.on('update', function(data) {
       var chat = document.getElementById('chatmsg')
@@ -276,14 +286,35 @@
       socket.emit('message', {type: 'message', message: message})
     }
 
-    function createPlan() {
-        var plan = document.getElementById('todoInput').value   // input value
-        document.getElementById('todoInput').value = ''
+    function createPlan(event) {
+        event.preventDefault();
+        const currentValue = document.getElementById('todoInput').value;
+        if(currentValue === ""){ //공백확인
+            toDoForm.querySelector(".js-empty").classList.add("showing");
+        } else {
+            toDoForm.querySelector(".js-empty").classList.remove("showing");
+            socket.emit('newPlan',{
+                type: 'create_todo',
+                goal : currentValue,
+                roomno : roomid
+            })
+            selectCheckedNum();
+            document.getElementById('todoInput').value = "";
+        }
 
-        socket.emit('newPlan',{
-            type: 'create_todo',
-            goal : plan,
-            roomno : 71
+    };
+    function pnoChange() {
+        var newPno = document.getElementById('pno').value;
+        if (newPno != pno) {
+            pno = newPno;
+            deletePlan(pno);
+        }
+    }
+    function deletePlan(pno) {
+        console.log(pno)
+        socket.emit('deletePlan',{
+            pno : pno,
+            rno : roomid
         })
     }
 

@@ -5,6 +5,7 @@ const toDoForm = document.querySelector(".js-toDoForm"),
 	completed = document.querySelector(".js-completed"),
 	empty = toDoForm.querySelector(".js-empty"),
 	nothing = document.querySelector(".js-nothing");
+var todono = document.getElementById('pno');
 
 const TODOS_LS = "toDos";
 const SHOWING_CN = "showing";
@@ -76,7 +77,7 @@ function editToDo(event){
 		btnSpan.appendChild(delBtn);
 		//저장
 		for(var i = 0; i < toDos.length; i++){
-			if(toDos[i].id === parseInt(li.id)){
+			if(toDos[i].pno === parseInt(li.id)){
 				toDos[i].text = text;
 			};
 		}
@@ -118,8 +119,8 @@ function undo(event){
 	editBtn.addEventListener("click", showEdit);
 	delBtn.addEventListener("click", deleteToDo);
 	for(var i = 0; i < toDos.length; i++){
-		if(toDos[i].id === parseInt(li.id)){
-			console.log(toDos[i].id);
+		if(toDos[i].pno === parseInt(li.id)){
+			console.log(toDos[i].pno);
 			console.log(li.id);
 			console.log(toDos[i].text);
 			checkBox.checked = toDos[i].isChecked;
@@ -225,14 +226,16 @@ function selectCheckedNum(){
 }
 
 function deleteToDo(event){
+
 	//paint X
 	const btn = event.target;
 	const btnSpan = btn.parentNode;
 	const li = btnSpan.parentNode;
+	todono.value=li.getAttribute('id');
 	toDoList.removeChild(li);
 	//저장
 	const cleanToDos = toDos.filter(function(toDo){
-		return toDo.id !== parseInt(li.id);
+		return toDo.pno !== parseInt(li.id);
 	});
 	toDos = cleanToDos;
 	saveToDos();
@@ -252,7 +255,7 @@ function checkBoxChange(event){
 	const isChecked = checkBox.checked;
 	//저장
 	for(var i = 0; i < toDos.length; i++){
-		if(toDos[i].id === parseInt(li.id)){
+		if(toDos[i].pno === parseInt(li.id)){
 			toDos[i].isChecked = isChecked;
 		};
 	}
@@ -261,7 +264,7 @@ function checkBoxChange(event){
 	selectCheckedNum();
 }
 
-function paintToDo(text, isChecked){
+function paintToDo(pno, text, isChecked){
     localStorage.clear();
 	//li > label > input(checkbox), span(content)
 	const li = document.createElement("li");
@@ -292,7 +295,7 @@ function paintToDo(text, isChecked){
 	li.appendChild(btns);
 	btns.appendChild(editBtn);
 	btns.appendChild(delBtn);
-	const newId = toDos.length + 1;
+	const newId = pno;
 	li.id = newId;
 	toDoList.appendChild(li);
 	//저장
@@ -315,15 +318,15 @@ function toDoSubmit(event){
 	} else {
 		empty.classList.remove(SHOWING_CN);
 		//보여주기
-		paintToDo(currentValue, false);
+		//paintToDo(currentValue, false);
 		//체크수 조회 + 프로그레스 바
 		selectCheckedNum();
 		toDoInput.value = "";
 	}
 }
 
-function loadToDos(){
-	const loadedToDos = localStorage.getItem(TODOS_LS);
+function loadToDos(data){
+    const loadedToDos = data;
 	if(loadedToDos !== null){
 		//loadedToDos(String) → parsedToDos(Array)
 		const parsedToDos = JSON.parse(loadedToDos);
@@ -333,7 +336,7 @@ function loadToDos(){
 		} else {
 			for(var i = 0; i < parsedToDos.length; i++){
 				//todo들을 보여줌
-				paintToDo(parsedToDos[i].text, parsedToDos[i].isChecked);
+				paintToDo(parsedToDos[i].pno,parsedToDos[i].text, parsedToDos[i].isChecked===0?false:true);
 			};
 			//체크수 조회 + 프로그레스 바
 			selectCheckedNum();
@@ -344,8 +347,8 @@ function loadToDos(){
 	}
 }
 
-function init(){
-	loadToDos();
+function init(data){
+	loadToDos(data);
 	toDoForm.addEventListener("submit", toDoSubmit);
 }
 //init();
