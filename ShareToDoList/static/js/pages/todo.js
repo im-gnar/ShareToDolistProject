@@ -262,6 +262,7 @@ function checkBoxChange(event){
 }
 
 function paintToDo(text, isChecked){
+    localStorage.clear();
 	//li > label > input(checkbox), span(content)
 	const li = document.createElement("li");
 	const label = document.createElement("label");
@@ -347,4 +348,4 @@ function init(){
 	loadToDos();
 	toDoForm.addEventListener("submit", toDoSubmit);
 }
-init();
+//init();

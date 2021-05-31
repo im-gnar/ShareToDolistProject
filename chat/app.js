@@ -1,7 +1,5 @@
 const express = require('express')
 const http = require('http')
-var jsdom = require("jsdom");
-var JSDOM = jsdom.JSDOM;
 var mysql = require('mysql2');
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -25,13 +23,14 @@ const io = require('socket.io')(server, {
 io.on('connection', function(socket) {
 //  console.log(socket)
   /* 새로운 유저가 접속했을 경우 다른 소켓에게도 알려줌 */
-  socket.on('newUser', function(name) {
-    console.log(name + ' 님이 접속하였습니다.')
+  socket.on('newUser', function(data) {
+
+    console.log(data.name + ' 님이 접속하였습니다.')
     /* 소켓에 이름 저장해두기 */
-    socket.name = name
+    socket.name = data.name
     connection.query("SELECT * FROM plan",function(err,success){
     /* 모든 소켓에게 전송 */
-    io.sockets.emit('update', {type: 'connect', name: 'SERVER', message: name + '님이 접속하였습니다.', todo:success})
+    io.sockets.emit('update', {type: 'connect', name: 'SERVER', message: data.name + '님이 접속하였습니다.', todo:success})
     })
   })
 
@@ -62,12 +61,18 @@ io.on('connection', function(socket) {
             if (err) console.log("err");
             console.log('Data Insert OK');
         });
-    connection.query("SELECT * FROM plan ORDER BY pno DESC LIMIT 1",function(err,success){
+    connection.query("SELECT * FROM plan ORDER BY pno DESC",function(err,success){
             if (err) console.log("err");
             console.log(success);
             io.emit('planUpdate', success);
         });
-    })
+    });
+
+    socket.on('deletePlan', function(data){
+        connection.query("DELETE FROM plan WHERE pno=?",[data.pno], function(err,success){
+            console.log("DELETED");
+        });
+    });
 })
 
 /* 서버를 8080 포트로 listen */

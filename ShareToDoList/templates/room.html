@@ -177,7 +177,7 @@
                     <div class="toDo-set addbtn">
                         <input class="js-toDoInput toDoInput" id="todoInput" type="text" placeholder="TO DO?"/>
                         <button class="toDoBtn" onclick="createPlan()">submit</button>
-<!--                        <span class="js-empty empty">You can't leave this empty.</span>-->
+                        <span class="js-empty empty">You can't leave this empty.</span>
                     </div>
                 </form>
             <ul class="js-toDoList toDoList">
@@ -197,6 +197,7 @@
 
       socket.on('connect', function () {
           console.log(socket.id)
+          console.log('user');
           socket.emit('newUser', {
               data: 'User Connected',
               name: 'hi'
@@ -205,7 +206,7 @@
       socket.on('planUpdate', function (data) {
           console.log(data);
           data.forEach((data)=>{
-            paintToDo(data.pno, data.goal,data.achievement===0?false:true);
+            paintToDo(data.goal,data.achievement===0?false:true);
             console.log(data.goal);
           });
       });
@@ -249,12 +250,6 @@
       message.appendChild(namediv)
       message.appendChild(content)
       chat.appendChild(message)
-
-      data.todo.forEach((td)=>{
-            paintToDo(td.pno, td.goal,td.achievement===0?false:true)
-            // nothing remove
-            console.log(data.goal);
-          });
     });
 
     /* 메시지 전송 함수 */
@@ -280,6 +275,7 @@
       // 서버로 message 이벤트 전달 + 데이터와 함께
       socket.emit('message', {type: 'message', message: message})
     }
+
     function createPlan() {
         var plan = document.getElementById('todoInput').value   // input value
         document.getElementById('todoInput').value = ''
@@ -290,42 +286,6 @@
             roomno : 71
         })
     }
-    function paintToDo(pno, goal, achievement){
-        //li > label > input(checkbox), span(content)
 
-        const li = document.createElement("li");
-        const label = document.createElement("label");
-        const checkBox = document.createElement("input");
-        checkBox.setAttribute("type", "checkbox");
-        checkBox.setAttribute("class", "todoCheck");
-        checkBox.checked = achievement;
-        const content = document.createElement("span");
-        content.setAttribute("class", "content");
-
-        //li > span(btns) > img(editBtn), img(delBtn)
-
-        const btns = document.createElement("span");
-        btns.setAttribute("class", "controlBtns");
-        const editBtn = document.createElement("button");
-        editBtn.setAttribute("class", "editBtn");
-        editBtn.innerText = "✏";
-        const delBtn = document.createElement("button");
-        delBtn.setAttribute("class", "delBtn");
-        delBtn.innerText = "❌";
-        //eventListener(checkbox, edit, delete)
-        checkBox.addEventListener("change", checkBoxChange);
-        editBtn.addEventListener("click", showEdit);
-        delBtn.addEventListener("click", deleteToDo);
-        content.innerText = goal;
-        li.appendChild(label);
-        label.appendChild(checkBox);
-        label.appendChild(content);
-        li.appendChild(btns);
-        btns.appendChild(editBtn);
-        btns.appendChild(delBtn);
-        const newId = pno;
-        li.id = newId;
-        toDoList.appendChild(li);
-    }
     </script>
 {% endblock %}
