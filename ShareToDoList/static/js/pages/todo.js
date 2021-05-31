@@ -56,16 +56,16 @@ function editToDo(event){
 		span.setAttribute("class", "content");
 		const btnSpan = document.createElement("span");
 		btnSpan.setAttribute("class", "controlBtns");
-		const editBtn = document.createElement("img");
+		const editBtn = document.createElement("button");
 		editBtn.setAttribute("class", "editBtn");
-		editBtn.src = "../../../templates/ShareToDoList/templates/static/images/edit.png";
-		const delBtn = document.createElement("img");
+		editBtn.innerText = "✏"
+		const delBtn = document.createElement("button");
 		delBtn.setAttribute("class", "delBtn");
-		delBtn.src = "../../../templates/ShareToDoList/templates/static/images/delete.png";
+		delBtn.innerText = "❌";
 		checkBox.addEventListener("change", checkBoxChange);
-		editBtn.innerText = "edit";
+//		editBtn.innerText = "edit";
 		editBtn.addEventListener("click", showEdit);
-		delBtn.innerText = "delete";
+//		delBtn.innerText = "delete";
 		delBtn.addEventListener("click", deleteToDo);
 		span.innerText = `${text}`;
 		li.appendChild(label);
@@ -107,12 +107,12 @@ function undo(event){
 	//li > span(btns) > img(editBtn), img(delBtn)
 	const btns = document.createElement("span");
 	btns.setAttribute("class", "controlBtns");
-	const editBtn = document.createElement("img");
+	const editBtn = document.createElement("button");
 	editBtn.setAttribute("class", "editBtn");
-	editBtn.src = "images/edit.png";
-	const delBtn = document.createElement("img");
+	editBtn.innerText = "✏";
+	const delBtn = document.createElement("button");
 	delBtn.setAttribute("class", "delBtn");
-	delBtn.src = "images/delete.png";
+	delBtn.innerText = "❌";
 	//eventListener(checkbox, edit, delete)
 	checkBox.addEventListener("change", checkBoxChange);
 	editBtn.addEventListener("click", showEdit);
@@ -155,12 +155,12 @@ function showEdit(event){
 	editInput.setAttribute("value", content.innerText);
 	const editBtns = document.createElement("span");
 	editBtns.setAttribute("class", "controlBtns");
-	const undoBtn = document.createElement("img");
+	const undoBtn = document.createElement("button");
 	undoBtn.setAttribute("class", "undoBtn");
-	undoBtn.src = "images/undo.png";
-	const submitBtn = document.createElement("img");
+	undoBtn.innerText = "↩";
+	const submitBtn = document.createElement("button");
 	submitBtn.setAttribute("class", "submitBtn");
-	submitBtn.src = "images/submit.png";
+	submitBtn.innerText = "☑";
 	const editEmpty = document.createElement("div");
 	editEmpty.setAttribute("class", "empty");
 	editEmpty.innerText = "You can't leave this empty."
@@ -178,7 +178,7 @@ function showEdit(event){
 
 function paintProgressBar(checkedNum){
 	let percent = 0;
-	//퍼센트 계산: 체크 수 / to do 수 * 100 반올림
+	//퍼센트 계산: round(checked/to do * 100)
 	if(toDos.length != 0) {
 		percent = Math.round(checkedNum / toDos.length * 100);
 	}
@@ -262,6 +262,7 @@ function checkBoxChange(event){
 }
 
 function paintToDo(text, isChecked){
+    localStorage.clear();
 	//li > label > input(checkbox), span(content)
 	const li = document.createElement("li");
 	const label = document.createElement("label");
@@ -274,12 +275,12 @@ function paintToDo(text, isChecked){
 	//li > span(btns) > img(editBtn), img(delBtn)
 	const btns = document.createElement("span");
 	btns.setAttribute("class", "controlBtns");
-	const editBtn = document.createElement("img");
+	const editBtn = document.createElement("button");
 	editBtn.setAttribute("class", "editBtn");
-	editBtn.src = "ShareToDoList/templates/static/images/edit.png";
-	const delBtn = document.createElement("img");
+	editBtn.innerText = "✏";
+	const delBtn = document.createElement("button");
 	delBtn.setAttribute("class", "delBtn");
-	delBtn.src = "ShareToDoList/templates/static/images/delete.png";
+	delBtn.innerText = "❌";
 	//eventListener(checkbox, edit, delete)
 	checkBox.addEventListener("change", checkBoxChange);
 	editBtn.addEventListener("click", showEdit);
@@ -306,6 +307,7 @@ function paintToDo(text, isChecked){
 
 //to do 작성완료
 function toDoSubmit(event){
+
 	event.preventDefault();
 	const currentValue = toDoInput.value;
 	if(currentValue === ""){ //공백확인
@@ -346,5 +348,4 @@ function init(){
 	loadToDos();
 	toDoForm.addEventListener("submit", toDoSubmit);
 }
-init();
-
+//init();

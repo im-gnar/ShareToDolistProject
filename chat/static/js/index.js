@@ -14,11 +14,34 @@ socket.on('connect', function() {
   socket.emit('newUser', name)
 })
 
+function createPlan() {
+    var plan = document.getElementById('todoInput').value   // input value
+    document.getElementById('todoInput').value = ''
+
+    socket.emit('newPlan',{
+        type: 'create_todo',
+		goal : plan,
+		roomno : {current room no}
+    })
+
+}
+
+
+
 /* 서버로부터 데이터 받은 경우 */
 socket.on('update', function(data) {
-  var chat = document.getElementById('chat')
+//    var chat = document.getElementById('chat')
+  var chat = document.getElementById('chatmsg')
+//    var message = document.createElement('div')
+  var message = document.createElement('li')
 
-  var message = document.createElement('div')
+  var namediv = document.createElement('div')
+  var name = document.createElement('span')
+  var content = document.createElement('p')
+
+  name.innerText = `${data.name}`
+  content.innerText = `${data.message}`
+
   var node = document.createTextNode(`${data.name}: ${data.message}`)
   var className = ''
 
@@ -37,8 +60,19 @@ socket.on('update', function(data) {
       break
   }
 
-  message.classList.add(className)
-  message.appendChild(node)
+//  message.classList.add(className)
+
+  message.classList.add("clearfix")
+  namediv.classList.add("mb-2 mt-4 align-left text-white")
+  name.classList.add("text-black")
+  content.classList.add("bg-blue-300 align-left text-white w-10/12 px-10 max-w-xs py-3 rounded break-words")
+
+  namediv.appendChild(name)
+  message.appendChild(namediv)
+  message.appendChild(content)
+
+//  message.appendChild(node)
+
   chat.appendChild(message)
 })
 
@@ -51,11 +85,19 @@ function send() {
   document.getElementById('test').value = ''
 
   // 내가 전송할 메시지 클라이언트에게 표시
-  var chat = document.getElementById('chat')
-  var msg = document.createElement('div')
-  var node = document.createTextNode(message)
-  msg.classList.add('me')
-  msg.appendChild(node)
+  var chat = document.getElementById('chatmsg')
+//  var msg = document.createElement('div')
+//  var node = document.createTextNode(message)
+
+  var msg = document.createElement('li')
+  var content = document.createElement('p')
+  content.innerText = message
+
+//  msg.classList.add('me')
+//  msg.appendChild(node)
+  message.classList.add("clearfix pt-10")
+  content.classList.add("float-right bg-yellow-400 text-right text-white max-w-xs px-6 py-3 rounded break-words")
+  msg.appendChild(content)
   chat.appendChild(msg)
 
   // 서버로 message 이벤트 전달 + 데이터와 함께

@@ -2,19 +2,19 @@
 {% block content %}
     <link rel="stylesheet" type="text/css" href="../static/todomain.css">
     <link rel="stylesheet" type="text/css" href="../static/todo.css">
-	<div class="main">
-		<div class="left">
-			<div class="left-items">
-				<div>
-					<div class="progress-set">
-						<div class="cheerImageProgress center">
-							<span class="js-completed completed">0% completed!</span>
-						</div>
-						<div class="toDoProgress center">
-				  			<div class="js-toDoProgressBar toDoProgressBar"></div>
-						</div>
-					</div>
-				</div>
+   <div class="main">
+      <div class="left">
+         <div class="left-items">
+            <div>
+               <div class="progress-set">
+                  <div class="cheerImageProgress center">
+                     <span class="js-completed completed">0% completed!</span>
+                  </div>
+                  <div class="toDoProgress center">
+                       <div class="js-toDoProgressBar toDoProgressBar"></div>
+                  </div>
+               </div>
+            </div>
 
                 <div class="container mt-20 flex p-4 h-5/6">
                     <div class="people_list h-full bg-gray-700 flex-auto text-white rounded-l-lg max-w-xs bg-gray-700">
@@ -124,9 +124,9 @@
                          <div class="clearfix p-6 border-2 border-white">
                        <div class="chat-with font-semibold text-black">Room name</div>
                          </div>
-
-                        <div class="p-4 h-5/6">
-                        <ul class="overflow-auto pl-10 pr-10 pb-10 h-full journal-scroll">
+                        <!-- chat message area -->
+                        <div class="p-4 h-5/6" id="main">
+                        <ul class="overflow-auto pl-10 pr-10 pb-10 h-full journal-scroll" id="chatmsg">
                           <li class="clearfix">
                             <div class="mb-2 mt-4 align-left text-white">
                               <span class="text-black" >Jay</span> <i class="fa fa-circle me text-green-500"></i>
@@ -159,40 +159,133 @@
                         </ul>
 
                       </div> <!-- end chat-history -->
+                      <div>
+                          <input style="width:80%;" type="text" id="test" placeholder="메세지를 입력해주세요">
+                          <button onclick="send()">SEND</button>
+                      </div>
                     </div>
 
                     </div>
                 </div>
-
-{#                <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>#}
-{#                <div class="message_holder">#}
-{#                    <form action="" method="POST">#}
-{#                      <input type="text" class="username" style='font-size:15px;' placeholder="User Name"/>#}
-{#                      <input type="text" class="message" style='font-size:15px;' placeholder="Messages"/>#}
-{#                      <input type="submit"/>#}
-{#                    </form>#}
-{#			    </div>#}
-		    </div>
+          </div>
         </div>
 
-		<div class="right">
-			<h1 class="toDoText">TO DO LIST</h1>
-			<div class="toDoItems">
+      <div class="right">
+         <h1 class="toDoText">TO DO LIST</h1>
+         <div class="toDoItems">
                 <form class="js-toDoForm toDoForm center">
                     <div class="toDo-set addbtn">
-                        <input class="js-toDoInput toDoInput" type="text" placeholder="TO DO?"/>
-                        <button class="toDoBtn">submit</button>
+                        <input class="js-toDoInput toDoInput" id="todoInput" type="text" placeholder="TO DO?"/>
+                        <button class="toDoBtn" onclick="createPlan()">submit</button>
                         <span class="js-empty empty">You can't leave this empty.</span>
                     </div>
                 </form>
-				<ul class="js-toDoList toDoList">
-					<li class="js-nothing nothing">Nothing to do</li>
-				</ul>
-			</div>
-		</div>
+            <ul class="js-toDoList toDoList">
+               <li class="js-nothing nothing">Nothing to do</li>
+            </ul>
+         </div>
+      </div>
     </div>
+<!--    <script src="../../chat/static/js/index.js"></script>-->
     <script type="text/javascript" src="../static/js/pages/todo.js"></script>
+<!--    <script type="text/javascript" src="../static/js/pages/chat.js"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/19d3e4fe13.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect('http://localhost:1230');
+
+      socket.on('connect', function () {
+          console.log(socket.id)
+          console.log('user');
+          socket.emit('newUser', {
+              data: 'User Connected',
+              name: 'hi'
+          });
+      });
+      socket.on('planUpdate', function (data) {
+          console.log(data);
+          data.forEach((data)=>{
+            paintToDo(data.goal,data.achievement===0?false:true);
+            console.log(data.goal);
+          });
+      });
+      socket.on('update', function(data) {
+      var chat = document.getElementById('chatmsg')
+      var message = document.createElement('li')
+
+      var namediv = document.createElement('div')
+      var name = document.createElement('span')
+      var online = document.createElement('i')
+      var content = document.createElement('p')
+
+      name.innerText = `${data.name}`+" "
+      content.innerText = `${data.message}`
+
+      var node = document.createTextNode(`${data.name}: ${data.message}`)
+      var className = ''
+
+      // 타입에 따라 적용할 클래스를 다르게 지정
+      switch(data.type) {
+        case 'message':
+          className = 'other'
+          break
+
+        case 'connect':
+          className = 'connect'
+          break
+
+        case 'disconnect':
+          className = 'disconnect'
+          break
+      }
+      message.classList.add("clearfix");
+      namediv.classList.add("mb-2","mt-4","align-left","text-white")
+      name.classList.add("text-black")
+      online.classList.add("fa","fa-circle","me","text-green-500")
+      content.classList.add("bg-blue-300","align-left","text-white","w-10/12","px-10","max-w-xs","py-3","rounded","break-words")
+
+      namediv.appendChild(name)
+      namediv.appendChild(online)
+      message.appendChild(namediv)
+      message.appendChild(content)
+      chat.appendChild(message)
+    });
+
+    /* 메시지 전송 함수 */
+    function send() {
+      // 입력되어있는 데이터 가져오기
+      var message = document.getElementById('test').value
+
+      // 가져왔으니 데이터 빈칸으로 변경
+      document.getElementById('test').value = ''
+
+      // 내가 전송할 메시지 클라이언트에게 표시
+      var chat = document.getElementById('chatmsg')
+
+      var msg = document.createElement('li')
+      var content = document.createElement('p')
+      content.innerText = message
+
+      msg.classList.add("clearfix","pt-10")
+      content.classList.add("float-right","bg-yellow-400","text-right","text-white","max-w-xs","px-6","py-3","rounded","break-words")
+      msg.appendChild(content)
+      chat.appendChild(msg)
+
+      // 서버로 message 이벤트 전달 + 데이터와 함께
+      socket.emit('message', {type: 'message', message: message})
+    }
+
+    function createPlan() {
+        var plan = document.getElementById('todoInput').value   // input value
+        document.getElementById('todoInput').value = ''
+
+        socket.emit('newPlan',{
+            type: 'create_todo',
+            goal : plan,
+            roomno : 71
+        })
+    }
+
+    </script>
 {% endblock %}

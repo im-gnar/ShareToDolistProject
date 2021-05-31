@@ -2,6 +2,9 @@
 {% block content %}
     <link rel="stylesheet" type="text/css" href="../static/todomain.css">
     <link rel="stylesheet" type="text/css" href="../static/todo.css">
+    <link rel="stylesheet" href="../static/chat/index.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../static/chat/index.js"></script>
 	<div class="main">
 		<div class="left">
 			<div class="left-items">
@@ -15,6 +18,15 @@
 						</div>
 					</div>
 				</div>
+				    <div id="main">
+      <div id="chat">
+        <!-- 채팅 메시지 영역 -->
+      </div>
+      <div>
+        <input type="text" id="test" placeholder="메시지를 입력해주세요..">
+        <button onclick="send()">전송</button>
+      </div>
+    </div>
 			</div>
 		</div>
 		<div class="right">
@@ -28,7 +40,23 @@
                     </div>
                 </form>
 				<ul class="js-toDoList toDoList">
+					{% if not todolist %}
 					<li class="js-nothing nothing">Nothing to do</li>
+					{% else %}
+					{% for todo in todolist %}
+					<li id="">
+						<lable>
+							<!-- if achivement==1: checked? -->
+							<input type="checkbox" class="todoCheck">
+							<span class="content">{{todo.goal}}</span>
+						</lable>
+						<span class="controlBtns">
+							<img class="editBtn" src="../../../templates/static/images/edit.png">
+							<img class="delBtn" src="../../../templates/static/images/delete.png">
+						</span>
+					</li>
+					{% endfor %}
+					{% endif %}
 				</ul>
 			</div>
 		</div>

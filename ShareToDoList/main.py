@@ -7,6 +7,7 @@ app = Flask("ToDO", static_url_path='/static')  # static 폴더 참조
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = 'private-key'
+
 socketio = SocketIO(app)
 socketio.init_app(app, cors_allowed_origins="*")
 rooms = []
@@ -99,15 +100,13 @@ def emailCheck():
 def loadRoom(roomId):
 
     login = False
-
     if (session.get('user') == None):
         redirect('/login')
-
     user = session['user']
-
-    print(user)
-
-    return render_template('room.html', login=login, user=user, roomId=roomId)
+    #print(user)
+    # login, user 파라미터는 안씀; 오류 없다면 빼기
+    # roomId로 DB에서 room title get, 파라미터로 넘겨주기
+    return render_template('room.html',name=user, roomId=roomId)
 
 def searchByWord(word):
     word = word.lower()
@@ -121,8 +120,8 @@ def searchByWord(word):
 ########### connect DB
 todo_db = pymysql.connect(
     user='root',
-    # passwd='jj123100!!',
-    passwd='5180',
+    passwd='jj123100!!',
+    # passwd='5180',
     host='127.0.0.1',
     # host='mysql',
     db='todolist',
@@ -211,5 +210,6 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     socketio.emit('my response', callback=todoList(json))
 
+
 if __name__ == '__main__':
-    socketio.run(app, debug=True, port=5000)
+    app.run(host='127.0.0.1',debug=True)
