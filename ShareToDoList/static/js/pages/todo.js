@@ -6,6 +6,7 @@ const toDoForm = document.querySelector(".js-toDoForm"),
 	empty = toDoForm.querySelector(".js-empty"),
 	nothing = document.querySelector(".js-nothing");
 var todono = document.getElementById('pno');
+var checkForm = document.getElementById('check');
 
 const TODOS_LS = "toDos";
 const SHOWING_CN = "showing";
@@ -123,7 +124,7 @@ function undo(event){
 			console.log(toDos[i].pno);
 			console.log(li.id);
 			console.log(toDos[i].text);
-			checkBox.checked = toDos[i].isChecked;
+			checkBox.checked = toDos[i].isChecked===0?false:true;
 			const text = toDos[i].text;
 			content.innerText = `${text}`;
 		};
@@ -215,12 +216,14 @@ function paintProgressBar(checkedNum){
 }
 
 function selectCheckedNum(){
+    console.log(toDos)
 	checkedNum = 0;
 	for(var i = 0; i < toDos.length; i++){
-		if(toDos[i].isChecked === true){
+		if( toDos[i].isChecked === true){
 			checkedNum = checkedNum + 1;
 		}
 	}
+	console.log(checkedNum)
 	//프로그레스 바
 	paintProgressBar(checkedNum);
 }
@@ -253,6 +256,10 @@ function checkBoxChange(event){
 	const label = checkBox.parentNode;
 	const li = label.parentNode;
 	const isChecked = checkBox.checked;
+
+    checkForm.value=li.getAttribute('id');
+    checkForm.setAttribute( 'checked', isChecked===true?1:0)
+
 	//저장
 	for(var i = 0; i < toDos.length; i++){
 		if(toDos[i].pno === parseInt(li.id)){
@@ -326,17 +333,22 @@ function toDoSubmit(event){
 }
 
 function loadToDos(data){
+     while ( toDoList.hasChildNodes() ) {
+      toDoList.removeChild( toDoList.firstChild );
+    }
+    toDos=[]
     const loadedToDos = data;
 	if(loadedToDos !== null){
 		//loadedToDos(String) → parsedToDos(Array)
 		const parsedToDos = JSON.parse(loadedToDos);
+//		json2array(parsedToDos);
 		if(parsedToDos.length === 0){
 			//Nothing To Do
 			paintNothing();
 		} else {
 			for(var i = 0; i < parsedToDos.length; i++){
 				//todo들을 보여줌
-				paintToDo(parsedToDos[i].pno,parsedToDos[i].text, parsedToDos[i].isChecked===0?false:true);
+				paintToDo(parsedToDos[i].PNO,parsedToDos[i].text, parsedToDos[i].isChecked===0?false:true);
 			};
 			//체크수 조회 + 프로그레스 바
 			selectCheckedNum();
@@ -347,8 +359,3 @@ function loadToDos(data){
 	}
 }
 
-function init(data){
-	loadToDos(data);
-	toDoForm.addEventListener("submit", toDoSubmit);
-}
-//init();

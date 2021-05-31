@@ -171,7 +171,8 @@
         </div>
 <input type="hidden" id="username" name="username" value="{{name}}">
 <input type="hidden" id="roomid" name="roomid" value="{{roomId}}">
-<input type="hidden" id="pno" name="pno" value="" oninput="deletePlan(this)">
+<input type="hidden" id="pno" name="pno" value="">
+<input type="hidden" id="check" name="check" value="" checked="">
       <div class="right">
          <h1 class="toDoText">TO DO LIST</h1>
          <div class="toDoItems">
@@ -200,6 +201,8 @@
       var user = document.getElementById('username').value
       var roomid = document.getElementById('roomid').value
       var pno = document.getElementById('pno').value
+      var check = document.getElementById('check').getAttribute('checked');
+      var cpno = document.getElementById('check').value;
 
       socket.on('connect', function () {
           console.log(socket.id)
@@ -211,7 +214,6 @@
           });
       });
       socket.on('planUpdate', function (data) {
-          console.log(data);
           var result = JSON.stringify(data);
           console.log(result);
           /*
@@ -305,15 +307,29 @@
     };
     function pnoChange() {
         var newPno = document.getElementById('pno').value;
+        var newCheck = document.getElementById('check').getAttribute('checked');
+        var newCpno = document.getElementById('check').value;
         if (newPno != pno) {
             pno = newPno;
             deletePlan(pno);
+        }
+        if (newCheck != check || newCpno != cpno) {
+            check = newCheck;
+            cpno = newCpno;
+            checkPlan(check,cpno);
         }
     }
     function deletePlan(pno) {
         console.log(pno)
         socket.emit('deletePlan',{
             pno : pno,
+            rno : roomid
+        })
+    }
+    function checkPlan(check,cpno) {
+        socket.emit('checkPlan',{
+            checked: check,
+            pno : cpno,
             rno : roomid
         })
     }

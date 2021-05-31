@@ -21,7 +21,7 @@ def mainpage():
     # room search
     word = request.form.get("roomsearch")
     roomtitle = request.form.get("roomtitle")
-
+    print(word)
     if word != None:
         return render_template("main.html", login=login, roomList=searchByWord(word))
     # create room

@@ -86,6 +86,17 @@ io.on('connection', function(socket) {
             io.emit('planUpdate', success);
         });
     });
+    socket.on('checkPlan', function(data){
+        console.log(data);
+        connection.query("UPDATE plan SET isChecked=? WHERE pno=? AND rno=?",[data.checked,data.pno,data.rno], function(err,success){
+            console.log("CHECKED");
+        });
+        connection.query("SELECT * FROM plan WHERE rno=? ORDER BY pno DESC",[
+            data.rno], function(err,success){
+            if (err) console.log("err");
+            io.emit('planUpdate', success);
+        });
+    });
 })
 
 /* 서버를 8080 포트로 listen */
