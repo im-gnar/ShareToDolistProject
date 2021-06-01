@@ -20,7 +20,10 @@ function deleteNothing(){
 }
 
 function paintNothing(){
-	nothing.classList.add(SHOWING_CN);
+	const li = document.createElement("li");
+	li.innerText = "Nothing to do";
+	li.setAttribute("class", "js-nothing nothing showing");
+	toDoList.appendChild(li);
 }
 
 function saveToDos(){
@@ -333,7 +336,7 @@ function toDoSubmit(event){
 }
 
 function loadToDos(data){
-     while ( toDoList.hasChildNodes() ) {
+    while ( toDoList.hasChildNodes() ) {
       toDoList.removeChild( toDoList.firstChild );
     }
     toDos=[]
@@ -341,8 +344,10 @@ function loadToDos(data){
 	if(loadedToDos !== null){
 		//loadedToDos(String) → parsedToDos(Array)
 		const parsedToDos = JSON.parse(loadedToDos);
-//		json2array(parsedToDos);
+        console.log("datalen")
+        console.log(parsedToDos.length===0)
 		if(parsedToDos.length === 0){
+
 			//Nothing To Do
 			paintNothing();
 		} else {
