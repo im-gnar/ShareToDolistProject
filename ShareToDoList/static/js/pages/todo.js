@@ -33,6 +33,7 @@ function saveToDos(){
 }
 
 function editToDo(event){
+    console.log("edit")
 	event.preventDefault();
 	let editForm;
 	if(event.target.className === "submitBtn"){
@@ -96,56 +97,54 @@ function editToDo(event){
 
 //edit undo
 function undo(event){
-	//hide editForm
+    console.log("undo");
+		//hide editForm
 	//li > form > input, editBtns(undoBtn, submitBtn), editEmpty
 	const undoBtn = event.target;
 	const editBtns = undoBtn.parentNode;
 	const editForm = editBtns.parentNode;
 	const li = editForm.parentNode;
-//	const editInput = editForm.querySelector(".editInput");
-//	const editEmpty = editForm.querySelector(".empty");
-//	editEmpty.classList.remove(SHOWING_CN);
-//	li.removeChild(editForm);
-//	//show to do list (label, btns)
-//	//li > label > input(checkbox), span(content)
-//	const label = document.createElement("label");
-//	const checkBox = document.createElement("input");
-//	checkBox.setAttribute("type", "checkbox");
-//	checkBox.setAttribute("class", "todoCheck");
-//	const content = document.createElement("span");
-//	content.setAttribute("class", "content");
-//	//li > span(btns) > img(editBtn), img(delBtn)
-//	const btns = document.createElement("span");
-//	btns.setAttribute("class", "controlBtns");
-//	const editBtn = document.createElement("button");
-//	editBtn.setAttribute("class", "editBtn");
-//	editBtn.innerText = "✏";
-//	const delBtn = document.createElement("button");
-//	delBtn.setAttribute("class", "delBtn");
-//	delBtn.innerText = "❌";
-//	//eventListener(checkbox, edit, delete)
-//	checkBox.addEventListener("change", checkBoxChange);
-//	editBtn.addEventListener("click", showEdit);
-//	delBtn.addEventListener("click", deleteToDo);
-
+	const editInput = editForm.querySelector(".editInput");
+	const editEmpty = editForm.querySelector(".empty");
+	editEmpty.classList.remove(SHOWING_CN);
+	li.removeChild(editForm);
+	//show to do list (label, btns)
+	//li > label > input(checkbox), span(content)
+	const label = document.createElement("label");
+	const checkBox = document.createElement("input");
+	checkBox.setAttribute("type", "checkbox");
+	checkBox.setAttribute("class", "todoCheck");
+	const content = document.createElement("span");
+	content.setAttribute("class", "content");
+	//li > span(btns) > img(editBtn), img(delBtn)
+	const btns = document.createElement("span");
+	btns.setAttribute("class", "controlBtns");
+	const editBtn = document.createElement("button");
+	editBtn.setAttribute("class", "editBtn");
+	editBtn.innerText = "✏";
+	const delBtn = document.createElement("button");
+	delBtn.setAttribute("class", "delBtn");
+	delBtn.innerText = "❌";
+	//eventListener(checkbox, edit, delete)
+	checkBox.addEventListener("change", checkBoxChange);
+	editBtn.addEventListener("click", showEdit);
+	delBtn.addEventListener("click", deleteToDo);
 	for(var i = 0; i < toDos.length; i++){
-	console.log(toDos[i].pno === parseInt(li.id));
-		if(toDos[i].pno === parseInt(li.id)){
-//			console.log(toDos[i].pno);
-//			console.log(li.id);
-//			console.log(toDos[i].text);
-//			checkBox.checked = toDos[i].isChecked===0?false:true;
-//			const text = toDos[i].text;
-//			content.innerText = `${text}`;
-            paintToDo(toDos[i].PNO,toDos[i].text, toDos[i].isChecked===0?false:true)
+		if(toDos[i].id === parseInt(li.id)){
+			console.log(toDos[i].id);
+			console.log(li.id);
+			console.log(toDos[i].text);
+			checkBox.checked = toDos[i].isChecked;
+			const text = toDos[i].text;
+			content.innerText = `${text}`;
 		};
 	}
-//	li.appendChild(label);
-//	label.appendChild(checkBox);
-//	label.appendChild(content);
-//	li.appendChild(btns);
-//	btns.appendChild(editBtn);
-//	btns.appendChild(delBtn);
+	li.appendChild(label);
+	label.appendChild(checkBox);
+	label.appendChild(content);
+	li.appendChild(btns);
+	btns.appendChild(editBtn);
+	btns.appendChild(delBtn);
 }
 
 function showEdit(event){
