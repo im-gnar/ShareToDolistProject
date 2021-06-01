@@ -176,13 +176,17 @@
                 <form class="js-toDoForm toDoForm center">
                     <div class="toDo-set addbtn">
                         <input class="js-toDoInput toDoInput" id="todoInput" type="text" placeholder="TO DO?"/>
-                        <button class="toDoBtn" onclick="createPlan()">submit</button>
+                        <button class="toDoBtn" onclick="createPlan(event)">submit</button>
                         <span class="js-empty empty">You can't leave this empty.</span>
                     </div>
                 </form>
             <ul class="js-toDoList toDoList">
                <li class="js-nothing nothing">Nothing to do</li>
             </ul>
+             <input type="hidden" id="userinfo" user="{{name}}" roomid="{{roomId}}">
+            <input type="hidden" id="pno" value="">
+            <input type="hidden" id="check" value="" checked="">
+            <input type="hidden" id="edit" text="" pno="">
          </div>
       </div>
     </div>
@@ -193,22 +197,34 @@
     <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/19d3e4fe13.js"></script>
     <script type="text/javascript">
+      setInterval(pnoChange, 100);
       var socket = io.connect('http://localhost:1230');
+
+      var user = document.getElementById('userinfo').getAttribute('user');
+      var roomid = document.getElementById('userinfo').getAttribute('roomid');
+      var pno = document.getElementById('pno').value;
+      var check = document.getElementById('check').getAttribute('checked');
+      var cpno = document.getElementById('check').value;
+      var text = document.getElementById('edit').getAttribute('text');
+      var epno = document.getElementById('edit').getAttribute('pno');
 
       socket.on('connect', function () {
           console.log(socket.id)
-          console.log('user');
+
           socket.emit('newUser', {
               data: 'User Connected',
-              name: 'hi'
+              name: user,
+              rno:roomid
           });
       });
       socket.on('planUpdate', function (data) {
-          console.log(data);
+          var result = JSON.stringify(data);
+          console.log(result);
+          /*
           data.forEach((data)=>{
-            paintToDo(data.goal,data.achievement===0?false:true);
-            console.log(data.goal);
-          });
+            paintToDo(data.pno,data.text,data.isChecked===0?false:true);
+          }); */
+          loadToDos(result);
       });
       socket.on('update', function(data) {
       var chat = document.getElementById('chatmsg')
@@ -276,14 +292,63 @@
       socket.emit('message', {type: 'message', message: message})
     }
 
-    function createPlan() {
-        var plan = document.getElementById('todoInput').value   // input value
-        document.getElementById('todoInput').value = ''
+    function createPlan(event) {
+        event.preventDefault();
+        const currentValue = document.getElementById('todoInput').value;
+        if(currentValue === ""){ //공백확인
+            toDoForm.querySelector(".js-empty").classList.add("showing");
+        } else {
+            toDoForm.querySelector(".js-empty").classList.remove("showing");
+            socket.emit('newPlan',{
+                type: 'create_todo',
+                goal : currentValue,
+                roomno : roomid
+            })
+            selectCheckedNum();
+            document.getElementById('todoInput').value = "";
+        }
 
-        socket.emit('newPlan',{
-            type: 'create_todo',
-            goal : plan,
-            roomno : 71
+    };
+    function pnoChange() {
+        var newPno = document.getElementById('pno').value;
+        var newCheck = document.getElementById('check').getAttribute('checked');
+        var newCpno = document.getElementById('check').value;
+        var newText = document.getElementById('edit').getAttribute('text');
+        var newEpno = document.getElementById('edit').getAttribute('pno');
+        if (newPno != pno) {
+            pno = newPno;
+            deletePlan(pno);
+        }
+        if (newCheck != check || newCpno != cpno) {
+            check = newCheck;
+            cpno = newCpno;
+            checkPlan(check,cpno);
+        }
+        if (newText != text || newEpno != epno) {
+            text = newText;
+            epno = newEpno;
+            editPlan(text,epno);
+        }
+    }
+    function deletePlan(pno) {
+        console.log(pno)
+        socket.emit('deletePlan',{
+            pno : pno,
+            rno : roomid
+        })
+    }
+    function checkPlan(check,cpno) {
+        socket.emit('checkPlan',{
+            checked: check,
+            pno : cpno,
+            rno : roomid
+        })
+    }
+    function editPlan(text,epno) {
+        socket.emit('editPlan',{
+            text: text,
+            pno : epno,
+            rno : roomid
         })
     }
 

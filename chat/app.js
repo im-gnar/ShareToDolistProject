@@ -28,7 +28,13 @@ io.on('connection', function(socket) {
     console.log(data.name + ' 님이 접속하였습니다.')
     /* 소켓에 이름 저장해두기 */
     socket.name = data.name
-    connection.query("SELECT * FROM plan",function(err,success){
+    connection.query("SELECT * FROM plan WHERE rno=? ORDER BY pno DESC",[
+            data.rno], function(err,success){
+            if (err) console.log("err");
+            else console.log(success);
+
+            io.emit('planUpdate', success);
+
     /* 모든 소켓에게 전송 */
     io.sockets.emit('update', {type: 'connect', name: 'SERVER', message: data.name + '님이 접속하였습니다.', todo:success})
     })
@@ -56,21 +62,51 @@ io.on('connection', function(socket) {
   socket.on('newPlan', function(data){
 		// todolist 갱신, 갱신된 리스트 반환
 	console.log(data.goal, data.roomno)
-    connection.query("INSERT INTO plan(rno,goal) VALUES (?, ?)",[
-            data.roomno, data.goal], function(err,success){
+    connection.query("INSERT INTO plan(pno,rno,text) VALUES ((SELECT IFNULL(MAX(pno)+1, 1) FROM plan p WHERE rno=?), ?, ?)",[
+            data.roomno, data.roomno, data.goal], function(err,success){
             if (err) console.log("err");
-            console.log('Data Insert OK');
+            else console.log('Data Insert OK');
         });
-    connection.query("SELECT * FROM plan ORDER BY pno DESC",function(err,success){
+    connection.query("SELECT * FROM plan WHERE rno=? ORDER BY pno DESC",[
+            data.roomno], function(err,success){
             if (err) console.log("err");
             console.log(success);
+
             io.emit('planUpdate', success);
         });
     });
 
     socket.on('deletePlan', function(data){
-        connection.query("DELETE FROM plan WHERE pno=?",[data.pno], function(err,success){
+        connection.query("DELETE FROM plan WHERE pno=? and rno=?",[data.pno,data.rno], function(err,success){
             console.log("DELETED");
+        });
+        connection.query("SELECT * FROM plan WHERE rno=? ORDER BY pno DESC",[
+            data.rno], function(err,success){
+            if (err) console.log("err");
+            io.emit('planUpdate', success);
+        });
+    });
+
+    socket.on('checkPlan', function(data){
+        connection.query("UPDATE plan SET isChecked=? WHERE pno=? AND rno=?",[data.checked,data.pno,data.rno], function(err,success){
+            console.log("CHECKED");
+        });
+        connection.query("SELECT * FROM plan WHERE rno=? ORDER BY pno DESC",[
+            data.rno], function(err,success){
+            if (err) console.log("err");
+            io.emit('planUpdate', success);
+        });
+    });
+
+    socket.on('editPlan', function(data){
+        console.log(data);
+        connection.query("UPDATE plan SET text=? WHERE pno=? AND rno=?",[data.text,data.pno,data.rno], function(err,success){
+            console.log("updated");
+        });
+        connection.query("SELECT * FROM plan WHERE rno=? ORDER BY pno DESC",[
+            data.rno], function(err,success){
+            if (err) console.log("err");
+            io.emit('planUpdate', success);
         });
     });
 })

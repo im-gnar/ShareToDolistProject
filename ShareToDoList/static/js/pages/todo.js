@@ -5,6 +5,9 @@ const toDoForm = document.querySelector(".js-toDoForm"),
 	completed = document.querySelector(".js-completed"),
 	empty = toDoForm.querySelector(".js-empty"),
 	nothing = document.querySelector(".js-nothing");
+var todono = document.getElementById('pno'),
+    checkForm = document.getElementById('check'),
+    editConfirm = document.getElementById('edit');
 
 const TODOS_LS = "toDos";
 const SHOWING_CN = "showing";
@@ -18,7 +21,10 @@ function deleteNothing(){
 }
 
 function paintNothing(){
-	nothing.classList.add(SHOWING_CN);
+	const li = document.createElement("li");
+	li.innerText = "Nothing to do";
+	li.setAttribute("class", "js-nothing nothing showing");
+	toDoList.appendChild(li);
 }
 
 function saveToDos(){
@@ -27,6 +33,7 @@ function saveToDos(){
 }
 
 function editToDo(event){
+    console.log("edit")
 	event.preventDefault();
 	let editForm;
 	if(event.target.className === "submitBtn"){
@@ -46,47 +53,52 @@ function editToDo(event){
 		//show edited to do list
 		empty.classList.remove(SHOWING_CN);
 		const li = editForm.parentNode;
-		editForm.removeChild(editInput);
-		li.removeChild(editForm);
-		const label = document.createElement("label");
-		const checkBox = document.createElement("input");
-		checkBox.setAttribute("type", "checkbox");
-		checkBox.setAttribute("class", "todoCheck");
-		const span = document.createElement("span");
-		span.setAttribute("class", "content");
-		const btnSpan = document.createElement("span");
-		btnSpan.setAttribute("class", "controlBtns");
-		const editBtn = document.createElement("button");
-		editBtn.setAttribute("class", "editBtn");
-		editBtn.innerText = "✏"
-		const delBtn = document.createElement("button");
-		delBtn.setAttribute("class", "delBtn");
-		delBtn.innerText = "❌";
-		checkBox.addEventListener("change", checkBoxChange);
-//		editBtn.innerText = "edit";
-		editBtn.addEventListener("click", showEdit);
-//		delBtn.innerText = "delete";
-		delBtn.addEventListener("click", deleteToDo);
-		span.innerText = `${text}`;
-		li.appendChild(label);
-		label.appendChild(checkBox);
-		label.appendChild(span);
-		li.appendChild(btnSpan);
-		btnSpan.appendChild(editBtn);
-		btnSpan.appendChild(delBtn);
+//		editForm.removeChild(editInput);
+//		li.removeChild(editForm);
+//		const label = document.createElement("label");
+//		const checkBox = document.createElement("input");
+//		checkBox.setAttribute("type", "checkbox");
+//		checkBox.setAttribute("class", "todoCheck");
+//		const span = document.createElement("span");
+//		span.setAttribute("class", "content");
+//		const btnSpan = document.createElement("span");
+//		btnSpan.setAttribute("class", "controlBtns");
+//		const editBtn = document.createElement("button");
+//		editBtn.setAttribute("class", "editBtn");
+//		editBtn.innerText = "✏"
+//		const delBtn = document.createElement("button");
+//		delBtn.setAttribute("class", "delBtn");
+//		delBtn.innerText = "❌";
+//		checkBox.addEventListener("change", checkBoxChange);
+////		editBtn.innerText = "edit";
+//		editBtn.addEventListener("click", showEdit);
+////		delBtn.innerText = "delete";
+//		delBtn.addEventListener("click", deleteToDo);
+//		span.innerText = `${text}`;
+//		li.appendChild(label);
+//		label.appendChild(checkBox);
+//		label.appendChild(span);
+//		li.appendChild(btnSpan);
+//		btnSpan.appendChild(editBtn);
+//		btnSpan.appendChild(delBtn);
+
+        editConfirm.setAttribute('text',text );
+        editConfirm.setAttribute('pno',li.id );
 		//저장
-		for(var i = 0; i < toDos.length; i++){
-			if(toDos[i].id === parseInt(li.id)){
-				toDos[i].text = text;
-			};
-		}
+//		for(var i = 0; i < toDos.length; i++){
+//			if(toDos[i].pno === parseInt(li.id)){
+//
+//				toDos[i].text = text;
+//			};
+//		}
 		saveToDos();
 	}
 }
 
 //edit undo
 function undo(event){
-	//hide editForm
+    console.log("undo");
+		//hide editForm
 	//li > form > input, editBtns(undoBtn, submitBtn), editEmpty
 	const undoBtn = event.target;
 	const editBtns = undoBtn.parentNode;
@@ -216,30 +228,33 @@ function paintProgressBar(checkedNum){
 function selectCheckedNum(){
 	checkedNum = 0;
 	for(var i = 0; i < toDos.length; i++){
-		if(toDos[i].isChecked === true){
+		if( toDos[i].isChecked === true){
 			checkedNum = checkedNum + 1;
 		}
 	}
+	console.log(checkedNum)
 	//프로그레스 바
 	paintProgressBar(checkedNum);
 }
 
 function deleteToDo(event){
+
 	//paint X
 	const btn = event.target;
 	const btnSpan = btn.parentNode;
 	const li = btnSpan.parentNode;
-	toDoList.removeChild(li);
-	//저장
-	const cleanToDos = toDos.filter(function(toDo){
-		return toDo.id !== parseInt(li.id);
-	});
-	toDos = cleanToDos;
-	saveToDos();
-	//nothing to do
-	if(toDos.length === 0){
-		paintNothing();
-	}
+	todono.value=li.getAttribute('id');
+//	toDoList.removeChild(li);
+//	//저장
+//	const cleanToDos = toDos.filter(function(toDo){
+//		return toDo.pno !== parseInt(li.id);
+//	});
+//	toDos = cleanToDos;
+//	saveToDos();
+//	//nothing to do
+//	if(toDos.length === 0){
+//		paintNothing();
+//	}
 	//체크수 조회 + 프로그레스 바
 	selectCheckedNum();
 }
@@ -250,18 +265,22 @@ function checkBoxChange(event){
 	const label = checkBox.parentNode;
 	const li = label.parentNode;
 	const isChecked = checkBox.checked;
-	//저장
-	for(var i = 0; i < toDos.length; i++){
-		if(toDos[i].id === parseInt(li.id)){
-			toDos[i].isChecked = isChecked;
-		};
-	}
-	saveToDos();
+
+    checkForm.value=li.getAttribute('id');
+    checkForm.setAttribute( 'checked', isChecked===true?1:0)
+
+//	//저장
+//	for(var i = 0; i < toDos.length; i++){
+//		if(toDos[i].pno === parseInt(li.id)){
+//			toDos[i].isChecked = isChecked;
+//		};
+//	}
+//	saveToDos();
 	//체크수 조회 + 프로그레스 바
 	selectCheckedNum();
 }
 
-function paintToDo(text, isChecked){
+function paintToDo(pno, text, isChecked){
     localStorage.clear();
 	//li > label > input(checkbox), span(content)
 	const li = document.createElement("li");
@@ -292,7 +311,7 @@ function paintToDo(text, isChecked){
 	li.appendChild(btns);
 	btns.appendChild(editBtn);
 	btns.appendChild(delBtn);
-	const newId = toDos.length + 1;
+	const newId = pno;
 	li.id = newId;
 	toDoList.appendChild(li);
 	//저장
@@ -315,15 +334,19 @@ function toDoSubmit(event){
 	} else {
 		empty.classList.remove(SHOWING_CN);
 		//보여주기
-		paintToDo(currentValue, false);
+		//paintToDo(currentValue, false);
 		//체크수 조회 + 프로그레스 바
 		selectCheckedNum();
 		toDoInput.value = "";
 	}
 }
 
-function loadToDos(){
-	const loadedToDos = localStorage.getItem(TODOS_LS);
+function loadToDos(data){
+    while ( toDoList.hasChildNodes() ) {
+      toDoList.removeChild( toDoList.firstChild );
+    }
+    toDos=[]
+    const loadedToDos = data;
 	if(loadedToDos !== null){
 		//loadedToDos(String) → parsedToDos(Array)
 		const parsedToDos = JSON.parse(loadedToDos);
@@ -333,7 +356,7 @@ function loadToDos(){
 		} else {
 			for(var i = 0; i < parsedToDos.length; i++){
 				//todo들을 보여줌
-				paintToDo(parsedToDos[i].text, parsedToDos[i].isChecked);
+				paintToDo(parsedToDos[i].PNO,parsedToDos[i].text, parsedToDos[i].isChecked===0?false:true);
 			};
 			//체크수 조회 + 프로그레스 바
 			selectCheckedNum();
@@ -344,8 +367,3 @@ function loadToDos(){
 	}
 }
 
-function init(){
-	loadToDos();
-	toDoForm.addEventListener("submit", toDoSubmit);
-}
-//init();

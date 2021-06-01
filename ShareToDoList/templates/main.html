@@ -53,6 +53,11 @@
                         focus:border-blue-400 hover:border-blue-200 transition-colors text-center" placeholder="search for room" required name="roomsearch" id="room-serach">
                         {% if not roomList %}
                             <h1 class="text-blue-400 text-2xl font-semibold text-center mt-10">No room exists</h1>
+                            <br>
+                            <br>
+                            <div class="flex shadow-md font-medium py-2 px-2 text-green-100 cursor-pointer
+                                              bg-green-500 rounded tr-mt text-center hover:bg-green-400 transition-colors"
+                                                   onclick="location.href = '/'">Back to List</div>
                         {% else %}
                             <div class="container mx-auto py-10 flex justify-center h-screen">
                               <div class="w-10/12 md:w-12/12 lg:w-full h-full flex flex-col">
