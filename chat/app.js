@@ -86,10 +86,22 @@ io.on('connection', function(socket) {
             io.emit('planUpdate', success);
         });
     });
+
     socket.on('checkPlan', function(data){
-        console.log(data);
         connection.query("UPDATE plan SET isChecked=? WHERE pno=? AND rno=?",[data.checked,data.pno,data.rno], function(err,success){
             console.log("CHECKED");
+        });
+        connection.query("SELECT * FROM plan WHERE rno=? ORDER BY pno DESC",[
+            data.rno], function(err,success){
+            if (err) console.log("err");
+            io.emit('planUpdate', success);
+        });
+    });
+
+    socket.on('editPlan', function(data){
+        console.log(data);
+        connection.query("UPDATE plan SET text=? WHERE pno=? AND rno=?",[data.text,data.pno,data.rno], function(err,success){
+            console.log("updated");
         });
         connection.query("SELECT * FROM plan WHERE rno=? ORDER BY pno DESC",[
             data.rno], function(err,success){

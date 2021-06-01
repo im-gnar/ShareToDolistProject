@@ -169,10 +169,7 @@
                 </div>
           </div>
         </div>
-<input type="hidden" id="username" name="username" value="{{name}}">
-<input type="hidden" id="roomid" name="roomid" value="{{roomId}}">
-<input type="hidden" id="pno" name="pno" value="">
-<input type="hidden" id="check" name="check" value="" checked="">
+
       <div class="right">
          <h1 class="toDoText">TO DO LIST</h1>
          <div class="toDoItems">
@@ -186,6 +183,10 @@
             <ul class="js-toDoList toDoList">
                <li class="js-nothing nothing">Nothing to do</li>
             </ul>
+             <input type="hidden" id="userinfo" user="{{name}}" roomid="{{roomId}}">
+            <input type="hidden" id="pno" value="">
+            <input type="hidden" id="check" value="" checked="">
+            <input type="hidden" id="edit" text="" pno="">
          </div>
       </div>
     </div>
@@ -198,11 +199,14 @@
     <script type="text/javascript">
       setInterval(pnoChange, 100);
       var socket = io.connect('http://localhost:1230');
-      var user = document.getElementById('username').value
-      var roomid = document.getElementById('roomid').value
-      var pno = document.getElementById('pno').value
+
+      var user = document.getElementById('userinfo').getAttribute('user');
+      var roomid = document.getElementById('userinfo').getAttribute('roomid');
+      var pno = document.getElementById('pno').value;
       var check = document.getElementById('check').getAttribute('checked');
       var cpno = document.getElementById('check').value;
+      var text = document.getElementById('edit').getAttribute('text');
+      var epno = document.getElementById('edit').getAttribute('pno');
 
       socket.on('connect', function () {
           console.log(socket.id)
@@ -309,6 +313,8 @@
         var newPno = document.getElementById('pno').value;
         var newCheck = document.getElementById('check').getAttribute('checked');
         var newCpno = document.getElementById('check').value;
+        var newText = document.getElementById('edit').getAttribute('text');
+        var newEpno = document.getElementById('edit').getAttribute('pno');
         if (newPno != pno) {
             pno = newPno;
             deletePlan(pno);
@@ -317,6 +323,11 @@
             check = newCheck;
             cpno = newCpno;
             checkPlan(check,cpno);
+        }
+        if (newText != text || newEpno != epno) {
+            text = newText;
+            epno = newEpno;
+            editPlan(text,epno);
         }
     }
     function deletePlan(pno) {
@@ -330,6 +341,13 @@
         socket.emit('checkPlan',{
             checked: check,
             pno : cpno,
+            rno : roomid
+        })
+    }
+    function editPlan(text,epno) {
+        socket.emit('editPlan',{
+            text: text,
+            pno : epno,
             rno : roomid
         })
     }

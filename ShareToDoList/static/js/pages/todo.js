@@ -5,8 +5,9 @@ const toDoForm = document.querySelector(".js-toDoForm"),
 	completed = document.querySelector(".js-completed"),
 	empty = toDoForm.querySelector(".js-empty"),
 	nothing = document.querySelector(".js-nothing");
-var todono = document.getElementById('pno');
-var checkForm = document.getElementById('check');
+var todono = document.getElementById('pno'),
+    checkForm = document.getElementById('check'),
+    editConfirm = document.getElementById('edit');
 
 const TODOS_LS = "toDos";
 const SHOWING_CN = "showing";
@@ -51,40 +52,44 @@ function editToDo(event){
 		//show edited to do list
 		empty.classList.remove(SHOWING_CN);
 		const li = editForm.parentNode;
-		editForm.removeChild(editInput);
-		li.removeChild(editForm);
-		const label = document.createElement("label");
-		const checkBox = document.createElement("input");
-		checkBox.setAttribute("type", "checkbox");
-		checkBox.setAttribute("class", "todoCheck");
-		const span = document.createElement("span");
-		span.setAttribute("class", "content");
-		const btnSpan = document.createElement("span");
-		btnSpan.setAttribute("class", "controlBtns");
-		const editBtn = document.createElement("button");
-		editBtn.setAttribute("class", "editBtn");
-		editBtn.innerText = "✏"
-		const delBtn = document.createElement("button");
-		delBtn.setAttribute("class", "delBtn");
-		delBtn.innerText = "❌";
-		checkBox.addEventListener("change", checkBoxChange);
-//		editBtn.innerText = "edit";
-		editBtn.addEventListener("click", showEdit);
-//		delBtn.innerText = "delete";
-		delBtn.addEventListener("click", deleteToDo);
-		span.innerText = `${text}`;
-		li.appendChild(label);
-		label.appendChild(checkBox);
-		label.appendChild(span);
-		li.appendChild(btnSpan);
-		btnSpan.appendChild(editBtn);
-		btnSpan.appendChild(delBtn);
+//		editForm.removeChild(editInput);
+//		li.removeChild(editForm);
+//		const label = document.createElement("label");
+//		const checkBox = document.createElement("input");
+//		checkBox.setAttribute("type", "checkbox");
+//		checkBox.setAttribute("class", "todoCheck");
+//		const span = document.createElement("span");
+//		span.setAttribute("class", "content");
+//		const btnSpan = document.createElement("span");
+//		btnSpan.setAttribute("class", "controlBtns");
+//		const editBtn = document.createElement("button");
+//		editBtn.setAttribute("class", "editBtn");
+//		editBtn.innerText = "✏"
+//		const delBtn = document.createElement("button");
+//		delBtn.setAttribute("class", "delBtn");
+//		delBtn.innerText = "❌";
+//		checkBox.addEventListener("change", checkBoxChange);
+////		editBtn.innerText = "edit";
+//		editBtn.addEventListener("click", showEdit);
+////		delBtn.innerText = "delete";
+//		delBtn.addEventListener("click", deleteToDo);
+//		span.innerText = `${text}`;
+//		li.appendChild(label);
+//		label.appendChild(checkBox);
+//		label.appendChild(span);
+//		li.appendChild(btnSpan);
+//		btnSpan.appendChild(editBtn);
+//		btnSpan.appendChild(delBtn);
+
+        editConfirm.setAttribute('text',text );
+        editConfirm.setAttribute('pno',li.id );
 		//저장
-		for(var i = 0; i < toDos.length; i++){
-			if(toDos[i].pno === parseInt(li.id)){
-				toDos[i].text = text;
-			};
-		}
+//		for(var i = 0; i < toDos.length; i++){
+//			if(toDos[i].pno === parseInt(li.id)){
+//
+//				toDos[i].text = text;
+//			};
+//		}
 		saveToDos();
 	}
 }
@@ -97,47 +102,50 @@ function undo(event){
 	const editBtns = undoBtn.parentNode;
 	const editForm = editBtns.parentNode;
 	const li = editForm.parentNode;
-	const editInput = editForm.querySelector(".editInput");
-	const editEmpty = editForm.querySelector(".empty");
-	editEmpty.classList.remove(SHOWING_CN);
-	li.removeChild(editForm);
-	//show to do list (label, btns)
-	//li > label > input(checkbox), span(content)
-	const label = document.createElement("label");
-	const checkBox = document.createElement("input");
-	checkBox.setAttribute("type", "checkbox");
-	checkBox.setAttribute("class", "todoCheck");
-	const content = document.createElement("span");
-	content.setAttribute("class", "content");
-	//li > span(btns) > img(editBtn), img(delBtn)
-	const btns = document.createElement("span");
-	btns.setAttribute("class", "controlBtns");
-	const editBtn = document.createElement("button");
-	editBtn.setAttribute("class", "editBtn");
-	editBtn.innerText = "✏";
-	const delBtn = document.createElement("button");
-	delBtn.setAttribute("class", "delBtn");
-	delBtn.innerText = "❌";
-	//eventListener(checkbox, edit, delete)
-	checkBox.addEventListener("change", checkBoxChange);
-	editBtn.addEventListener("click", showEdit);
-	delBtn.addEventListener("click", deleteToDo);
+//	const editInput = editForm.querySelector(".editInput");
+//	const editEmpty = editForm.querySelector(".empty");
+//	editEmpty.classList.remove(SHOWING_CN);
+//	li.removeChild(editForm);
+//	//show to do list (label, btns)
+//	//li > label > input(checkbox), span(content)
+//	const label = document.createElement("label");
+//	const checkBox = document.createElement("input");
+//	checkBox.setAttribute("type", "checkbox");
+//	checkBox.setAttribute("class", "todoCheck");
+//	const content = document.createElement("span");
+//	content.setAttribute("class", "content");
+//	//li > span(btns) > img(editBtn), img(delBtn)
+//	const btns = document.createElement("span");
+//	btns.setAttribute("class", "controlBtns");
+//	const editBtn = document.createElement("button");
+//	editBtn.setAttribute("class", "editBtn");
+//	editBtn.innerText = "✏";
+//	const delBtn = document.createElement("button");
+//	delBtn.setAttribute("class", "delBtn");
+//	delBtn.innerText = "❌";
+//	//eventListener(checkbox, edit, delete)
+//	checkBox.addEventListener("change", checkBoxChange);
+//	editBtn.addEventListener("click", showEdit);
+//	delBtn.addEventListener("click", deleteToDo);
+
 	for(var i = 0; i < toDos.length; i++){
+	console.log(toDos[i].pno === parseInt(li.id));
 		if(toDos[i].pno === parseInt(li.id)){
-			console.log(toDos[i].pno);
-			console.log(li.id);
-			console.log(toDos[i].text);
-			checkBox.checked = toDos[i].isChecked===0?false:true;
-			const text = toDos[i].text;
-			content.innerText = `${text}`;
+//			console.log(toDos[i].pno);
+//			console.log(li.id);
+//			console.log(toDos[i].text);
+//			checkBox.checked = toDos[i].isChecked===0?false:true;
+//			const text = toDos[i].text;
+//			content.innerText = `${text}`;
+            paintToDo(toDos[i].PNO,toDos[i].text, toDos[i].isChecked===0?false:true)
 		};
 	}
-	li.appendChild(label);
-	label.appendChild(checkBox);
-	label.appendChild(content);
-	li.appendChild(btns);
-	btns.appendChild(editBtn);
-	btns.appendChild(delBtn);
+//	li.appendChild(label);
+//	label.appendChild(checkBox);
+//	label.appendChild(content);
+//	li.appendChild(btns);
+//	btns.appendChild(editBtn);
+//	btns.appendChild(delBtn);
 }
 
 function showEdit(event){
@@ -219,7 +227,6 @@ function paintProgressBar(checkedNum){
 }
 
 function selectCheckedNum(){
-    console.log(toDos)
 	checkedNum = 0;
 	for(var i = 0; i < toDos.length; i++){
 		if( toDos[i].isChecked === true){
@@ -238,17 +245,17 @@ function deleteToDo(event){
 	const btnSpan = btn.parentNode;
 	const li = btnSpan.parentNode;
 	todono.value=li.getAttribute('id');
-	toDoList.removeChild(li);
-	//저장
-	const cleanToDos = toDos.filter(function(toDo){
-		return toDo.pno !== parseInt(li.id);
-	});
-	toDos = cleanToDos;
-	saveToDos();
-	//nothing to do
-	if(toDos.length === 0){
-		paintNothing();
-	}
+//	toDoList.removeChild(li);
+//	//저장
+//	const cleanToDos = toDos.filter(function(toDo){
+//		return toDo.pno !== parseInt(li.id);
+//	});
+//	toDos = cleanToDos;
+//	saveToDos();
+//	//nothing to do
+//	if(toDos.length === 0){
+//		paintNothing();
+//	}
 	//체크수 조회 + 프로그레스 바
 	selectCheckedNum();
 }
@@ -263,13 +270,13 @@ function checkBoxChange(event){
     checkForm.value=li.getAttribute('id');
     checkForm.setAttribute( 'checked', isChecked===true?1:0)
 
-	//저장
-	for(var i = 0; i < toDos.length; i++){
-		if(toDos[i].pno === parseInt(li.id)){
-			toDos[i].isChecked = isChecked;
-		};
-	}
-	saveToDos();
+//	//저장
+//	for(var i = 0; i < toDos.length; i++){
+//		if(toDos[i].pno === parseInt(li.id)){
+//			toDos[i].isChecked = isChecked;
+//		};
+//	}
+//	saveToDos();
 	//체크수 조회 + 프로그레스 바
 	selectCheckedNum();
 }
@@ -344,10 +351,7 @@ function loadToDos(data){
 	if(loadedToDos !== null){
 		//loadedToDos(String) → parsedToDos(Array)
 		const parsedToDos = JSON.parse(loadedToDos);
-        console.log("datalen")
-        console.log(parsedToDos.length===0)
 		if(parsedToDos.length === 0){
-
 			//Nothing To Do
 			paintNothing();
 		} else {
