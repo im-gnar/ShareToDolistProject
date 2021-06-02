@@ -1,5 +1,6 @@
 
 .js-form {
+    margin-left:70%;
     text-align : center;
     position: fixed;
     transform: translate(-50%);
