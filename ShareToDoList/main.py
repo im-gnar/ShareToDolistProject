@@ -98,15 +98,11 @@ def emailCheck():
 
 @app.route('/tododist/<roomId>')
 def loadRoom(roomId):
-
-    login = False
     if (session.get('user') == None):
         redirect('/login')
     user = session['user']
-
-    # login, user 파라미터는 안씀; 오류 없다면 빼기
-    # roomId로 DB에서 room title get, 파라미터로 넘겨주기
-    return render_template('room.html',name=user, roomId=roomId)
+    roomName = selectroomname(roomId)
+    return render_template('room.html',name=user, roomId=roomId, roomName=roomName)
 
 def searchByWord(word):
     word = word.lower()
@@ -142,7 +138,12 @@ def selectroom():
     sql = "SELECT * FROM `roomlist`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
-    print(result)
+    return result
+
+def selectroomname(rno):
+    sql = f"SELECT title FROM `roomlist` WHERE rno={rno};"
+    cursor.execute(sql)
+    result = cursor.fetchone()
     return result
 
 
