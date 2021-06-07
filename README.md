@@ -1,13 +1,14 @@
 # ToDoList
 <p> <h2 align="middle"> 👉 https:/  👈 </h2></p>
 <p align="middle">
-  <img src="https://img.shields.io/badge/language-html-red.svg?style=flat-square"/>
-  <img src="https://img.shields.io/badge/language-css-orange.svg?style=flat-square"/>
-  <img src="https://img.shields.io/badge/language-VanillaJS-yellow.svg?style=flat-square"/>
+  <img src="https://img.shields.io/badge/language-python-red.svg?style=flat-square"/>
+  <img src="https://img.shields.io/badge/language-html-orange.svg?style=flat-square"/>
+  <img src="https://img.shields.io/badge/language-css-yellow.svg?style=flat-square"/>
+  <img src="https://img.shields.io/badge/language-VanillaJS-yellowgreen.svg?style=flat-square"/>
   <br>
   <img src="https://img.shields.io/badge/framework-flask-green.svg?style=flat-square"/>
   <img src="https://img.shields.io/badge/framework-expresss-deepgreen.svg?style=flat-square"/>
- <img src="https://img.shields.io/badge/language-docker-blue.svg?style=flat-square"/>
+ <img src="https://img.shields.io/badge/devops-docker-blue.svg?style=flat-square"/>
   <a href="https://github.com/next-step/js-todo-list-step1/blob/main/LICENSE" target="_blank">
     <img src="https://img.shields.io/github/license/next-step/js-todo-list-step1.svg?style=flat-square&label=license&color=08CE5D"/>
   </a>
