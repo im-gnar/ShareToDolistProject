@@ -1,5 +1,5 @@
 # ToDoList
-<p> <h2 align="middle"> 👉 https:/  👈 </h2></p>
+<p> <h2 align="middle"> 👉  👈 </h2></p>
 <p align="middle">
   <img src="https://img.shields.io/badge/language-python-red.svg?style=flat-square"/>
   <img src="https://img.shields.io/badge/language-html-orange.svg?style=flat-square"/>
