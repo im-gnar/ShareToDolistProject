@@ -13,7 +13,9 @@
     <img src="https://img.shields.io/github/license/next-step/js-todo-list-step1.svg?style=flat-square&label=license&color=08CE5D"/>
   </a>
 </p>
-
+###  todo
+query refactoring
+rest api
 
 ## Local Start Guide
 
