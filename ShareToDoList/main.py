@@ -14,8 +14,7 @@ rooms = []
 
 @app.route('/', methods=["post", "get"])
 def mainpage():
-    login = False
-
+    login = session.get('login')
     if (session.get('user') != None):
         login = True
     # room search
@@ -53,8 +52,8 @@ def loginpage():
             # login success
             else:
                 session['user'] = db[count]['ID']
-                login = True
-                return render_template("main.html", login=login, roomList=selectroom())
+                session['login'] = True
+                return render_template("main.html", roomList=selectroom())
     return render_template("login.html", Error=Error)
 
 @app.route('/logout', methods=["get"])
