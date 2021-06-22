@@ -9,9 +9,7 @@
   <img src="https://img.shields.io/badge/framework-flask-green.svg?style=flat-square"/>
   <img src="https://img.shields.io/badge/framework-expresss-deepgreen.svg?style=flat-square"/>
  <img src="https://img.shields.io/badge/devops-docker-blue.svg?style=flat-square"/>
-  <a href="https://github.com/next-step/js-todo-list-step1/blob/main/LICENSE" target="_blank">
-    <img src="https://img.shields.io/github/license/next-step/js-todo-list-step1.svg?style=flat-square&label=license&color=08CE5D"/>
-  </a>
+
 </p>
 ###  todo
 query refactoring
