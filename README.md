@@ -1,5 +1,5 @@
 <p><h1 align="middle">📋 ToDoList 📋</h1><p>
-<p> <h2 align="middle"> 👉 http://3.36.185.209:5000/ 👈 </h2></p>
+<p> <h2 align="middle"> 👉 http://tryourself.com:5000/ 👈 </h2></p>
 <p align="middle">
   <img src="https://img.shields.io/badge/language-python-red.svg?style=flat-square"/>
   <img src="https://img.shields.io/badge/language-html-orange.svg?style=flat-square"/>
