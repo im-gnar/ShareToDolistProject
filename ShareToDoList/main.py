@@ -1,5 +1,4 @@
 from flask import *
-# from flask_socketio import SocketIO, send
 import pymysql
 import re
 
@@ -8,8 +7,6 @@ app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = 'private-key'
 
-# socketio = SocketIO(app)
-# socketio.init_app(app, cors_allowed_origins="*")
 rooms = []
 
 @app.route('/', methods=["post", "get"])
@@ -117,7 +114,7 @@ todo_db = pymysql.connect(
     user='root',
     passwd='jj123100!!',
     # passwd='5180',
-    host='127.0.0.1',
+    host='app_mysql',
     # host='mysql',
     db='todolist',
     charset='utf8',
@@ -205,11 +202,5 @@ def sign_idCheck(id):
 def todoList(methods=['GET', 'POST']):
     print('message wa received!!!')
 
-# @socketio.on('room_event')
-# def handle_my_custom_event(json, methods=['GET', 'POST']):
-#     print('received my event: ' + str(json))
-#     socketio.emit('my response', callback=todoList(json))
-
-
 if __name__ == '__main__':
-    app.run(host='127.0.0.1',debug=True)
+    app.run(host='0.0.0.0',debug=True)
