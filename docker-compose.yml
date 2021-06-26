@@ -17,8 +17,8 @@ services:
     volumes:
       - ./mysql/sqls/:/docker-entrypoint-initdb.d/
     environment:
-      MYSQL_ROOT_PASSWORD: jj123100!!
-      MYSQL_DATABASE: todolist
+      MYSQL_ROOT_PASSWORD: 'jj123100!!'
+      MYSQL_DATABASE: 'todolist'
 
 #  mysql:
 #    build: ./mysql
