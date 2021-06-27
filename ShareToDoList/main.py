@@ -11,9 +11,11 @@ rooms = []
 
 @app.route('/', methods=["post", "get"])
 def mainpage():
-    login = session.get('login')
+    login = False
     if (session.get('user') != None):
         login = True
+
+    print(login)
     # room search
     word = request.form.get("roomsearch")
     roomtitle = request.form.get("roomtitle")
@@ -49,8 +51,8 @@ def loginpage():
             # login success
             else:
                 session['user'] = db[count]['ID']
-                session['login'] = True
-                return render_template("main.html", roomList=selectroom())
+                login = True
+                return render_template("main.html",login=login, roomList=selectroom())
     return render_template("login.html", Error=Error)
 
 @app.route('/logout', methods=["get"])
@@ -114,8 +116,8 @@ todo_db = pymysql.connect(
     user='root',
     passwd='jj123100!!',
     # passwd='5180',
-    host='app_mysql',
-    # host='mysql',
+    #host='app_mysql',
+    host='127.0.0.1',
     db='todolist',
     charset='utf8',
 )
