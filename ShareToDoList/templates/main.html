@@ -2,7 +2,7 @@
 {% block top %}
     {% if login %}
     <form class="js-form top-6 left-28" method="post" action="/">
-            <input class="roomtitle" name="roomtitle" placeholder="create new room">
+            <input class="roomtitle" autocomplete="off" name="roomtitle" placeholder="create new room">
             <button class="create create-after">➕</button>
     </form>
     {% endif %}
@@ -43,7 +43,7 @@
                 {% else %}
                         <div class="flex flex-col items-center w-full h-screen lg:mt-26">
                         <input class="border-0 border-b-2 outline-none max-w-2xl h-14 leading-10 text-lg
-                        focus:border-blue-400 hover:border-blue-200 transition-colors text-center" placeholder="search for room" required name="roomsearch" id="room-serach">
+                        focus:border-blue-400 hover:border-blue-200 transition-colors text-center" placeholder="search for room" autocomplete="off" required name="roomsearch" id="room-serach">
                         {% if not roomList %}
                             <h1 class="text-blue-400 text-2xl font-semibold text-center mt-10">No room exists</h1>
                             <br>
