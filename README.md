@@ -1,4 +1,4 @@
-<p><h1 align="middle">📋 ToDoList 📋</h1><p>
+<p><h1 align="middle">📋 To Do List 📋</h1><p>
 <p> <h2 align="middle"> 👉 http://tryourself.com:5000/ 👈 </h2></p>
 <p align="middle">
   <img src="https://img.shields.io/badge/language-python-red.svg?style=flat-square"/>
@@ -11,11 +11,33 @@
  <img src="https://img.shields.io/badge/devops-docker-blue.svg?style=flat-square"/>
 
 </p>
+
 ###  todo
-query refactoring
+
+query refactoring<br>
 rest api
 
+## PreView
 
+### 🎇 Signin && Login
+
+![로그인](https://user-images.githubusercontent.com/75432228/123546161-6ab14200-d796-11eb-926c-b76dda10a180.gif)
+
+
+### 🎇 Room Search && Create
+
+![방생성](https://user-images.githubusercontent.com/75432228/123546205-9af8e080-d796-11eb-9fd1-a516c348f46b.gif)
+
+![검색](https://user-images.githubusercontent.com/75432228/123546228-aea44700-d796-11eb-9b13-7747c3164f07.gif)
+
+
+### 🎇 Chat
+
+![채팅](https://user-images.githubusercontent.com/75432228/123546256-c8458e80-d796-11eb-9051-2921f99f6e11.gif)
+
+### 🎇 To DO CRUD
+
+![투두](https://user-images.githubusercontent.com/75432228/123546267-d7c4d780-d796-11eb-94d8-e194ec347d94.gif)
 
 
 ## Local Start Guide
