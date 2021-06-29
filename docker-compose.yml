@@ -20,6 +20,14 @@ services:
       MYSQL_ROOT_PASSWORD: 'jj123100!!'
       MYSQL_DATABASE: 'todolist'
 
+  node:
+     restart: always
+     build: ./chat
+     depends_on:
+       - mysql
+     ports:
+       - "1230:1230"
+
 #  mysql:
 #    build: ./mysql
 #    restart: unless-stopped
