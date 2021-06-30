@@ -2,7 +2,7 @@ const express = require('express')
 const http = require('http')
 var mysql = require('mysql2');
 var connection = mysql.createConnection({
-  host: 'localhost',
+  host: 'app_mysql',
   port:3306,
   user:'root',
   password:'jj123100!!',
@@ -15,7 +15,7 @@ const app = express()
 const server = http.createServer(app)
 const io = require('socket.io')(server, {
   cors: {
-    origin: "http://127.0.0.1:5000",
+    origin: "http:/0.0.0.0:5000",
     credentials: true
   }
 });

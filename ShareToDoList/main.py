@@ -116,8 +116,8 @@ todo_db = pymysql.connect(
     user='root',
     passwd='jj123100!!',
     # passwd='5180',
-    #host='app_mysql',
-    host='127.0.0.1',
+    host='app_mysql',
+    #host='127.0.0.1',
     db='todolist',
     charset='utf8',
 )
