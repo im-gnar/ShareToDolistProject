@@ -16,7 +16,7 @@
 
 query refactoring<br>
 rest api
-lightsail server down
+lightsail server up
 
 ## PreView
 
