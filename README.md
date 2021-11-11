@@ -75,7 +75,7 @@
 <!--SITE-->
 <h2 id="site"> 💻 사이트</h2>
  
-* 실서버 링크 : http://workourself.com/<br>
+* 실서버 링크 : http://workourself.com:5000<br>
 <br>
 <h2 id="skills"> 🗃 기술 스택 </h2>
   
