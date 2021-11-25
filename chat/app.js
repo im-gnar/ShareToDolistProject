@@ -15,13 +15,11 @@ const app = express()
 const server = http.createServer(app)
 const io = require('socket.io')(server, {
   cors: {
-    origin: "http:/0.0.0.0:5000",
-    credentials: true
+    origin: "*"
   }
 });
 
 io.on('connection', function(socket) {
-//  console.log(socket)
   /* 새로운 유저가 접속했을 경우 다른 소켓에게도 알려줌 */
   socket.on('newUser', function(data) {
 
@@ -64,7 +62,7 @@ io.on('connection', function(socket) {
 	console.log(data.goal, data.roomno)
     connection.query("INSERT INTO plan(pno,rno,text) VALUES ((SELECT IFNULL(MAX(pno)+1, 1) FROM plan p WHERE rno=?), ?, ?)",[
             data.roomno, data.roomno, data.goal], function(err,success){
-            if (err) console.log("err");
+            if (err) console.log(err);
             else console.log('Data Insert OK');
         });
     connection.query("SELECT * FROM plan WHERE rno=? ORDER BY pno DESC",[

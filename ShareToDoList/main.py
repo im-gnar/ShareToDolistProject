@@ -112,7 +112,7 @@ def searchByWord(word):
 
 
 ########### connect DB
-todo_db = pymysql.connect(
+conn = pymysql.connect(
     user='root',
     passwd='jj123100!!',
     # passwd='5180',
@@ -122,52 +122,68 @@ todo_db = pymysql.connect(
     charset='utf8',
 )
 # default는 tuple, Dictcurser는 dict
-cursor = todo_db.cursor(pymysql.cursors.DictCursor)
+def curs():
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    return cursor
 
 
 def select():
+    cursor=curs()
     sql = "SELECT * FROM `member`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
+    conn.close()
     return result
 
 
 def selectroom():
+    cursor=curs()
     sql = "SELECT * FROM `roomlist`;"
     cursor.execute(sql)  # send query
     result = cursor.fetchall()  # get result
+    conn.close()
     return result
 
 def selectroomname(rno):
+    cursor=curs()
     sql = f"SELECT title FROM `roomlist` WHERE rno={rno};"
     cursor.execute(sql)
     result = cursor.fetchone()
+    conn.close()
     return result
 
 
 def insert(id, pwd):
+    cursor=curs()
     sql = f"INSERT INTO `member`(ID, PWD) VALUES ('{id}', '{pwd}');"
     cursor.execute(sql)
     todo_db.commit()
+    conn.close()
 
 
 def addRoom(host, title):
+    cursor=curs()
     sql = f"INSERT INTO roomlist(host, title) VALUES ('{host}', '{title}');"
     cursor.execute(sql)
     todo_db.commit()
+    conn.close()
 
 
 def db_count():
+    cursor=curs()
     sql = "SELECT COUNT(*) FROM `member`;"
     cursor.execute(sql)
     result = cursor.fetchall()
+    conn.close()
     return result
 
 
 def db_get_id():
+    cursor=curs()
     sql = "SELECT ID FROM `member`;"
     cursor.execute(sql)
     m_id = cursor.fetchall()
+    conn.close()
     return m_id
   
 
@@ -180,9 +196,11 @@ def emailTypeCheck(id):  # 정규식 체크
 
 
 def email_idCheck(id):
+    cursor=curs()
     sql = f"SELECT id FROM `member` WHERE id = '{id}';"
     cursor.execute(sql)
     result = cursor.fetchone()
+    conn.close()
     if (result != None):
         response = 'false'
         return response
@@ -192,14 +210,16 @@ def email_idCheck(id):
 
 
 def sign_idCheck(id):
+    cursor=curs()
     sql = f"SELECT ID FROM `member` WHERE ID = '{id}';"
     cursor.execute(sql)
     result = cursor.fetchone()
-
+    conn.close()
     if (result != None):  # 아이디가 존재하면
         return False
     else:
         return True
+
 
 def todoList(methods=['GET', 'POST']):
     print('message wa received!!!')

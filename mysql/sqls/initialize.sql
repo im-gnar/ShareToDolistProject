@@ -24,8 +24,8 @@ AUTO_INCREMENT=70
 CREATE TABLE `plan` (
    `PNO` INT(10) NOT NULL AUTO_INCREMENT,
    `RNO` INT(10) NOT NULL,
-   `goal` VARCHAR(200) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-   `achievement` TINYINT(1) NOT NULL default 0,
+   `text` VARCHAR(200) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+   `isChecked` TINYINT(1) NOT NULL default 0,
    PRIMARY KEY (`PNO`) USING BTREE,
    INDEX `RNO` (`RNO`) USING BTREE,
    CONSTRAINT `plan_ibfk_1` FOREIGN KEY (`RNO`) REFERENCES `todolist`.`roomlist` (`rno`) ON UPDATE NO ACTION ON DELETE NO ACTION
